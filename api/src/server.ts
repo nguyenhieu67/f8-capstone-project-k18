@@ -16,7 +16,7 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "F88 API",
+      title: "Edu CRM API",
       version: "1.0.0",
       description: "API documentation",
     },
