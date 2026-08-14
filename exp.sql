@@ -6,6 +6,8 @@ CREATE TYPE staff_status AS ENUM ('present', 'excused_absence', 'unexcused_absen
 
 CREATE TYPE payroll_status AS ENUM ('draft', 'confirmed', 'paid');
 
+CREATE TYPE employee_role AS ENUM ('trainer', 'sale', 'accountant', 'manager', 'admin');
+
 CREATE    TABLE "source" (
           id BIGSERIAL PRIMARY KEY,
           name TEXT NOT NULL,
@@ -22,8 +24,10 @@ CREATE    TABLE "source" (
 
 CREATE    TABLE employee (
           id BIGSERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
           POSITION TEXT,
+          role employee_role NOT NULL,
           phone TEXT,
           salary INTEGER NOT NULL DEFAULT 0,
           commission_rate INTEGER NOT NULL DEFAULT 0,
@@ -39,10 +43,10 @@ CREATE    TABLE employee (
 
 CREATE    TABLE classe (
           id BIGSERIAL PRIMARY KEY,
-          code TEXT NOT NULL,
+          trainer_id BIGINT, -- employee_id
+          code TEXT NOT NULL UNIQUE,
           name TEXT,
           schedule TEXT,
-          trainer_id BIGINT,
           tuition INTEGER NOT NULL DEFAULT 0,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
@@ -55,13 +59,14 @@ CREATE    TABLE classe (
 
 CREATE    TABLE "lead" (
           id BIGSERIAL PRIMARY KEY,
-          name TEXT NOT NULL,
+          seller_id BIGINT,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
           phone TEXT,
           source_id BIGINT,
           purpose TEXT, -- Mục đích học
           who TEXT,
-          seller_id BIGINT,
-          "status" lead_status NOT NULL DEFAULT 'moi_nhan',
+          status lead_status NOT NULL DEFAULT 'new',
           rejection_reason TEXT,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
@@ -74,8 +79,9 @@ CREATE    TABLE "lead" (
 
 CREATE    TABLE student (
           id BIGSERIAL PRIMARY KEY,
-          lead_id BIGINT UNIQUE t class_id BIGINT,
-          name TEXT NOT NULL,
+          lead_id BIGINT UNIQUE,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
           phone TEXT,
           revenue INTEGER NOT NULL DEFAULT 0,
           enrolled_at TIMESTAMPTZ,
@@ -93,7 +99,7 @@ CREATE    TABLE student_attendance (
           class_id BIGINT NOT NULL,
           student_id BIGINT NOT NULL,
           DATE DATE NOT NULL,
-          "status" attendance_status NOT NULL,
+          status attendance_status NOT NULL,
           note TEXT,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
@@ -109,7 +115,7 @@ CREATE    TABLE staff_attendance (
           id BIGSERIAL PRIMARY KEY,
           employee_id BIGINT NOT NULL,
           DATE DATE NOT NULL,
-          "status" staff_status NOT NULL,
+          status staff_status NOT NULL,
           check_in_time TIME,
           note TEXT,
           created_at TIMESTAMPTZ DEFAULT NOW (),
@@ -148,7 +154,7 @@ CREATE    TABLE payroll_record (
           taxable_income INTEGER NOT NULL DEFAULT 0,
           pit_tax INTEGER NOT NULL DEFAULT 0,
           net_salary INTEGER NOT NULL DEFAULT 0,
-          "status" payroll_status NOT NULL DEFAULT 'draft',
+          status payroll_status NOT NULL DEFAULT 'draft',
           paid_at TIMESTAMPTZ,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,

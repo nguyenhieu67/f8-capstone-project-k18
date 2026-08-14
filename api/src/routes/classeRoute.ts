@@ -1,5 +1,5 @@
-import { SourceCreateDto, SourceUpdateDto } from "@/dtos";
-import { sourceService } from "@/services";
+import { ClasseCreateDto, ClasseUpdateDto } from "@/dtos";
+import { classeService } from "@/services";
 import { ValidationPipe } from "@/validations";
 import express, { type Request, type Response } from "express";
 
@@ -7,11 +7,11 @@ const router = express.Router();
 
 /**
  * @swagger
- * /sources:
+ * /classes:
  *   get:
- *     summary: Lấy danh sách khoá học
+ *     summary: Lấy danh sách lớp học
  *     tags:
- *       - Sources
+ *       - Classes
  *     responses:
  *       200:
  *         description: Lấy danh sách thành công
@@ -33,16 +33,16 @@ const router = express.Router();
  */
 
 router.get("/", async (req: Request, res: Response) => {
-  res.success(await sourceService.getList());
+  res.success(await classeService.getList());
 });
 
 /**
  * @swagger
- * /sources:
+ * /classes:
  *   post:
- *     summary: Tạo khoá học mới
+ *     summary: Tạo lớp học mới
  *     tags:
- *       - Sources
+ *       - Classes
  *     requestBody:
  *       required: true
  *       content:
@@ -50,11 +50,19 @@ router.get("/", async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             required:
+ *               - trainer_id
+ *               - code
  *               - name
  *             properties:
+ *               trainer_id:
+ *                 type: number
+ *                 example: 1
+ *               code:
+ *                 type: string
+ *                 example: "A BASIC"
  *               name:
  *                 type: string
- *                 example: Finn
+ *                 example: "Khoa hoc co ban A"
  *     responses:
  *       200:
  *         description: Tạo thành công
@@ -75,25 +83,25 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post(
   "/",
-  ValidationPipe(SourceCreateDto),
+  ValidationPipe(ClasseCreateDto),
   async (req: Request, res: Response) => {
-    const newSource = req.body;
-    res.success(await sourceService.create(newSource));
+    const newClasse = req.body;
+    res.success(await classeService.create(newClasse));
   },
 );
 
 /**
  * @swagger
- * /sources/{id}:
+ * /classes/{id}:
  *   put:
- *     summary: Sửa khoá học
+ *     summary: Sửa lớp học
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: int
  *     tags:
- *       - Sources
+ *       - Classes
  *     requestBody:
  *       required: true
  *       content:
@@ -101,8 +109,14 @@ router.post(
  *           schema:
  *             type: object
  *             required:
+ *               - trainer_id
+ *               - code
  *               - name
  *             properties:
+ *               trainer_id:
+ *                 type: number
+ *               code:
+ *                 type: string
  *               name:
  *                 type: string
  *     responses:
@@ -125,41 +139,41 @@ router.post(
 
 router.put(
   "/:id",
-  ValidationPipe(SourceUpdateDto),
+  ValidationPipe(ClasseUpdateDto),
   async (req: Request, res: Response) => {
-    const sourceId = Number(req.params.id);
-    const newSource = req.body;
+    const classeId = Number(req.params.id);
+    const newClasse = req.body;
 
-    const existingCustomer = await sourceService.findOneBy(sourceId);
-    if (!existingCustomer) {
-      return res.status(404).send(`Can not find customer with id ${sourceId}`);
+    const existing = await classeService.findOneBy(classeId);
+    if (!existing) {
+      return res.status(404).send(`Can not find ... with id ${classeId}`);
     }
 
-    res.success(await sourceService.updateById(sourceId, newSource));
+    res.success(await classeService.updateById(classeId, newClasse));
   },
 );
 
 /**
  * @swagger
- * /sources/{id}:
+ * /classes/{id}:
  *   delete:
- *     summary: Xoá khoá học
+ *     summary: Xoá lớp học
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: int
  *     tags:
- *       - Sources
+ *       - Classes
  *     responses:
  *       400:
  *         description: Dữ liệu không hợp lệ
  */
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const sourceId = Number(req.params.id);
+  const classeId = Number(req.params.id);
 
-  res.success(await sourceService.deleteById(sourceId));
+  res.success(await classeService.deleteById(classeId));
   res.status(204).send(`Delete`);
 });
 

@@ -1,5 +1,5 @@
-import { SourceCreateDto, SourceUpdateDto } from "@/dtos";
-import { sourceService } from "@/services";
+import { EmployeeCreateDto, EmployeeUpdateDto } from "@/dtos";
+import { employeeService } from "@/services";
 import { ValidationPipe } from "@/validations";
 import express, { type Request, type Response } from "express";
 
@@ -7,11 +7,11 @@ const router = express.Router();
 
 /**
  * @swagger
- * /sources:
+ * /employees:
  *   get:
- *     summary: Lấy danh sách khoá học
+ *     summary: Lấy danh sách nhân viên
  *     tags:
- *       - Sources
+ *       - Employees
  *     responses:
  *       200:
  *         description: Lấy danh sách thành công
@@ -33,16 +33,16 @@ const router = express.Router();
  */
 
 router.get("/", async (req: Request, res: Response) => {
-  res.success(await sourceService.getList());
+  res.success(await employeeService.getList());
 });
 
 /**
  * @swagger
- * /sources:
+ * /employees:
  *   post:
- *     summary: Tạo khoá học mới
+ *     summary: Tạo nhân viên mới
  *     tags:
- *       - Sources
+ *       - Employees
  *     requestBody:
  *       required: true
  *       content:
@@ -50,11 +50,19 @@ router.get("/", async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - first_name
+ *               - last_name
+ *               - role
  *             properties:
- *               name:
+ *               first_name:
  *                 type: string
- *                 example: Finn
+ *                 example: Nguyen Van
+ *               last_name:
+ *                 type: string
+ *                 example: A
+ *               role:
+ *                 type: string
+ *                 example: trainer
  *     responses:
  *       200:
  *         description: Tạo thành công
@@ -75,25 +83,25 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post(
   "/",
-  ValidationPipe(SourceCreateDto),
+  ValidationPipe(EmployeeCreateDto),
   async (req: Request, res: Response) => {
-    const newSource = req.body;
-    res.success(await sourceService.create(newSource));
+    const newEmployee = req.body;
+    res.success(await employeeService.create(newEmployee));
   },
 );
 
 /**
  * @swagger
- * /sources/{id}:
+ * /employees/{id}:
  *   put:
- *     summary: Sửa khoá học
+ *     summary: Sửa nhân viên
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: int
  *     tags:
- *       - Sources
+ *       - Employees
  *     requestBody:
  *       required: true
  *       content:
@@ -101,9 +109,15 @@ router.post(
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - first_name
+ *               - last_name
+ *               - role
  *             properties:
- *               name:
+ *               first_name:
+ *                 type: string
+ *               last_name:
+ *                 type: string
+ *               role:
  *                 type: string
  *     responses:
  *       200:
@@ -125,41 +139,43 @@ router.post(
 
 router.put(
   "/:id",
-  ValidationPipe(SourceUpdateDto),
+  ValidationPipe(EmployeeUpdateDto),
   async (req: Request, res: Response) => {
-    const sourceId = Number(req.params.id);
-    const newSource = req.body;
+    const employeeId = Number(req.params.id);
+    const newEmployee = req.body;
 
-    const existingCustomer = await sourceService.findOneBy(sourceId);
+    const existingCustomer = await employeeService.findOneBy(employeeId);
     if (!existingCustomer) {
-      return res.status(404).send(`Can not find customer with id ${sourceId}`);
+      return res
+        .status(404)
+        .send(`Can not find customer with id ${employeeId}`);
     }
 
-    res.success(await sourceService.updateById(sourceId, newSource));
+    res.success(await employeeService.updateById(employeeId, newEmployee));
   },
 );
 
 /**
  * @swagger
- * /sources/{id}:
+ * /employees/{id}:
  *   delete:
- *     summary: Xoá khoá học
+ *     summary: Xoá nhân viên
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: int
  *     tags:
- *       - Sources
+ *       - Employees
  *     responses:
  *       400:
  *         description: Dữ liệu không hợp lệ
  */
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const sourceId = Number(req.params.id);
+  const employeeId = Number(req.params.id);
 
-  res.success(await sourceService.deleteById(sourceId));
+  res.success(await employeeService.deleteById(employeeId));
   res.status(204).send(`Delete`);
 });
 
