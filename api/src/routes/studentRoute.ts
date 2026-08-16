@@ -1,12 +1,71 @@
+import { studentController } from "@/controllers";
 import { StudentCreateDto, StudentUpdateDto } from "@/dtos";
-import { studentService } from "@/services";
 import { ValidationPipe } from "@/validations";
-import express, { type Request, type Response } from "express";
+import express from "express";
 
 const router = express.Router();
 
+router.get("/", studentController.getList);
+router.post("/", ValidationPipe(StudentCreateDto), studentController.create);
+router.put("/:id", ValidationPipe(StudentUpdateDto), studentController.update);
+router.delete("/:id", studentController.delete);
+
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Student:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
+ *         lead_id:
+ *           type: number
+ *           example: 1
+ *         first_name:
+ *           type: string
+ *           example: "Nguyen Van"
+ *         last_name:
+ *           type: string
+ *           example: "A"
+ *         phone:
+ *           type: string
+ *           example: "0901234567"
+ *         revenue:
+ *           type: integer
+ *           example: 5000000
+ *         enrolled_at:
+ *           type: string
+ *           format: date-time
+ *           example: "2026-08-16T09:00:00Z"
+ *     StudentInput:
+ *       type: object
+ *       required:
+ *         - lead_id
+ *         - first_name
+ *         - last_name
+ *       properties:
+ *         lead_id:
+ *           type: number
+ *           example: 1
+ *         first_name:
+ *           type: string
+ *           example: "Nguyen Van"
+ *         last_name:
+ *           type: string
+ *           example: "A"
+ *         phone:
+ *           type: string
+ *           example: "0901234567"
+ *         revenue:
+ *           type: integer
+ *           example: 5000000
+ *         enrolled_at:
+ *           type: string
+ *           format: date-time
+ *           example: "2026-08-16T09:00:00Z"
+ *
  * /students:
  *   get:
  *     summary: Lấy danh sách học sinh
@@ -20,25 +79,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                   name:
- *                     type: string
- *                     example: John Doe
- *
- *
- */
-
-router.get("/", async (req: Request, res: Response) => {
-  res.success(await studentService.getList());
-});
-
-/**
- * @swagger
- * /students:
+ *                 $ref: '#/components/schemas/Student'
  *   post:
  *     summary: Tạo học sinh mới
  *     tags:
@@ -48,133 +89,60 @@ router.get("/", async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - lead_id
- *               - first_name
- *               - last_name
- *             properties:
- *               lead_id:
- *                 type: number
- *                 example: 1
- *               first_name:
- *                 type: string
- *                 example: "Nguyen Van"
- *               last_name:
- *                 type: string
- *                 example: "A"
+ *             $ref: '#/components/schemas/StudentInput'
  *     responses:
  *       200:
  *         description: Tạo thành công
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                 name:
- *                   type: string
- *                   example: Finn
+ *               $ref: '#/components/schemas/Student'
  *       400:
  *         description: Dữ liệu không hợp lệ
- */
-
-router.post(
-  "/",
-  ValidationPipe(StudentCreateDto),
-  async (req: Request, res: Response) => {
-    const newStudent = req.body;
-    res.success(await studentService.create(newStudent));
-  },
-);
-
-/**
- * @swagger
+ *
  * /students/{id}:
  *   put:
  *     summary: Sửa học sinh
+ *     tags:
+ *       - Students
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
- *           type: int
- *     tags:
- *       - Students
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - lead_id
- *               - first_name
- *               - last_name
- *             properties:
- *               lead_id:
- *                 type: number
- *               first_name:
- *                 type: string
- *               last_name:
- *                 type: string
+ *             $ref: '#/components/schemas/StudentInput'
  *     responses:
  *       200:
  *         description: Sửa thành công
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                 name:
- *                   type: string
- *                   example: Finn
+ *               $ref: '#/components/schemas/Student'
  *       400:
  *         description: Dữ liệu không hợp lệ
- */
-
-router.put(
-  "/:id",
-  ValidationPipe(StudentUpdateDto),
-  async (req: Request, res: Response) => {
-    const studentId = Number(req.params.id);
-    const newStudent = req.body;
-
-    const existing = await studentService.findOneBy(studentId);
-    if (!existing) {
-      return res.status(404).send(`Can not find ... with id ${studentId}`);
-    }
-
-    res.success(await studentService.updateById(studentId, newStudent));
-  },
-);
-
-/**
- * @swagger
- * /students/{id}:
+ *       404:
+ *         description: Không tìm thấy học sinh
  *   delete:
  *     summary: Xoá học sinh
+ *     tags:
+ *       - Students
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
- *           type: int
- *     tags:
- *       - Students
+ *           type: integer
  *     responses:
- *       400:
- *         description: Dữ liệu không hợp lệ
+ *       204:
+ *         description: Xoá thành công
+ *       404:
+ *         description: Không tìm thấy học sinh
  */
-
-router.delete("/:id", async (req: Request, res: Response) => {
-  const studentId = Number(req.params.id);
-
-  res.success(await studentService.deleteById(studentId));
-  res.status(204).send(`Delete`);
-});
 
 export default router;

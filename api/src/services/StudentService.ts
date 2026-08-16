@@ -12,9 +12,7 @@ class StudentService extends BaseService {
       .getOne();
 
     if (!lead) {
-      throw new Error(
-        `lead_id ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`,
-      );
+      throw new Error(`lead_id ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`);
     }
   }
 
@@ -35,6 +33,4 @@ class StudentService extends BaseService {
   }
 }
 
-const studentService = new StudentService(StudentEntity);
-
-export default studentService;
+export default new StudentService(StudentEntity);

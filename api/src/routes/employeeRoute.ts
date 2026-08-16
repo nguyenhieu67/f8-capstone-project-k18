@@ -1,12 +1,83 @@
+import express from "express";
 import { EmployeeCreateDto, EmployeeUpdateDto } from "@/dtos";
-import { employeeService } from "@/services";
 import { ValidationPipe } from "@/validations";
-import express, { type Request, type Response } from "express";
+import { employeeController } from "@/controllers";
 
 const router = express.Router();
 
+router.get("/", employeeController.getList);
+router.post("/", ValidationPipe(EmployeeCreateDto), employeeController.create);
+router.put("/:id", ValidationPipe(EmployeeUpdateDto), employeeController.update);
+router.delete("/:id", employeeController.delete);
+
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Employee:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
+ *         first_name:
+ *           type: string
+ *           example: Nguyen Van
+ *         last_name:
+ *           type: string
+ *           example: A
+ *         role:
+ *           type: string
+ *           enum: [trainer, sale, accountant, manager, admin]
+ *           example: trainer
+ *         position:
+ *           type: string
+ *           example: "Senior Trainer"
+ *         phone:
+ *           type: string
+ *           example: "0901234567"
+ *         salary:
+ *           type: integer
+ *           example: 15000000
+ *         commission_rate:
+ *           type: integer
+ *           example: 10
+ *         dependents:
+ *           type: integer
+ *           example: 2
+ *     EmployeeInput:
+ *       type: object
+ *       required:
+ *         - first_name
+ *         - last_name
+ *         - role
+ *       properties:
+ *         first_name:
+ *           type: string
+ *           example: Nguyen Van
+ *         last_name:
+ *           type: string
+ *           example: A
+ *         role:
+ *           type: string
+ *           enum: [trainer, sale, accountant, manager, admin]
+ *           example: trainer
+ *         position:
+ *           type: string
+ *           example: "Senior Trainer"
+ *         phone:
+ *           type: string
+ *           example: "0901234567"
+ *         salary:
+ *           type: integer
+ *           example: 15000000
+ *         commission_rate:
+ *           type: integer
+ *           example: 10
+ *         dependents:
+ *           type: integer
+ *           example: 2
+ *
  * /employees:
  *   get:
  *     summary: Lấy danh sách nhân viên
@@ -20,25 +91,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                   name:
- *                     type: string
- *                     example: John Doe
- *
- *
- */
-
-router.get("/", async (req: Request, res: Response) => {
-  res.success(await employeeService.getList());
-});
-
-/**
- * @swagger
- * /employees:
+ *                 $ref: '#/components/schemas/Employee'
  *   post:
  *     summary: Tạo nhân viên mới
  *     tags:
@@ -48,135 +101,60 @@ router.get("/", async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - first_name
- *               - last_name
- *               - role
- *             properties:
- *               first_name:
- *                 type: string
- *                 example: Nguyen Van
- *               last_name:
- *                 type: string
- *                 example: A
- *               role:
- *                 type: string
- *                 example: trainer
+ *             $ref: '#/components/schemas/EmployeeInput'
  *     responses:
  *       200:
  *         description: Tạo thành công
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                 name:
- *                   type: string
- *                   example: Finn
+ *               $ref: '#/components/schemas/Employee'
  *       400:
  *         description: Dữ liệu không hợp lệ
- */
-
-router.post(
-  "/",
-  ValidationPipe(EmployeeCreateDto),
-  async (req: Request, res: Response) => {
-    const newEmployee = req.body;
-    res.success(await employeeService.create(newEmployee));
-  },
-);
-
-/**
- * @swagger
+ *
  * /employees/{id}:
  *   put:
  *     summary: Sửa nhân viên
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
- *           type: int
- *     tags:
- *       - Employees
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - first_name
- *               - last_name
- *               - role
- *             properties:
- *               first_name:
- *                 type: string
- *               last_name:
- *                 type: string
- *               role:
- *                 type: string
+ *             $ref: '#/components/schemas/EmployeeInput'
  *     responses:
  *       200:
  *         description: Sửa thành công
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *                 name:
- *                   type: string
- *                   example: Finn
+ *               $ref: '#/components/schemas/Employee'
  *       400:
  *         description: Dữ liệu không hợp lệ
- */
-
-router.put(
-  "/:id",
-  ValidationPipe(EmployeeUpdateDto),
-  async (req: Request, res: Response) => {
-    const employeeId = Number(req.params.id);
-    const newEmployee = req.body;
-
-    const existingCustomer = await employeeService.findOneBy(employeeId);
-    if (!existingCustomer) {
-      return res
-        .status(404)
-        .send(`Can not find customer with id ${employeeId}`);
-    }
-
-    res.success(await employeeService.updateById(employeeId, newEmployee));
-  },
-);
-
-/**
- * @swagger
- * /employees/{id}:
+ *       404:
+ *         description: Không tìm thấy nhân viên
  *   delete:
  *     summary: Xoá nhân viên
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
- *           type: int
- *     tags:
- *       - Employees
+ *           type: integer
  *     responses:
- *       400:
- *         description: Dữ liệu không hợp lệ
+ *       204:
+ *         description: Xoá thành công
+ *       404:
+ *         description: Không tìm thấy nhân viên
  */
-
-router.delete("/:id", async (req: Request, res: Response) => {
-  const employeeId = Number(req.params.id);
-
-  res.success(await employeeService.deleteById(employeeId));
-  res.status(204).send(`Delete`);
-});
 
 export default router;

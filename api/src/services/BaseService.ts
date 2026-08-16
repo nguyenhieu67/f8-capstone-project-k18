@@ -3,23 +3,35 @@ import { SelectQueryBuilder } from "typeorm";
 import { AppDataSource } from "@/config/database";
 import { BaseEntity } from "@/entities";
 
+type FkValidator = {
+  field: string;
+  validate: (value: any) => Promise<void>;
+};
+
 export abstract class BaseService {
   private entity: new () => BaseEntity;
+
+  protected fkValidators: FkValidator[] = [];
 
   constructor(entity: new () => BaseEntity) {
     this.entity = entity;
   }
 
   private getTableName() {
-    const tableName = AppDataSource.getRepository(this.entity).metadata
-      .tableName;
+    const tableName = AppDataSource.getRepository(this.entity).metadata.tableName;
     return tableName === "order" ? `"${tableName}"` : tableName;
   }
 
+  private async runFkValidators(data: any) {
+    for (const v of this.fkValidators) {
+      if (data[v.field] !== undefined) {
+        await v.validate(data[v.field]);
+      }
+    }
+  }
+
   handleSelect() {
-    return AppDataSource.getRepository(this.entity)
-      .createQueryBuilder(this.getTableName())
-      .select();
+    return AppDataSource.getRepository(this.entity).createQueryBuilder(this.getTableName()).select();
   }
 
   handleFind(query: SelectQueryBuilder<BaseEntity>, condition: any) {
@@ -45,6 +57,7 @@ export abstract class BaseService {
   }
 
   async create(data: any) {
+    await this.runFkValidators(data);
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .insert()
@@ -69,6 +82,7 @@ export abstract class BaseService {
   }
 
   async updateById(id: number, data: any) {
+    await this.runFkValidators(data);
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .update(data)
