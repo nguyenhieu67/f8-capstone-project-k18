@@ -1,11 +1,14 @@
 import { leadController } from "@/controllers";
 import { LeadCreateDto, LeadUpdateDto } from "@/dtos";
+import authRequired from "@/middlewares/authRequired";
 import { ValidationPipe } from "@/validations";
 import express from "express";
 
 const router = express.Router();
+router.use(authRequired);
 
 router.get("/", leadController.getList);
+router.get("/:id", leadController.getOne);
 router.post("/", ValidationPipe(LeadCreateDto), leadController.create);
 router.put("/:id", ValidationPipe(LeadUpdateDto), leadController.update);
 router.delete("/:id", leadController.delete);
@@ -113,6 +116,25 @@ router.delete("/:id", leadController.delete);
  *         description: Dữ liệu không hợp lệ
  *
  * /leads/{id}:
+ *   get:
+ *     summary: Lấy thông tin khách hàng tiềm năng theo id
+ *     tags:
+ *       - Leads
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Lead'
+ *       404:
+ *         description: Không tìm thấy khách hàng tiềm năng
  *   put:
  *     summary: Sửa khách hàng tiềm năng
  *     tags:

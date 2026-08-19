@@ -1,7 +1,7 @@
 import { SelectQueryBuilder } from "typeorm";
 
 import { AppDataSource } from "@/config/database";
-import { BaseEntity } from "@/entities";
+import { BaseEntity, SimpleEntity } from "@/entities";
 
 type FkValidator = {
   field: string;
@@ -9,12 +9,14 @@ type FkValidator = {
 };
 
 export abstract class BaseService {
-  private entity: new () => BaseEntity;
+  private entity: new () => BaseEntity | SimpleEntity;
 
   protected fkValidators: FkValidator[] = [];
+  protected useSoftDelete: boolean = true;
 
-  constructor(entity: new () => BaseEntity) {
+  constructor(entity: new () => BaseEntity | SimpleEntity, useSoftDelete = true) {
     this.entity = entity;
+    this.useSoftDelete = useSoftDelete;
   }
 
   private getTableName() {
@@ -30,12 +32,16 @@ export abstract class BaseService {
     }
   }
 
+  private applyActiveCondition(condition: any) {
+    return this.useSoftDelete ? { ...condition, is_active: true } : condition;
+  }
+
   handleSelect() {
     return AppDataSource.getRepository(this.entity).createQueryBuilder(this.getTableName()).select();
   }
 
-  handleFind(query: SelectQueryBuilder<BaseEntity>, condition: any) {
-    return query.where({ ...condition, is_active: true });
+  handleFind(query: SelectQueryBuilder<BaseEntity | SimpleEntity>, condition: any) {
+    return query.where(this.applyActiveCondition(condition));
   }
 
   async getList(condition = {}) {
@@ -44,16 +50,16 @@ export abstract class BaseService {
     return await query.getRawMany();
   }
 
-  async findOneBy(id: number) {
-    const query = await AppDataSource.getRepository(this.entity)
-      .createQueryBuilder(this.getTableName())
-      .where(`${this.getTableName()}.id = :id`, { id })
-      .andWhere(`${this.getTableName()}.is_active = :isActive`, {
-        isActive: true,
-      })
-      .getOne();
+  async getById(id: number) {
+    return this.findOneBy({ id });
+  }
 
-    return query;
+  async findOneBy(condition: Record<string, any>) {
+    const query = AppDataSource.getRepository(this.entity)
+      .createQueryBuilder(this.getTableName())
+      .where(this.applyActiveCondition(condition));
+
+    return await query.getOne();
   }
 
   async create(data: any) {
@@ -66,7 +72,8 @@ export abstract class BaseService {
       .returning(["id"])
       .execute();
 
-    return query;
+    const insertedId = query.identifiers[0].id;
+    return this.getById(insertedId);
   }
 
   async createMany(data: any) {
@@ -94,14 +101,21 @@ export abstract class BaseService {
   }
 
   async deleteById(id: number) {
+    if (this.useSoftDelete) {
+      const query = await AppDataSource.getRepository(this.entity)
+        .createQueryBuilder(this.getTableName())
+        .update({ deleted_at: new Date(), is_active: false })
+        .where(`${this.getTableName()}.id = :id`, { id })
+        .returning(["id"])
+        .execute();
+
+      return query;
+    }
+
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
-      .update({
-        deleted_at: new Date(),
-        is_active: false,
-      })
+      .delete()
       .where(`${this.getTableName()}.id = :id`, { id })
-      .returning(["id"])
       .execute();
 
     return query;

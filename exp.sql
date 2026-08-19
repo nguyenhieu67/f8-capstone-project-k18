@@ -1,3 +1,5 @@
+CREATE TYPE user_role AS ENUM ('admin', 'guest', 'authorized');
+
 CREATE TYPE lead_status AS ENUM ('new', 'converted', 'rejected');
 
 CREATE TYPE attendance_status AS ENUM ('present', 'absent');
@@ -7,6 +9,25 @@ CREATE TYPE staff_status AS ENUM ('present', 'excused_absence', 'unexcused_absen
 CREATE TYPE payroll_status AS ENUM ('draft', 'confirmed', 'paid');
 
 CREATE TYPE employee_role AS ENUM ('trainer', 'sale', 'accountant', 'manager', 'admin');
+
+CREATE    TABLE "user" (
+          id BIGSERIAL PRIMARY KEY,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
+          email TEXT NOT NULL UNIQUE,
+          password TEXT NOT NULL,
+          role user_role NOT NULL DEFAULT 'guest',
+          phone TEXT,
+          avatar_url TEXT,
+          last_login_at TIMESTAMPTZ,
+          created_at TIMESTAMPTZ DEFAULT NOW (),
+          created_by BIGINT,
+          updated_at TIMESTAMPTZ,
+          updated_by BIGINT,
+          deleted_at TIMESTAMPTZ,
+          deleted_by BIGINT,
+          is_active BOOLEAN DEFAULT TRUE
+          );
 
 CREATE    TABLE "source" (
           id BIGSERIAL PRIMARY KEY,
@@ -164,4 +185,15 @@ CREATE    TABLE payroll_record (
           deleted_by BIGINT,
           is_active BOOLEAN DEFAULT TRUE,
           UNIQUE (employee_id, period)
+          );
+
+CREATE    TABLE refresh_token (
+          id BIGSERIAL PRIMARY KEY,
+          user_id BIGINT NOT NULL REFERENCES "user" (id),
+          token TEXT NOT NULL UNIQUE,
+          user_agent TEXT,
+          ip_address TEXT,
+          expires_at TIMESTAMPTZ NOT NULL,
+          revoked_at TIMESTAMPTZ,
+          created_at TIMESTAMPTZ DEFAULT NOW ()
           );

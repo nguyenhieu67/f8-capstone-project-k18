@@ -14,7 +14,7 @@ export abstract class BaseController {
 
   getOne = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const item = await this.service.findOneBy(id);
+    const item = await this.service.findOneBy({ id });
     if (!item) {
       return res.status(404).send(`Not found with id ${id}`);
     }
@@ -27,7 +27,7 @@ export abstract class BaseController {
 
   update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const existing = await this.service.findOneBy(id);
+    const existing = await this.service.findOneBy({ id });
     if (!existing) {
       return res.status(404).send(`Not found with id ${id}`);
     }

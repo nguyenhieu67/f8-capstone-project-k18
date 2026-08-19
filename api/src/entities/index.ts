@@ -1,4 +1,7 @@
 export * from "./BaseEntity";
+export * from "./SimpleEntity";
+export * from "./RefreshTokenEntity";
+export * from "./UserEntity";
 export * from "./SourceEntity";
 export * from "./EmployeeEntity";
 export * from "./ClasseEntity";

@@ -9,8 +9,6 @@ import { customResponse } from "@/middlewares/index";
 
 const app: Express = express();
 
-AppDataSource.initialize();
-
 // Swagger setup
 const swaggerOptions = {
   definition: {
@@ -23,6 +21,20 @@ const swaggerOptions = {
     servers: [
       {
         url: "http://localhost:3000",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
       },
     ],
   },
@@ -39,6 +51,17 @@ app.use(customResponse);
 app.use(rootRouter);
 
 const port = 3000;
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+
+async function bootstrap() {
+  await AppDataSource.initialize();
+  console.log("Database connected");
+
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+}
+
+bootstrap().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
 });

@@ -7,13 +7,13 @@ export abstract class BaseEntity {
   @Column({ type: "timestamptz" })
   created_at!: Date;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true })
   created_by!: number;
 
-  @Column({ type: "timestamptz" })
+  @Column({ type: "timestamptz", nullable: true })
   updated_at!: Date;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true })
   updated_by!: number;
 
   @Column({ type: "timestamptz", nullable: true })

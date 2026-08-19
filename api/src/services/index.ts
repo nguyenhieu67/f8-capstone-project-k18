@@ -1,3 +1,5 @@
+export { default as authService } from "./AuthService";
+export { default as userService } from "./UserService";
 export { default as sourceService } from "./SourceService";
 export { default as employeeService } from "./EmployeeService";
 export { default as classeService } from "./ClasseService";

@@ -2,10 +2,13 @@ import express from "express";
 import { EmployeeCreateDto, EmployeeUpdateDto } from "@/dtos";
 import { ValidationPipe } from "@/validations";
 import { employeeController } from "@/controllers";
+import authRequired from "@/middlewares/authRequired";
 
 const router = express.Router();
+router.use(authRequired);
 
 router.get("/", employeeController.getList);
+router.get("/:id", employeeController.getOne);
 router.post("/", ValidationPipe(EmployeeCreateDto), employeeController.create);
 router.put("/:id", ValidationPipe(EmployeeUpdateDto), employeeController.update);
 router.delete("/:id", employeeController.delete);
@@ -113,6 +116,25 @@ router.delete("/:id", employeeController.delete);
  *         description: Dữ liệu không hợp lệ
  *
  * /employees/{id}:
+ *   get:
+ *     summary: Lấy thông tin nhân viên theo id
+ *     tags:
+ *       - Employees
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       404:
+ *         description: Không tìm thấy nhân viên
  *   put:
  *     summary: Sửa nhân viên
  *     tags:

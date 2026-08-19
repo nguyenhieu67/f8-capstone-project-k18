@@ -1,11 +1,14 @@
 import { classeController } from "@/controllers";
 import { ClasseCreateDto, ClasseUpdateDto } from "@/dtos";
+import authRequired from "@/middlewares/authRequired";
 import { ValidationPipe } from "@/validations";
 import express from "express";
 
 const router = express.Router();
+router.use(authRequired);
 
 router.get("/", classeController.getList);
+router.get("/:id", classeController.getOne);
 router.post("/", ValidationPipe(ClasseCreateDto), classeController.create);
 router.put("/:id", ValidationPipe(ClasseUpdateDto), classeController.update);
 router.delete("/:id", classeController.delete);
@@ -93,6 +96,25 @@ router.delete("/:id", classeController.delete);
  *         description: Dữ liệu không hợp lệ
  *
  * /classes/{id}:
+ *   get:
+ *     summary: Lấy thông tin lớp học theo id
+ *     tags:
+ *       - Classes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Classe'
+ *       404:
+ *         description: Không tìm thấy lớp học
  *   put:
  *     summary: Sửa lớp học
  *     tags:

@@ -1,11 +1,14 @@
 import { studentController } from "@/controllers";
 import { StudentCreateDto, StudentUpdateDto } from "@/dtos";
+import authRequired from "@/middlewares/authRequired";
 import { ValidationPipe } from "@/validations";
 import express from "express";
 
 const router = express.Router();
+router.use(authRequired);
 
 router.get("/", studentController.getList);
+router.get("/:id", studentController.getOne);
 router.post("/", ValidationPipe(StudentCreateDto), studentController.create);
 router.put("/:id", ValidationPipe(StudentUpdateDto), studentController.update);
 router.delete("/:id", studentController.delete);
@@ -101,6 +104,25 @@ router.delete("/:id", studentController.delete);
  *         description: Dữ liệu không hợp lệ
  *
  * /students/{id}:
+ *   get:
+ *     summary: Lấy thông tin học sinh theo id
+ *     tags:
+ *       - Students
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Student'
+ *       404:
+ *         description: Không tìm thấy học sinh
  *   put:
  *     summary: Sửa học sinh
  *     tags:

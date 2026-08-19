@@ -1,11 +1,14 @@
 import { sourceController } from "@/controllers";
 import { SourceCreateDto, SourceUpdateDto } from "@/dtos";
+import authRequired from "@/middlewares/authRequired";
 import { ValidationPipe } from "@/validations";
 import express from "express";
 
 const router = express.Router();
+router.use(authRequired);
 
 router.get("/", sourceController.getList);
+router.get("/:id", sourceController.getOne);
 router.post("/", ValidationPipe(SourceCreateDto), sourceController.create);
 router.put("/:id", ValidationPipe(SourceUpdateDto), sourceController.update);
 router.delete("/:id", sourceController.delete);
@@ -79,6 +82,25 @@ router.delete("/:id", sourceController.delete);
  *         description: Dữ liệu không hợp lệ
  *
  * /sources/{id}:
+ *   get:
+ *     summary: Lấy thông tin khoá học theo id
+ *     tags:
+ *       - Sources
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Source'
+ *       404:
+ *         description: Không tìm thấy khoá học
  *   put:
  *     summary: Sửa khoá học
  *     tags:

@@ -2,12 +2,14 @@ import { DataSource } from "typeorm";
 
 import env from "./environment";
 import {
+  UserEntity,
   ClasseEntity,
   EmployeeEntity,
   LeadEntity,
   SourceEntity,
   StudentAttendanceEntity,
   StudentEntity,
+  RefreshTokenEntity,
 } from "@/entities";
 
 export const AppDataSource = new DataSource({
@@ -20,6 +22,8 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: true,
   entities: [
+    RefreshTokenEntity,
+    UserEntity,
     SourceEntity,
     EmployeeEntity,
     ClasseEntity,
