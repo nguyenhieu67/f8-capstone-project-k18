@@ -1,11 +1,10 @@
-import { sourceController } from "@/controllers";
-import { SourceCreateDto, SourceUpdateDto } from "@/dtos";
-import authRequired from "@/middlewares/authRequired";
-import { ValidationPipe } from "@/validations";
 import express from "express";
 
+import { sourceController } from "@/controllers";
+import { SourceCreateDto, SourceUpdateDto } from "@/dtos";
+import { ValidationPipe } from "@/validations";
+
 const router = express.Router();
-router.use(authRequired);
 
 router.get("/", sourceController.getList);
 router.get("/:id", sourceController.getOne);

@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
+import { constants, env } from "@/config";
+import { UserEntity } from "@/entities";
+import { AppError, randomString } from "@/utils";
 import { BaseService } from "./BaseService";
 import refreshTokenService from "./RefreshTokenService";
-import { BaseEntity, UserEntity } from "@/entities";
-import env from "@/config/environment";
-import { userService } from ".";
-import randomString from "@/utils/randomString";
+import UserService from "./UserService";
 
 interface RegisterI {
   email: string;
@@ -24,7 +25,7 @@ class AuthService extends BaseService {
   async register(data: RegisterI) {
     const existing = await this.findOneBy({ email: data.email });
     if (existing) {
-      throw new Error("Email đã được sử dụng");
+      throw new AppError("Email đã được sử dụng", constants.httpCodes.conffict);
     }
 
     const hash = await bcrypt.hash(data.password, 10);
@@ -80,7 +81,7 @@ class AuthService extends BaseService {
   }
 
   async getUserById(id: number) {
-    const user = await userService.getById(id);
+    const user = await UserService.getById(id);
     return user;
   }
 

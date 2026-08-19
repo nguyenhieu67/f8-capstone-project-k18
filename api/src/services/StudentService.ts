@@ -1,6 +1,7 @@
-import { BaseService } from "./BaseService";
+import { AppDataSource, constants } from "@/config";
 import { LeadEntity, LeadStatus, StudentEntity } from "@/entities";
-import { AppDataSource } from "@/config/database";
+import { AppError } from "@/utils";
+import { BaseService } from "./BaseService";
 
 class StudentService extends BaseService {
   private async validateTrainer(leadId: number) {
@@ -12,7 +13,10 @@ class StudentService extends BaseService {
       .getOne();
 
     if (!lead) {
-      throw new Error(`lead_id ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`);
+      throw new AppError(
+        `lead_id ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`,
+        constants.httpCodes.badRequest,
+      );
     }
   }
 

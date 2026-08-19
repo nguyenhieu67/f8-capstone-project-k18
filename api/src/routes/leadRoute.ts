@@ -1,11 +1,10 @@
-import { leadController } from "@/controllers";
-import { LeadCreateDto, LeadUpdateDto } from "@/dtos";
-import authRequired from "@/middlewares/authRequired";
-import { ValidationPipe } from "@/validations";
 import express from "express";
 
+import { leadController } from "@/controllers";
+import { LeadCreateDto, LeadUpdateDto } from "@/dtos";
+import { ValidationPipe } from "@/validations";
+
 const router = express.Router();
-router.use(authRequired);
 
 router.get("/", leadController.getList);
 router.get("/:id", leadController.getOne);

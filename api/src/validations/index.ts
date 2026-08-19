@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
-import constants from "@/config/constants";
+
+import { constants } from "@/config";
 
 async function valid<T>(dtoClass: new () => T, body: any) {
   const dto = plainToInstance(dtoClass, body);
@@ -30,9 +31,7 @@ export function ValidationPipe<T>(dtoClass: new () => T) {
     }
 
     if (allEroors.length > 0) {
-      const msges = allEroors
-        .map((e) => (e.constraints ? Object.values(e.constraints) : []))
-        .flat();
+      const msges = allEroors.map((e) => (e.constraints ? Object.values(e.constraints) : [])).flat();
 
       return res.status(constants.httpCodes.unprocessableContent).json({
         statusCode: constants.httpCodes.unprocessableContent,

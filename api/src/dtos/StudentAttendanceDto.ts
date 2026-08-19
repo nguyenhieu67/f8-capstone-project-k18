@@ -1,5 +1,6 @@
+import { IsDate, IsEnum, IsNumber } from "class-validator";
+
 import { AttendanceStatus } from "@/entities";
-import { IsDate, IsEnum, IsNumber, IsString } from "class-validator";
 
 export class StudentCreateDto {
   @IsNumber()

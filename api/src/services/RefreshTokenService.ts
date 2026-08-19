@@ -1,6 +1,6 @@
-import { AppDataSource } from "@/config/database";
-import { BaseService } from "./BaseService";
+import { AppDataSource } from "@/config";
 import { RefreshTokenEntity } from "@/entities";
+import { BaseService } from "./BaseService";
 
 class RefreshTokenService extends BaseService {
   async findValidToken(token: string) {

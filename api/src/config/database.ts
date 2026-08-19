@@ -12,7 +12,7 @@ import {
   RefreshTokenEntity,
 } from "@/entities";
 
-export const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: "postgres",
   host: env.DB_HOST || "db",
   port: Number(env.DB_PORT) || 5432,
@@ -34,3 +34,5 @@ export const AppDataSource = new DataSource({
   subscribers: [],
   migrations: [],
 });
+
+export default AppDataSource;

@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from "typeorm";
 
-import { AppDataSource } from "@/config/database";
+import { AppDataSource } from "@/config";
 import { BaseEntity, SimpleEntity } from "@/entities";
 
 type FkValidator = {

@@ -1,5 +1,6 @@
-import { AppDataSource } from "@/config/database";
+import { AppDataSource, constants } from "@/config";
 import { EmployeeEntity, EmployeeRole } from "@/entities/EmployeeEntity";
+import { AppError } from "@/utils";
 
 export async function validateEmployeeRole(employeeId: number, role: EmployeeRole, fieldName: string) {
   const employee = await AppDataSource.getRepository(EmployeeEntity)
@@ -10,6 +11,9 @@ export async function validateEmployeeRole(employeeId: number, role: EmployeeRol
     .getOne();
 
   if (!employee) {
-    throw new Error(`${fieldName} ${employeeId} không hợp lệ: employee không tồn tại hoặc không có role ${role}`);
+    throw new AppError(
+      `${fieldName} ${employeeId} không hợp lệ: employee không tồn tại hoặc không có role ${role}`,
+      constants.httpCodes.badRequest,
+    );
   }
 }

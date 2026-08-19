@@ -1,4 +1,5 @@
 import { Entity, Column } from "typeorm";
+
 import { SimpleEntity } from "./SimpleEntity";
 
 @Entity("refresh_token")

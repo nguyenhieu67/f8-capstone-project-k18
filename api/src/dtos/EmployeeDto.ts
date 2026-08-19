@@ -1,5 +1,6 @@
-import { EmployeeRole } from "@/entities";
 import { IsString, IsEnum } from "class-validator";
+
+import { EmployeeRole } from "@/entities";
 
 export class EmployeeCreateDto {
   @IsString()

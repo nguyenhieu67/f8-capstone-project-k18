@@ -1,6 +1,5 @@
 import { BaseService } from "./BaseService";
-import { LeadEntity } from "@/entities";
-import { EmployeeRole } from "@/entities";
+import { LeadEntity, EmployeeRole } from "@/entities";
 import { validateEmployeeRole } from "./helpers/validateEmployeeRole";
 
 class LeadService extends BaseService {

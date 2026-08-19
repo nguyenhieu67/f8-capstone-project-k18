@@ -1,11 +1,10 @@
 import express from "express";
+
+import { employeeController } from "@/controllers";
 import { EmployeeCreateDto, EmployeeUpdateDto } from "@/dtos";
 import { ValidationPipe } from "@/validations";
-import { employeeController } from "@/controllers";
-import authRequired from "@/middlewares/authRequired";
 
 const router = express.Router();
-router.use(authRequired);
 
 router.get("/", employeeController.getList);
 router.get("/:id", employeeController.getOne);

@@ -1,11 +1,10 @@
-import { studentController } from "@/controllers";
-import { StudentCreateDto, StudentUpdateDto } from "@/dtos";
-import authRequired from "@/middlewares/authRequired";
-import { ValidationPipe } from "@/validations";
 import express from "express";
 
+import { studentController } from "@/controllers";
+import { StudentCreateDto, StudentUpdateDto } from "@/dtos";
+import { ValidationPipe } from "@/validations";
+
 const router = express.Router();
-router.use(authRequired);
 
 router.get("/", studentController.getList);
 router.get("/:id", studentController.getOne);

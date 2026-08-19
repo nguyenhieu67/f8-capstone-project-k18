@@ -1,5 +1,6 @@
-import constants from "@/config/constants";
 import { Request, Response, NextFunction } from "express";
+
+import { constants } from "@/config";
 
 declare global {
   namespace Express {

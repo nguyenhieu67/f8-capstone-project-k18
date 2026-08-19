@@ -1,5 +1,5 @@
-import { BaseService } from "./BaseService";
 import { UserEntity } from "@/entities";
+import { BaseService } from "./BaseService";
 
 class UserService extends BaseService {}
 

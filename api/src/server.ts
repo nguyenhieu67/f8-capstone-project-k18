@@ -3,9 +3,9 @@ import express, { type Express } from "express";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
-import { AppDataSource } from "@/config/database";
-import rootRouter from "@/routes/index";
-import { customResponse } from "@/middlewares/index";
+import { AppDataSource } from "@/config";
+import { customResponse, handleError } from "@/middlewares";
+import rootRouter from "@/routes";
 
 const app: Express = express();
 
@@ -47,8 +47,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Middleware
 app.use(customResponse);
-
 app.use(rootRouter);
+
+// Error
+app.use(handleError);
 
 const port = 3000;
 

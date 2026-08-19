@@ -1,8 +1,9 @@
+import express from "express";
+
 import { authController } from "@/controllers";
 import { RefreshTokenCreateDto, UserCreateDto } from "@/dtos";
-import authRequired from "@/middlewares/authRequired";
+import { authRequired } from "@/middlewares";
 import { ValidationPipe } from "@/validations";
-import express from "express";
 
 const router = express.Router();
 

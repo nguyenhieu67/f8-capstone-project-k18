@@ -1,5 +1,6 @@
-import { BaseService } from "@/services/BaseService";
 import { Request, Response } from "express";
+
+import { BaseService } from "@/services/BaseService";
 
 export abstract class BaseController {
   protected service: BaseService;
