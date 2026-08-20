@@ -33,7 +33,7 @@ export abstract class BaseService {
   }
 
   private applyActiveCondition(condition: any) {
-    return this.useSoftDelete ? { ...condition, is_active: true } : condition;
+    return this.useSoftDelete ? { ...condition, isActive: true } : condition;
   }
 
   handleSelect() {
@@ -93,7 +93,7 @@ export abstract class BaseService {
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .update(data)
-      .where(`${this.getTableName()}.id = :id`, { id })
+      .where(`"${this.getTableName()}".id = :id`, { id })
       .returning(["id"])
       .execute();
 
@@ -104,8 +104,8 @@ export abstract class BaseService {
     if (this.useSoftDelete) {
       const query = await AppDataSource.getRepository(this.entity)
         .createQueryBuilder(this.getTableName())
-        .update({ deleted_at: new Date(), is_active: false })
-        .where(`${this.getTableName()}.id = :id`, { id })
+        .update({ deletedAt: new Date(), isActive: false })
+        .where(`"${this.getTableName()}".id = :id`, { id })
         .returning(["id"])
         .execute();
 
@@ -115,7 +115,7 @@ export abstract class BaseService {
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .delete()
-      .where(`${this.getTableName()}.id = :id`, { id })
+      .where(`"${this.getTableName()}".id = :id`, { id })
       .execute();
 
     return query;

@@ -22,10 +22,10 @@ router.delete("/:id", employeeController.delete);
  *         id:
  *           type: string
  *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: Nguyen Van
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: A
  *         role:
@@ -41,7 +41,7 @@ router.delete("/:id", employeeController.delete);
  *         salary:
  *           type: integer
  *           example: 15000000
- *         commission_rate:
+ *         commissionRate:
  *           type: integer
  *           example: 10
  *         dependents:
@@ -50,14 +50,14 @@ router.delete("/:id", employeeController.delete);
  *     EmployeeInput:
  *       type: object
  *       required:
- *         - first_name
- *         - last_name
+ *         - firstName
+ *         - lastName
  *         - role
  *       properties:
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: Nguyen Van
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: A
  *         role:
@@ -73,7 +73,7 @@ router.delete("/:id", employeeController.delete);
  *         salary:
  *           type: integer
  *           example: 15000000
- *         commission_rate:
+ *         commissionRate:
  *           type: integer
  *           example: 10
  *         dependents:

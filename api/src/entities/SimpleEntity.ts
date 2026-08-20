@@ -5,5 +5,5 @@ export abstract class SimpleEntity {
   id!: number;
 
   @Column({ type: "timestamptz" })
-  created_at!: Date;
+  createdAt!: Date;
 }

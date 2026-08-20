@@ -197,3 +197,12 @@ CREATE    TABLE refresh_token (
           revoked_at TIMESTAMPTZ,
           created_at TIMESTAMPTZ DEFAULT NOW ()
           );
+
+CREATE    TABLE password_reset (
+          id BIGSERIAL PRIMARY KEY,
+          user_id BIGINT NOT NULL REFERENCES "user" (id),
+          token TEXT NOT NULL,
+          expires_at TIMESTAMPTZ NOT NULL,
+          used_at TIMESTAMPTZ,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT now ()
+          );

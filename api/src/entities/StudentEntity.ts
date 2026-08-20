@@ -5,13 +5,13 @@ import { BaseEntity } from "./BaseEntity";
 @Entity("student")
 export class StudentEntity extends BaseEntity {
   @Column({ type: "bigint" })
-  lead_id!: number;
+  leadId!: number;
 
   @Column({ type: "text" })
-  first_name!: string;
+  firstName!: string;
 
   @Column({ type: "text" })
-  last_name!: string;
+  lastName!: string;
 
   @Column({ type: "text" })
   phone?: string;
@@ -20,5 +20,5 @@ export class StudentEntity extends BaseEntity {
   revenue?: number;
 
   @Column({ type: "timestamptz" })
-  enrolled_at?: Date;
+  enrolledAt?: Date;
 }

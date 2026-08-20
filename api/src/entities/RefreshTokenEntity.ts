@@ -5,20 +5,20 @@ import { SimpleEntity } from "./SimpleEntity";
 @Entity("refresh_token")
 export class RefreshTokenEntity extends SimpleEntity {
   @Column({ type: "bigint" })
-  user_id!: number;
+  userId!: number;
 
   @Column({ type: "text" })
   token!: string;
 
   @Column({ type: "timestamptz" })
-  expires_at!: Date;
+  expiresAt!: Date;
 
   @Column({ type: "timestamptz" })
-  revoked_at?: Date;
+  revokedAt?: Date;
 
   @Column({ type: "text" })
-  user_agent?: string;
+  userAgent?: string;
 
   @Column({ type: "text" })
-  ip_address?: string;
+  ipAddress?: string;
 }

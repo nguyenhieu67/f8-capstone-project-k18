@@ -1,0 +1,98 @@
+{
+  "brand": {
+    "subtitle": "Hệ Thống Quản Lý Đào Tạo",
+    "hero_title": "Quản lý trung tâm\nhiệu quả và toàn diện.",
+    "hero_desc": "Tối ưu hóa quy trình sales, quản lý học viên, nhân sự và tài chính chỉ trên một nền tảng duy nhất."
+  },
+  "register": {
+    "title": "Tạo tài khoản nhân viên mới",
+    "or": "Hoặc",
+    "has_account": "đăng nhập nếu đã có tài khoản",
+    "firstName": "Họ",
+    "lastName": "Tên",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "role": "Bộ phận / Chức vụ",
+    "roles": {
+      "authorized": "Quản lý trung tâm",
+      "admin": "Quản trị viên / HR"
+    },
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "agree_prefix": "Tôi đồng ý với",
+    "terms": "Điều khoản",
+    "and": "và",
+    "privacy": "Chính sách bảo mật",
+    "submit": "Đăng ký tài khoản"
+  },
+
+  "login": {
+    "title": "Đăng nhập tài khoản",
+    "subtitle": "Vui lòng nhập thông tin để truy cập hệ thống.",
+    "email": "Email đăng nhập",
+    "password": "Mật khẩu",
+    "remember": "Ghi nhớ đăng nhập",
+    "forgot_password": "Quên mật khẩu?",
+    "submit": "Đăng nhập hệ thống",
+    "no_account": "Chưa có tài khoản?",
+    "register_now": "Đăng ký ngay"
+  },
+  "forgot_password": {
+    "title": "Quên mật khẩu?",
+    "subtitle": "Nhập địa chỉ email đã đăng ký. Chúng tôi sẽ gửi liên kết để đặt lại mật khẩu của bạn.",
+    "email": "Email đăng nhập",
+    "submit": "Gửi liên kết khôi phục",
+    "sending": "Đang gửi...",
+    "success_title": "Đã gửi yêu cầu thành công!",
+    "success_msg": "Vui lòng kiểm tra hòm thư email của bạn để nhận hướng dẫn đặt lại mật khẩu.",
+    "back_to_login": "Quay lại đăng nhập"
+  },
+  "reset_password": {
+    "mismatch": "Mật khẩu xác nhận không khớp",
+    "invalid_token": "Mã xác thực không hợp lệ hoặc đã hết hạn",
+    "missing_token": "Mã xác thực không tồn tại. Vui lòng kiểm tra lại liên kết.",
+    "new_password": "Mật khẩu mới",
+    "confirm_password": "Xác nhận mật khẩu",
+    "submitting": "Đang xử lý...",
+    "submit": "Đặt lại mật khẩu"
+  },
+  "not_found": {
+    "heading": "Ôi không! Trang này không tồn tại.",
+    "desc": "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi tên hoặc tạm thời không khả dụng. Vui lòng kiểm tra lại đường dẫn.",
+    "back_home": "Về Trang Chủ (Dashboard)",
+    "relogin": "Đăng Nhập Lại",
+    "need_help": "Cần hỗ trợ?",
+    "contact_it": "Liên hệ bộ phận kỹ thuật IT"
+  },
+  "validation": {
+    "email": {
+      "required": "Vui lòng nhập email.",
+      "invalid": "Email không đúng định dạng."
+    },
+    "password": {
+      "required": "Vui lòng nhập mật khẩu.",
+      "min": "Mật khẩu phải từ 8 ký tự.",
+      "hasLetter": "Phải chứa ít nhất 1 chữ cái.",
+      "hasNumber": "Phải chứa ít nhất 1 con số."
+    },
+    "firstName": {
+      "required": "Vui lòng nhập tên.",
+      "min": "Tên phải có ít nhất 2 ký tự."
+    },
+    "lastName": {
+      "required": "Vui lòng nhập họ.",
+      "min": "Họ phải có ít nhất 5 ký tự."
+    },
+    "phone": {
+      "required": "Vui lòng nhập số điện thoại",
+      "invalid": "Số điện thoại không đúng định dạng"
+    },
+    "role": {
+      "required": "Vui lòng chọn bộ phận / chức vụ"
+    },
+    "confirmPassword": {
+      "required": "Vui lòng nhập xác nhận mật khẩu.",
+      "mismatch": "Mật khẩu xác nhận không khớp."
+    }
+  }
+}

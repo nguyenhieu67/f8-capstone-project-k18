@@ -13,10 +13,10 @@ export enum EmployeeRole {
 @Entity("employee")
 export class EmployeeEntity extends BaseEntity {
   @Column({ type: "text" })
-  first_name!: string;
+  firstName!: string;
 
   @Column({ type: "text" })
-  last_name!: string;
+  lastName!: string;
 
   @Column({
     type: "enum",
@@ -35,7 +35,7 @@ export class EmployeeEntity extends BaseEntity {
   salary?: number;
 
   @Column({ type: "integer" })
-  commission_rate?: number;
+  commissionRate?: number;
 
   @Column({ type: "bigint" })
   dependents?: number;

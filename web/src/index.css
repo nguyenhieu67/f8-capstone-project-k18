@@ -1,1 +1,125 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  user-select: none;
+  font-family: "Inter", sans-serif;
+}
+
+@theme {
+  /* Font */
+  --font-sans: "Inter", sans-serif;
+
+  /* Color */
+  --color-crm-bg: var(--crm-bg);
+  --color-crm-heading-text: var(--crm-heading-text);
+  --color-crm-label-text: var(--crm-label-text);
+  --color-crm-boxshadow: var(--crm-boxshadow);
+
+  --color-crm-surface: var(--crm-surface);
+  --color-crm-surface-soft: var(--crm-surface-soft);
+  --color-crm-border: var(--crm-border);
+
+  --color-crm-header: var(--crm-header);
+  --color-crm-list-bg: var(--crm-list-bg);
+  --color-crm-card-bg: var(--crm-card-bg);
+  --color-crm-listCard-text: var(--crm-listCard-text);
+
+  --color-crm-menu-item-bg-hover: var(--crm-menu-item-bg-hover);
+  --color-crm-icon-bg-hover: var(--crm-icon-bg-hover);
+
+  /* Semantic status */
+  --color-crm-primary: var(--crm-primary);
+  --color-crm-secondary: var(--crm-secondary);
+  --color-crm-success: var(--crm-success);
+  --color-crm-warning: var(--crm-warning);
+  --color-crm-danger: var(--crm-danger);
+  --color-crm-info: var(--crm-info);
+  --color-crm-accent: var(--crm-accent);
+
+  /* Button */
+  --color-crm-header-button-bg: var(--crm-header-button-bg);
+  --color-crm-header-button-bg-hover: var(--crm-header-button-bg-hover);
+  --color-crm-header-button-text: var(--crm-header-button-text);
+
+  --color-crm-button-bg: var(--crm-button-bg);
+  --color-crm-button-bg-hover: var(--crm-button-bg-hover);
+  --color-crm-button-text: var(--crm-button-text);
+}
+
+/* Light mode */
+:root {
+  --crm-bg: #f8fafc;
+  --crm-heading-text: #1e293b;
+  --crm-label-text: #64748b;
+  --crm-boxshadow: inset 0 0 0 1px #e2e8f0;
+
+  --crm-surface: #ffffff;
+  --crm-surface-soft: #f8fafc;
+  --crm-border: #e2e8f0;
+
+  --crm-header: #4f46e5;
+  --crm-list-bg: #f1f5f9;
+  --crm-card-bg: #ffffff;
+  --crm-listCard-text: #1e293b;
+
+  --crm-menu-item-bg-hover: #0515240f;
+  --crm-icon-bg-hover: #0b120e14;
+
+  /* Semantic status */
+  --crm-primary: #4f46e5;
+  --crm-secondary: #7c3aed;
+  --crm-success: #059669;
+  --crm-warning: #d97706;
+  --crm-danger: #e11d48;
+  --crm-info: #0284c7;
+  --crm-accent: #9333ea;
+
+  /* Button */
+  --crm-header-button-bg: #ffffff33;
+  --crm-header-button-bg-hover: #ffffff5c;
+  --crm-header-button-text: #ffffff;
+
+  --crm-button-bg: #4f46e5;
+  --crm-button-bg-hover: #4338ca;
+  --crm-button-text: #ffffff;
+}
+
+/* Dark mode */
+.dark {
+  --crm-bg: #0f172a;
+  --crm-heading-text: #f1f5f9;
+  --crm-label-text: #94a3b8;
+  --crm-boxshadow: inset 0 0 0 1px #334155;
+
+  --crm-surface: #1e293b;
+  --crm-surface-soft: #1a2234;
+  --crm-border: #334155;
+
+  --crm-header: #1e1b4b;
+  --crm-list-bg: #0f172a;
+  --crm-card-bg: #1e293b;
+  --crm-listCard-text: #e2e8f0;
+
+  --crm-menu-item-bg-hover: #ceced912;
+  --crm-icon-bg-hover: #e3e4f21f;
+
+  /* Semantic status */
+  --crm-primary: #818cf8;
+  --crm-secondary: #a78bfa;
+  --crm-success: #34d399;
+  --crm-warning: #fbbf24;
+  --crm-danger: #fb7185;
+  --crm-info: #38bdf8;
+  --crm-accent: #c084fc;
+
+  /* Button */
+  --crm-header-button-bg: #ffffff1a;
+  --crm-header-button-bg-hover: #ffffff33;
+  --crm-header-button-text: #f1f5f9;
+
+  --crm-button-bg: #818cf8;
+  --crm-button-bg-hover: #a5b4fc;
+  --crm-button-text: #1e1b4b;
+}

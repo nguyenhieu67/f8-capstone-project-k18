@@ -2,13 +2,13 @@ import { IsNumber, IsString } from "class-validator";
 
 export class LeadCreateDto {
   @IsNumber()
-  seller_id!: number;
+  sellerId!: number;
 
   @IsString()
-  first_name!: string;
+  firstName!: string;
 
   @IsString()
-  last_name!: string;
+  lastName!: string;
 }
 
 export class LeadUpdateDto extends LeadCreateDto {}

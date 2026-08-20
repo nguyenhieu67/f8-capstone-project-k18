@@ -1,0 +1,97 @@
+{
+  "brand": {
+    "subtitle": "教育・研修管理システム",
+    "hero_title": "スクール運営を\n効率的かつ総合的に管理",
+    "hero_desc": "営業プロセス、受講生管理、人事、財務を単一のプラットフォームで最適化します。"
+  },
+  "register": {
+    "title": "新規スタッフアカウント作成",
+    "or": "または",
+    "has_account": "既にアカウントをお持ちの方はこちら",
+    "firstName": "氏",
+    "lastName": "名",
+    "phone": "電話番号",
+    "email": "メールアドレス",
+    "role": "部署・役職",
+    "roles": {
+      "authorized": "センター管理者",
+      "admin": "人事・システム管理者"
+    },
+    "password": "パスワード",
+    "confirm_password": "パスワード (確認)",
+    "agree_prefix": "利用規約に同意します:",
+    "terms": "利用規約",
+    "and": "および",
+    "privacy": "プライバシーポリシー",
+    "submit": "アカウント登録"
+  },
+  "login": {
+    "title": "アカウントにログイン",
+    "subtitle": "システムにアクセスするための情報を入力してください。",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "remember": "ログイン状態を保存",
+    "forgot_password": "パスワードをお忘れですか？",
+    "submit": "ログイン",
+    "no_account": "アカウントをお持ちでないですか？",
+    "register_now": "新規登録はこちら"
+  },
+  "forgot_password": {
+    "title": "パスワードをお忘れですか？",
+    "subtitle": "ご登録のメールアドレスを入力してください。パスワード再設定用のリンクをお送りします。",
+    "email": "メールアドレス",
+    "submit": "再設定リンクを送信",
+    "sending": "送信中...",
+    "success_title": "送信が完了しました！",
+    "success_msg": "メールをご確認の上、手順に従ってパスワードを再設定してください。",
+    "back_to_login": "ログイン画面に戻る"
+  },
+  "reset_password": {
+    "mismatch": "パスワードが一致しません",
+    "invalid_token": "トークンが無効か、有効期限が切れています",
+    "missing_token": "トークンが見つかりません。リンクを確認してください。",
+    "new_password": "新しいパスワード",
+    "confirm_password": "パスワードの確認",
+    "submitting": "送信中...",
+    "submit": "パスワードを再設定"
+  },
+  "not_found": {
+    "heading": "お探しのページが見つかりません。",
+    "desc": "アクセスしようとしたページは削除されたか、名前が変更されたか、一時的に利用できない可能性があります。",
+    "back_home": "ホームに戻る (ダッシュボード)",
+    "relogin": "再度ログイン",
+    "need_help": "お困りですか？",
+    "contact_it": "ITサポートに連絡"
+  },
+  "validation": {
+    "email": {
+      "required": "メールアドレスを入力してください。",
+      "invalid": "メールアドレスの形式が正しくありません。"
+    },
+    "password": {
+      "required": "パスワードを入力してください。",
+      "min": "パスワードは8文字以上で入力してください。",
+      "hasLetter": "英字を1文字以上含めてください。",
+      "hasNumber": "数字を1文字以上含めてください。"
+    },
+    "firstName": {
+      "required": "名を入力してください。",
+      "min": "名は2文字以上で入力してください。"
+    },
+    "lastName": {
+      "required": "姓を入力してください。",
+      "min": "姓は5文字以上で入力してください。"
+    },
+    "phone": {
+      "required": "電話番号を入力してください",
+      "invalid": "有効な電話番号を入力してください"
+    },
+    "role": {
+      "required": "部署・役職を選択してください"
+    },
+    "confirmPassword": {
+      "required": "確認用パスワードを入力してください。",
+      "mismatch": "パスワードが一致しません。"
+    }
+  }
+}

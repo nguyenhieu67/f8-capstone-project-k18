@@ -22,13 +22,13 @@ router.delete("/:id", studentController.delete);
  *         id:
  *           type: string
  *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *         lead_id:
+ *         leadId:
  *           type: number
  *           example: 1
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen Van"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "A"
  *         phone:
@@ -37,24 +37,24 @@ router.delete("/:id", studentController.delete);
  *         revenue:
  *           type: integer
  *           example: 5000000
- *         enrolled_at:
+ *         enrolledAt:
  *           type: string
  *           format: date-time
  *           example: "2026-08-16T09:00:00Z"
  *     StudentInput:
  *       type: object
  *       required:
- *         - lead_id
- *         - first_name
- *         - last_name
+ *         - leadId
+ *         - firstName
+ *         - lastName
  *       properties:
- *         lead_id:
+ *         leadId:
  *           type: number
  *           example: 1
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen Van"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "A"
  *         phone:
@@ -63,7 +63,7 @@ router.delete("/:id", studentController.delete);
  *         revenue:
  *           type: integer
  *           example: 5000000
- *         enrolled_at:
+ *         enrolledAt:
  *           type: string
  *           format: date-time
  *           example: "2026-08-16T09:00:00Z"

@@ -5,8 +5,8 @@ import { validateEmployeeRole } from "./helpers/validateEmployeeRole";
 class ClasseService extends BaseService {
   protected fkValidators = [
     {
-      field: "trainer_id",
-      validate: (id: number) => validateEmployeeRole(id, EmployeeRole.TRAINER, "trainer_id"),
+      field: "trainerId",
+      validate: (id: number) => validateEmployeeRole(id, EmployeeRole.TRAINER, "trainerId"),
     },
   ];
 }

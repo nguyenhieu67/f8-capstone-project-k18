@@ -11,16 +11,16 @@ export enum LeadStatus {
 @Entity("lead")
 export class LeadEntity extends BaseEntity {
   @Column({ type: "bigint" })
-  seller_id!: number;
+  sellerId!: number;
 
   @Column({ type: "bigint" })
-  source_id!: number;
+  sourceId!: number;
 
   @Column({ type: "text" })
-  first_name!: string;
+  firstName!: string;
 
   @Column({ type: "text" })
-  last_name!: string;
+  lastName!: string;
 
   @Column({ type: "text" })
   phone?: string;
@@ -39,5 +39,5 @@ export class LeadEntity extends BaseEntity {
   status?: LeadStatus;
 
   @Column({ type: "text" })
-  rejection_reason?: string;
+  rejectionReason?: string;
 }

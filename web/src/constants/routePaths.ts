@@ -1,3 +1,8 @@
 export const ROUTE_PATHS = {
-  HOME: "/",
-} as const;
+  DASHBOARD: "/",
+  REGISTER: "/register",
+  LOGIN: "/login",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
+  NOT_FOUND: "*",
+};

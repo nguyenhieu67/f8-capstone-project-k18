@@ -13,24 +13,21 @@ class StudentService extends BaseService {
       .getOne();
 
     if (!lead) {
-      throw new AppError(
-        `lead_id ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`,
-        constants.httpCodes.badRequest,
-      );
+      throw new AppError(`leadId ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`, constants.httpCodes.badRequest);
     }
   }
 
   async create(data: any) {
-    if (data.lead_id) {
-      await this.validateTrainer(data.lead_id);
+    if (data.leadId) {
+      await this.validateTrainer(data.leadId);
     }
 
     return super.create(data);
   }
 
   async updateById(id: number, data: any) {
-    if (data.lead_id) {
-      await this.validateTrainer(data.lead_id);
+    if (data.leadId) {
+      await this.validateTrainer(data.leadId);
     }
 
     return super.updateById(id, data);

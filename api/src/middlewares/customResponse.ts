@@ -33,7 +33,7 @@ function customResponse(req: Request, res: Response, next: NextFunction) {
 
   // Unauthorized
   res.unauthorized = () => {
-    res.error("Unauthorized.", constants.httpCodes.unanthorized);
+    res.error("Unauthorized.", constants.httpCodes.unauthorized);
   };
 
   next();

@@ -22,13 +22,13 @@ router.delete("/:id", leadController.delete);
  *         id:
  *           type: string
  *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *         seller_id:
+ *         sellerId:
  *           type: number
  *           example: 1
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen Van"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "A"
  *         phone:
@@ -44,23 +44,23 @@ router.delete("/:id", leadController.delete);
  *           type: string
  *           enum: [new, converted, rejected]
  *           example: new
- *         rejection_reason:
+ *         rejectionReason:
  *           type: string
  *           example: "Không đủ ngân sách"
  *     LeadInput:
  *       type: object
  *       required:
- *         - seller_id
- *         - first_name
- *         - last_name
+ *         - sellerId
+ *         - firstName
+ *         - lastName
  *       properties:
- *         seller_id:
+ *         sellerId:
  *           type: number
  *           example: 1
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen Van"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "A"
  *         phone:
@@ -76,7 +76,7 @@ router.delete("/:id", leadController.delete);
  *           type: string
  *           enum: [new, converted, rejected]
  *           example: new
- *         rejection_reason:
+ *         rejectionReason:
  *           type: string
  *           example: "Không đủ ngân sách"
  *

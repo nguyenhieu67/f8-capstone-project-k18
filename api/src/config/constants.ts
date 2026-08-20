@@ -7,7 +7,7 @@ const constants = {
 
     // Client Error
     badRequest: 400,
-    unanthorized: 401,
+    unauthorized: 401,
     forbidden: 403,
     notFound: 404,
     conffict: 409,

@@ -1,4 +1,5 @@
-import { IsString } from "class-validator";
+import { UserRole } from "@/entities";
+import { IsEnum, IsOptional, IsString } from "class-validator";
 
 export class UserCreateDto {
   @IsString()
@@ -8,10 +9,18 @@ export class UserCreateDto {
   password!: string;
 
   @IsString()
-  first_name!: string;
+  firstName!: string;
 
   @IsString()
-  last_name!: string;
+  lastName!: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole;
 }
 
 export class UserUpdateDto extends UserCreateDto {}

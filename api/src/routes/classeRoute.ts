@@ -22,7 +22,7 @@ router.delete("/:id", classeController.delete);
  *         id:
  *           type: string
  *           example: "0197e2f7-0c7b-7d9d-a8d6-7d0b8b7d1234"
- *         trainer_id:
+ *         trainerId:
  *           type: number
  *           example: 1
  *         code:
@@ -40,11 +40,11 @@ router.delete("/:id", classeController.delete);
  *     ClasseInput:
  *       type: object
  *       required:
- *         - trainer_id
+ *         - trainerId
  *         - code
  *         - name
  *       properties:
- *         trainer_id:
+ *         trainerId:
  *           type: number
  *           example: 1
  *         code:

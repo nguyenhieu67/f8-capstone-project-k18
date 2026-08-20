@@ -5,23 +5,23 @@ export abstract class BaseEntity {
   id!: number;
 
   @Column({ type: "timestamptz" })
-  created_at!: Date;
+  createdAt!: Date;
 
   @Column({ type: "int", nullable: true })
-  created_by!: number;
+  createdBy!: number;
 
   @Column({ type: "timestamptz", nullable: true })
-  updated_at!: Date;
+  updatedAt!: Date;
 
   @Column({ type: "int", nullable: true })
-  updated_by!: number;
+  updatedBy!: number;
 
   @Column({ type: "timestamptz", nullable: true })
-  deleted_at?: Date;
+  deletedAt?: Date;
 
   @Column({ type: "int", nullable: true })
-  deleted_by?: number;
+  deletedBy?: number;
 
   @Column({ type: "boolean", default: true })
-  is_active!: boolean;
+  isActive!: boolean;
 }

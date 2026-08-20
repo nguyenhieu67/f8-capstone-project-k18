@@ -2,13 +2,13 @@ import { IsNumber, IsString } from "class-validator";
 
 export class StudentCreateDto {
   @IsNumber()
-  lead_id!: number;
+  leadId!: number;
 
   @IsString()
-  first_name!: string;
+  firstName!: string;
 
   @IsString()
-  last_name!: string;
+  lastName!: string;
 }
 
 export class StudentUpdateDto extends StudentCreateDto {}

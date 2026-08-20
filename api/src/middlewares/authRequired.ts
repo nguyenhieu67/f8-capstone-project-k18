@@ -6,16 +6,13 @@ import { userService } from "@/services";
 
 async function authRequired(req: Request, res: Response, next: NextFunction) {
   try {
-    const accessToken = req.headers?.authorization?.replace("Bearer", "")?.trim();
+    const accessToken = req.cookies?.accessToken;
+
     if (!accessToken) {
       return res.unauthorized();
     }
 
     const payload = jwt.verify(accessToken, env.AUTH_JWT_SECRET as string) as jwt.JwtPayload;
-
-    if (payload.exp! < Date.now() / 1000) {
-      return res.unauthorized();
-    }
 
     const userId = payload.sub;
     const user = await userService.getById(Number(userId));

@@ -13,11 +13,7 @@ class RefreshTokenService extends BaseService {
   }
 
   async revoke(id: number) {
-    return AppDataSource.getRepository(RefreshTokenEntity)
-      .createQueryBuilder("refresh_token")
-      .update({ revoked_at: new Date() })
-      .where("id = :id", { id })
-      .execute();
+    return AppDataSource.getRepository(RefreshTokenEntity).createQueryBuilder("refresh_token").update({ revokedAt: new Date() }).where("id = :id", { id }).execute();
   }
 }
 

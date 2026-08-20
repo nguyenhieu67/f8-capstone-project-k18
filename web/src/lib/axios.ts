@@ -23,12 +23,12 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response.data,
+  (response) => response.data.data,
   async (error) => {
     const originalRequest = error.config;
 
     const isTokenExpired =
-      error.response?.status === 410 ||
+      error.response?.status === 401 ||
       error.response?.data?.message === "Need to refresh token!";
 
     if (isTokenExpired && !originalRequest._retry) {
@@ -38,7 +38,7 @@ api.interceptors.response.use(
         if (!refreshTokenPromise) {
           refreshTokenPromise = axios
             .post(
-              `${baseURL}/users/refresh_token`,
+              `${baseURL}/auth/refresh-token`,
               {},
               { withCredentials: true },
             )

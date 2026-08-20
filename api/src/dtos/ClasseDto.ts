@@ -2,7 +2,7 @@ import { IsNumber, IsString } from "class-validator";
 
 export class ClasseCreateDto {
   @IsNumber()
-  trainer_id!: number;
+  trainerId!: number;
 
   @IsString()
   code!: string;

@@ -4,7 +4,6 @@ import { BaseEntity } from "./BaseEntity";
 
 export enum UserRole {
   ADMIN = "admin",
-  GUEST = "guest",
   AUTHORIZED = "authorized",
 }
 
@@ -17,24 +16,24 @@ export class UserEntity extends BaseEntity {
   password!: string;
 
   @Column({ type: "text" })
-  first_name!: string;
+  firstName!: string;
 
   @Column({ type: "text" })
-  last_name!: string;
+  lastName!: string;
 
   @Column({
     type: "enum",
     enum: UserRole,
     enumName: "user_role",
   })
-  role?: UserRole;
+  role!: UserRole;
 
   @Column({ type: "text" })
-  phone?: string;
+  phone!: string;
 
   @Column({ type: "text" })
-  avatar_url?: string;
+  avatarUrl?: string;
 
   @Column({ type: "timestamptz" })
-  last_login_at?: Date;
+  lastLoginAt?: Date;
 }

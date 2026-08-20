@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import express, { type Express } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -8,6 +10,15 @@ import { customResponse, handleError } from "@/middlewares";
 import rootRouter from "@/routes";
 
 const app: Express = express();
+
+const corsOptions = {
+  origin: "http://localhost:5001",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Swagger setup
 const swaggerOptions = {
@@ -23,20 +34,6 @@ const swaggerOptions = {
         url: "http://localhost:3000",
       },
     ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
   },
   apis: ["./src/**/*.ts"],
 };
@@ -46,6 +43,7 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Middleware
+app.use(cookieParser());
 app.use(customResponse);
 app.use(rootRouter);
 

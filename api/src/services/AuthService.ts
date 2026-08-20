@@ -2,17 +2,22 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { constants, env } from "@/config";
-import { UserEntity } from "@/entities";
-import { AppError, randomString } from "@/utils";
+import { UserEntity, UserRole } from "@/entities";
+import { AppError, randomString, sendEmail } from "@/utils";
 import { BaseService } from "./BaseService";
 import refreshTokenService from "./RefreshTokenService";
 import UserService from "./UserService";
+import passwordResetService from "./PasswordResetService";
 
 interface RegisterI {
   email: string;
   password: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  role?: UserRole;
+  avatarUrl?: string;
+  lastLoginAt?: Date;
 }
 
 interface LoginI {
@@ -20,6 +25,12 @@ interface LoginI {
   password: string;
   userAgent?: string;
 }
+
+type UserTokens = {
+  accessToken: string;
+  accessTokenTtl: number;
+  refreshToken: string;
+};
 
 class AuthService extends BaseService {
   async register(data: RegisterI) {
@@ -37,15 +48,15 @@ class AuthService extends BaseService {
     return user;
   }
 
-  async login(data: LoginI) {
+  async login(data: LoginI): Promise<[AppError | null, UserTokens | null]> {
     const user = await this.findOneBy({ email: data.email });
-    if (!user) return [true, null];
+    if (!user) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
 
     const isValid = await bcrypt.compare(data.password, (user as UserEntity).password);
-    if (isValid) {
-      const userTokens = await this.generateUserTokens(user, data.userAgent);
-      return [null, userTokens];
-    }
+    if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
+
+    const userTokens = await this.generateUserTokens(user, data.userAgent);
+    return [null, userTokens];
   }
 
   generateAccessToken(user: any) {
@@ -60,20 +71,22 @@ class AuthService extends BaseService {
     expiresAt.setDate(expiresAt.getDate() + env.AUTH_REFRESHTOKEN_TTL);
 
     await refreshTokenService.create({
-      user_id: Number(user.id),
+      userId: Number(user.id),
       token,
-      expires_at: expiresAt,
-      user_agent: userAgent,
+      expiresAt,
+      userAgent,
     });
 
     return token;
   }
 
-  async handleRefreshToken(token: string, userAgent?: string) {
+  async handleRefreshToken(token: string, userAgent?: string): Promise<[AppError | null, UserTokens | null]> {
     const refreshToken = await refreshTokenService.findValidToken(token);
-    if (!refreshToken) return [true, null];
+    if (!refreshToken) {
+      return [new AppError("Refresh token không hợp lệ", constants.httpCodes.unauthorized), null];
+    }
 
-    const user = { id: refreshToken?.user_id };
+    const user = { id: refreshToken.userId };
     const userTokens = await this.generateUserTokens(user, userAgent);
     await refreshTokenService.revoke(refreshToken.id);
 
@@ -94,6 +107,43 @@ class AuthService extends BaseService {
       accessTokenTtl: env.AUTH_ACCESS_TOKEN_TTL,
       refreshToken,
     };
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.findOneBy({ email });
+
+    if (!user) return;
+
+    await passwordResetService.invalidateOldTokens((user as UserEntity).id);
+
+    const token = randomString(32);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15m
+
+    await passwordResetService.create({
+      userId: (user as UserEntity).id,
+      token,
+      expiresAt,
+    });
+
+    const resetLink = `${env.FRONTEND_URL}/reset-password?token=${token}`;
+
+    await sendEmail(
+      email,
+      "Đặt lại mật khẩu - EduCRM",
+      `<p>Nhấn vào link sau để đặt lại mật khẩu (hết hạn sau 15 phút):</p>
+     <a href="${resetLink}">${resetLink}</a>`,
+    );
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const resetRecord = await passwordResetService.findValidToken(token);
+    if (!resetRecord) {
+      throw new AppError("Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn", constants.httpCodes.badRequest);
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    await UserService.updateById(resetRecord.userId, { password: hash });
+    await passwordResetService.markUsed(resetRecord.id);
   }
 }
 

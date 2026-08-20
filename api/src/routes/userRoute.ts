@@ -24,10 +24,10 @@ router.delete("/:id", userController.delete);
  *         email:
  *           type: string
  *           example: "nguyenvana@gmail.com"
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "Van A"
  *         role:
@@ -37,10 +37,10 @@ router.delete("/:id", userController.delete);
  *         phone:
  *           type: string
  *           example: "0912345678"
- *         avatar_url:
+ *         avatarUrl:
  *           type: string
  *           example: "https://example.com/avatar.jpg"
- *         last_login_at:
+ *         lastLoginAt:
  *           type: string
  *           format: date-time
  *           example: "2026-08-18T10:00:00Z"
@@ -49,8 +49,8 @@ router.delete("/:id", userController.delete);
  *       required:
  *         - email
  *         - password
- *         - first_name
- *         - last_name
+ *         - firstName
+ *         - lastName
  *       properties:
  *         email:
  *           type: string
@@ -59,10 +59,10 @@ router.delete("/:id", userController.delete);
  *           type: string
  *           format: password
  *           example: "MatKhau123!"
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "Van A"
  *         role:

@@ -1,0 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ROUTE_PATHS } from "@/constants/routePaths";
+import AuthLayout from "@/layouts/Auth/AuthLayout";
+import {
+  ForgotPassword,
+  Dashboard,
+  Login,
+  NotFound,
+  Register,
+  ResetPassword,
+} from "@/pages";
+
+interface RoutesI {
+  path: string;
+  component: React.ComponentType<any>;
+  layout?: React.ComponentType<any>;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+const AuthRightLayout = (props: { children: React.ReactNode }) => (
+  <AuthLayout bannerPosition="right" {...props} />
+);
+
+const publicRoutes: RoutesI[] = [
+  { path: ROUTE_PATHS.REGISTER, component: Register, layout: AuthRightLayout },
+  { path: ROUTE_PATHS.LOGIN, component: Login, layout: AuthLayout },
+  {
+    path: ROUTE_PATHS.FORGOT_PASSWORD,
+    component: ForgotPassword,
+    layout: AuthLayout,
+  },
+  {
+    path: ROUTE_PATHS.RESET_PASSWORD,
+    component: ResetPassword,
+    layout: AuthRightLayout,
+  },
+
+  { path: ROUTE_PATHS.NOT_FOUND, component: NotFound },
+  // { path: "/login", component: "exmp", layout: "exmp" },
+];
+
+const privateRoutes: RoutesI[] = [
+  { path: ROUTE_PATHS.DASHBOARD, component: Dashboard },
+];
+
+export { publicRoutes, privateRoutes };

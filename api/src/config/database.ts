@@ -10,7 +10,9 @@ import {
   StudentAttendanceEntity,
   StudentEntity,
   RefreshTokenEntity,
+  PasswordResetEntity,
 } from "@/entities";
+import { SnakeNamingStrategy } from "./SnakeNamingStrategy";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -23,6 +25,7 @@ const AppDataSource = new DataSource({
   logging: true,
   entities: [
     RefreshTokenEntity,
+    PasswordResetEntity,
     UserEntity,
     SourceEntity,
     EmployeeEntity,
@@ -33,6 +36,7 @@ const AppDataSource = new DataSource({
   ],
   subscribers: [],
   migrations: [],
+  namingStrategy: new SnakeNamingStrategy(),
 });
 
 export default AppDataSource;

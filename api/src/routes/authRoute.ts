@@ -1,7 +1,7 @@
 import express from "express";
 
 import { authController } from "@/controllers";
-import { RefreshTokenCreateDto, UserCreateDto } from "@/dtos";
+import { ForgotPasswordDto, ResetPasswordDto, UserCreateDto } from "@/dtos";
 import { authRequired } from "@/middlewares";
 import { ValidationPipe } from "@/validations";
 
@@ -9,7 +9,9 @@ const router = express.Router();
 
 router.post("/register", ValidationPipe(UserCreateDto), authController.register);
 router.post("/login", authController.login);
-router.post("/refresh-token", ValidationPipe(RefreshTokenCreateDto), authController.refreshToken);
+router.post("/refresh-token", authController.refreshToken);
+router.post("/forgot-password", ValidationPipe(ForgotPasswordDto), authController.forgotPassword);
+router.post("/reset-password", ValidationPipe(ResetPasswordDto), authController.resetPassword);
 router.get("/me", authRequired, authController.getCurrentUser);
 
 /**
@@ -19,19 +21,19 @@ router.get("/me", authRequired, authController.getCurrentUser);
  *     Auth:
  *       type: object
  *       properties:
- *         accessToken:
+ *         id:
  *           type: string
- *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
- *         refreshToken:
+ *           example: 1
+ *         email:
  *           type: string
- *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
+ *           example: example@gmail.com
  *     RegisterInput:
  *       type: object
  *       required:
  *         - email
  *         - password
- *         - first_name
- *         - last_name
+ *         - firstName
+ *         - lastName
  *       properties:
  *         email:
  *           type: string
@@ -40,10 +42,10 @@ router.get("/me", authRequired, authController.getCurrentUser);
  *           type: string
  *           format: password
  *           example: "MatKhau123!"
- *         first_name:
+ *         firstName:
  *           type: string
  *           example: "Nguyen"
- *         last_name:
+ *         lastName:
  *           type: string
  *           example: "Van A"
  *     LoginInput:
@@ -65,7 +67,6 @@ router.get("/me", authRequired, authController.getCurrentUser);
  *     summary: Tạo người dùng mới
  *     tags:
  *       - Auth
- *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -87,7 +88,6 @@ router.get("/me", authRequired, authController.getCurrentUser);
  *     summary: Đăng nhập
  *     tags:
  *       - Auth
- *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -109,7 +109,6 @@ router.get("/me", authRequired, authController.getCurrentUser);
  *     summary: Tạo access và refresh token mới
  *     tags:
  *       - Auth
- *     security: []
  *     requestBody:
  *       required: true
  *       content:

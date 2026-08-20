@@ -4,10 +4,10 @@ import { AttendanceStatus } from "@/entities";
 
 export class StudentCreateDto {
   @IsNumber()
-  classe_id!: number;
+  classeId!: number;
 
   @IsNumber()
-  student_id!: number;
+  studentId!: number;
 
   @IsDate()
   date!: Date;

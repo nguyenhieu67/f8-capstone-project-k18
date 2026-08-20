@@ -5,7 +5,7 @@ import { BaseEntity } from "./BaseEntity";
 @Entity("classe")
 export class ClasseEntity extends BaseEntity {
   @Column({ type: "bigint" })
-  trainer_id!: number;
+  trainerId!: number;
 
   @Column({ type: "text" })
   code!: string;

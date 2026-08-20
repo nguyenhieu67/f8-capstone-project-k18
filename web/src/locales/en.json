@@ -1,0 +1,97 @@
+{
+  "brand": {
+    "subtitle": "Training Management System",
+    "hero_title": "Manage your center\nefficiently and comprehensively.",
+    "hero_desc": "Optimize sales workflows, student management, HR, and finances on a single platform."
+  },
+  "register": {
+    "title": "Create a new employee account",
+    "or": "Or",
+    "has_account": "log in if you already have an account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone Number",
+    "email": "Email",
+    "role": "Department / Role",
+    "roles": {
+      "authorized": "Center Manager",
+      "admin": "HR / Administrator"
+    },
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "agree_prefix": "I agree to the",
+    "terms": "Terms",
+    "and": "and",
+    "privacy": "Privacy Policy",
+    "submit": "Register Account"
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "subtitle": "Please enter your details to access the system.",
+    "email": "Email Address",
+    "password": "Password",
+    "remember": "Remember me",
+    "forgot_password": "Forgot password?",
+    "submit": "Sign In",
+    "no_account": "Don't have an account?",
+    "register_now": "Register now"
+  },
+  "forgot_password": {
+    "title": "Forgot Password?",
+    "subtitle": "Enter your registered email address and we will send you a link to reset your password.",
+    "email": "Email Address",
+    "submit": "Send Reset Link",
+    "sending": "Sending...",
+    "success_title": "Request Sent Successfully!",
+    "success_msg": "Please check your inbox for instructions to reset your password.",
+    "back_to_login": "Back to login"
+  },
+  "reset_password": {
+    "mismatch": "Passwords do not match",
+    "invalid_token": "Invalid or expired reset token",
+    "missing_token": "Reset token is missing. Please check your link.",
+    "new_password": "New password",
+    "confirm_password": "Confirm password",
+    "submitting": "Submitting...",
+    "submit": "Reset password"
+  },
+  "not_found": {
+    "heading": "Oops! Page not found.",
+    "desc": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+    "back_home": "Back to Home (Dashboard)",
+    "relogin": "Log In Again",
+    "need_help": "Need help?",
+    "contact_it": "Contact IT Support"
+  },
+  "validation": {
+    "email": {
+      "required": "Please enter your email.",
+      "invalid": "Invalid email address format."
+    },
+    "password": {
+      "required": "Please enter your password.",
+      "min": "Password must be at least 8 characters.",
+      "hasLetter": "Must contain at least 1 letter.",
+      "hasNumber": "Must contain at least 1 number."
+    },
+    "firstName": {
+      "required": "Please enter your first name.",
+      "min": "First name must be at least 2 characters."
+    },
+    "lastName": {
+      "required": "Please enter your last name.",
+      "min": "Last name must be at least 5 characters."
+    },
+    "phone": {
+      "required": "Phone number is required",
+      "invalid": "Invalid phone number format"
+    },
+    "role": {
+      "required": "Please select a department or role"
+    },
+    "confirmPassword": {
+      "required": "Please confirm your password.",
+      "mismatch": "Passwords do not match."
+    }
+  }
+}

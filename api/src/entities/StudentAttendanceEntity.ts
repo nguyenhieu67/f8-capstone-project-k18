@@ -10,10 +10,10 @@ export enum AttendanceStatus {
 @Entity("student")
 export class StudentAttendanceEntity extends BaseEntity {
   @Column({ type: "bigint" })
-  class_id!: number;
+  classId!: number;
 
   @Column({ type: "bigint" })
-  student_id!: number;
+  studentId!: number;
 
   @Column({ type: "timestamptz" })
   date!: Date;

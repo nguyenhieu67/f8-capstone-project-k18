@@ -1,0 +1,113 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ArrowUpIcon, CheckIcon, EmailIcon } from "@/components/Icons";
+import { InputField, LanguageSelect } from "@/components/Form";
+import { Logo } from "@/components/ui";
+import { ROUTE_PATHS } from "@/constants/routePaths";
+import Button from "@/components/Button";
+import { forgotPassword } from "@/services/auth";
+import { forgotPasswordSchema, validationForm, type FormErrors } from "@/utils";
+
+export default function ForgotPassword() {
+  const { t, i18n } = useTranslation();
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const currentLang = i18n.language ? i18n.language.split("-")[0] : "vi";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validationForm(forgotPasswordSchema, { email }, setErrors)) return;
+    setIsLoading(true);
+
+    try {
+      const res = await forgotPassword({ email });
+      console.log(res);
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <div className="absolute top-4 right-4 z-50">
+        <LanguageSelect
+          value={currentLang}
+          onChange={(code) => i18n.changeLanguage(code)}
+        />
+      </div>
+
+      <div className="w-full max-w-lg space-y-8">
+        {/* Logo Mobile */}
+        <div className="mb-8 flex justify-center lg:hidden">
+          <Logo variant="light" />
+        </div>
+
+        <div>
+          <h2 className="text-crm-heading-text text-center text-2xl font-bold lg:text-left">
+            {t("forgot_password.title")}
+          </h2>
+          <p className="text-crm-label-text mt-2 text-center text-sm lg:text-left">
+            {t("forgot_password.subtitle")}
+          </p>
+        </div>
+
+        {!isSubmitted ? (
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
+            {/* Email */}
+            <InputField
+              id="email"
+              name="email"
+              type="email"
+              label={t("forgot_password.email")}
+              placeholder="admin@center.edu"
+              icon={<EmailIcon size="md" />}
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={errors.email ? t(errors.email) : ""}
+              required
+            />
+
+            <div className="flex justify-center">
+              <Button large primary>
+                {isLoading
+                  ? t("forgot_password.sending")
+                  : t("forgot_password.submit")}
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <div className="border-crm-border bg-crm-surface rounded-2xl border p-6 text-center shadow-xs">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600">
+              {<CheckIcon />}
+            </div>
+            <h3 className="text-crm-heading-text text-lg font-semibold">
+              {t("forgot_password.success_title")}
+            </h3>
+            <p className="text-crm-label-text mt-2 text-sm">
+              {t("forgot_password.success_msg")}
+            </p>
+          </div>
+        )}
+
+        {/* Login Button */}
+        <div className="text-center">
+          <Button
+            to={ROUTE_PATHS.LOGIN}
+            className="text-crm-primary inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-80"
+            leftIcon={<ArrowUpIcon className="-rotate-90" />}
+          >
+            <span>{t("forgot_password.back_to_login")}</span>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

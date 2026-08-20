@@ -4,10 +4,10 @@ import { EmployeeRole } from "@/entities";
 
 export class EmployeeCreateDto {
   @IsString()
-  first_name!: string;
+  firstName!: string;
 
   @IsString()
-  last_name!: string;
+  lastName!: string;
 
   @IsEnum(EmployeeRole)
   role!: EmployeeRole;
