@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 
 import { authService } from "@/services";
 import { BaseController } from "./BaseController";
-import { env } from "@/config";
+import { constants, env } from "@/config";
+import { AppError } from "@/utils";
 
 class AuthController extends BaseController {
   private setAuthCookies = (res: Response, accessToken: string, accessTokenTtl: number, refreshToken: string) => {
@@ -44,10 +45,27 @@ class AuthController extends BaseController {
 
     const userAgent = req.headers["user-agent"];
     const [error, tokens] = await authService.login({ email, password, userAgent });
-    if (error || !tokens) return res.unauthorized();
+
+    if (error)
+      return res.error(
+        new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest),
+        constants.httpCodes.badRequest,
+      );
+    if (!tokens) return res.unauthorized();
 
     this.setAuthCookies(res, tokens.accessToken, tokens.accessTokenTtl, tokens.refreshToken);
     return res.success({}, 201);
+  };
+
+  logout = async (req: Request, res: Response) => {
+    const token = req.cookies?.refreshToken;
+    if (token) {
+      await authService.revokeRefreshToken(token);
+    }
+
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    return res.success({});
   };
 
   refreshToken = async (req: Request, res: Response) => {

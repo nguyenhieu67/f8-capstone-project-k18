@@ -1,97 +1,231 @@
 {
-  "brand": {
-    "subtitle": "教育・研修管理システム",
-    "hero_title": "スクール運営を\n効率的かつ総合的に管理",
-    "hero_desc": "営業プロセス、受講生管理、人事、財務を単一のプラットフォームで最適化します。"
+  "homePage": {
+    "nav": {
+      "overview": "概要",
+      "features": "主要機能",
+      "architecture": "アーキテクチャ・ソースコード",
+      "reviews": "レビュー"
+    },
+    "header": {
+      "signIn": "新規登録",
+      "login": "ログイン"
+    },
+    "hero": {
+      "badge": "EduCRM & Sales システム レビューレポート",
+      "title_1": "教育センター向けの",
+      "title_highlight": "総合管理",
+      "title_2": "& Sales プロフェッショナルソリューション",
+      "desc": "Pre-Salesリードの受付、クラス管理、受講生の出席管理から、勤怠管理、給与・インセンティブの自動計算まで、業務フロー全体を一つに統合したシステムです。",
+      "cta_explore": "機能を見る",
+      "cta_demo": "デモを体験",
+      "preview_url": "https://educrm-sales.internal/dashboard",
+      "preview_badge": "リアルタイム システム概要",
+      "stats": {
+        "revenue": {
+          "label": "回収済み売上",
+          "value": "180,000,000 VND"
+        },
+        "leads": {
+          "label": "Pre-Sales リード総数",
+          "value": "128 件"
+        },
+        "students": {
+          "label": "登録受講生数",
+          "value": "42 名"
+        },
+        "payroll": {
+          "label": "給与・インセンティブ総額",
+          "value": "65,400,000 VND"
+        }
+      }
+    },
+    "features": {
+      "heading": "機能モジュール詳細",
+      "desc": "EduCRM & Sales は、現代的な教育センター運営のあらゆる課題を解決します。",
+      "items": [
+        {
+          "title": "1. 広告ソース管理",
+          "desc": "各マーケティングチャネル(Google広告、Facebook広告、Zalo OA、Webサイト)を正確に追跡し、コンバージョン率と実際の売上を測定します。"
+        },
+        {
+          "title": "2. Pre-Sales リード管理",
+          "desc": "リードを担当営業に自動で割り当て。ニーズ、対象受講生、失注理由を記録し、「成約」操作で正式な受講生へ変換します。"
+        },
+        {
+          "title": "3. クラス・出席管理",
+          "desc": "登録完了後、受講生を自動でクラス編成。講師・管理者は毎日の出席確認、出席状況のメモ、視覚的な授業スケジュールを利用できます。"
+        },
+        {
+          "title": "4. 人事・勤怠管理",
+          "desc": "職種(営業、講師、管理者)別に社員情報を保管し、日次の勤怠を記録、税務用の扶養家族数も管理します。"
+        },
+        {
+          "title": "5. 給与・インセンティブ税務計算(ベトナム基準)",
+          "desc": "Gross/NET給与、3%の営業インセンティブ、社会保険等の強制控除(社会保険8%、失業保険1%、医療保険1.5%)、労働法に準拠した累進所得税を自動計算します。"
+        },
+        {
+          "title": "6. リアルタイム分析ダッシュボード",
+          "desc": "クラス別売上、広告ソース構成、優秀営業ランキング、顧客の失注理由分析をビジュアルなグラフで表示します。"
+        }
+      ]
+    },
+    "architecture": {
+      "eyebrow": "プロジェクトソースコードレビュー",
+      "heading": "モダンで拡張しやすいアーキテクチャ",
+      "desc": "React + TypeScript + Vite に Tailwind CSS を組み合わせたプロジェクト構成をベースに、標準的なフォルダ構造でモジュール分割されています:",
+      "points": [
+        {
+          "title": "多言語対応(i18n):",
+          "desc": "ベトナム語(vi)、英語(en)、日本語(ja)に対応。"
+        },
+        {
+          "title": "モジュール化されたサービス・Hooks:",
+          "desc": "API層、Auth Context、カスタムHooksを分離。"
+        },
+        {
+          "title": "UIの最適化:",
+          "desc": "Tailwind CSSとChart.jsを組み合わせ、スムーズな描画を実現。"
+        }
+      ],
+      "directoryTitle": "📂 ディレクトリ構成"
+    },
+    "reviews": {
+      "heading": "総合レビューまとめ",
+      "desc": "EduCRMを真に総合的なセンター管理システムたらしめる主なポイントです。",
+      "items": [
+        {
+          "title": "優れたUX/UI体験",
+          "desc": "直感的なインターフェースと調和のとれた配色、優れたレスポンシブ対応。成約処理、出席確認、勤怠入力が中断なくスムーズに行えます。"
+        },
+        {
+          "title": "ベトナムの税・社会保険基準への準拠",
+          "desc": "Gross給与からNET給与への自動計算アルゴリズムを搭載し、社会保険8%、失業保険1%、医療保険1.5%の控除と、正確な累進所得税率を適用します。"
+        },
+        {
+          "title": "各プロセス間のシームレスな連携",
+          "desc": "広告ソース → リードデータ → 営業売上 → 受講生クラス編成 → 営業インセンティブまで、データが単一のプラットフォーム上で途切れなく流れます。"
+        }
+      ]
+    }
   },
-  "register": {
-    "title": "新規スタッフアカウント作成",
-    "or": "または",
-    "has_account": "既にアカウントをお持ちの方はこちら",
-    "firstName": "氏",
-    "lastName": "名",
-    "phone": "電話番号",
-    "email": "メールアドレス",
-    "role": "部署・役職",
-    "roles": {
-      "authorized": "センター管理者",
-      "admin": "人事・システム管理者"
+  "authPage": {
+    "brand": {
+      "subtitle": "教育・研修管理システム",
+      "heroTitle": "スクール運営を\n効率的かつ総合的に管理",
+      "heroDesc": "営業プロセス、受講生管理、人事、財務を単一のプラットフォームで最適化します。"
     },
-    "password": "パスワード",
-    "confirm_password": "パスワード (確認)",
-    "agree_prefix": "利用規約に同意します:",
-    "terms": "利用規約",
-    "and": "および",
-    "privacy": "プライバシーポリシー",
-    "submit": "アカウント登録"
+    "register": {
+      "title": "新規スタッフアカウント作成",
+      "or": "または",
+      "hasAccount": "既にアカウントをお持ちの方はこちら",
+      "firstName": "氏",
+      "lastName": "名",
+      "phone": "電話番号",
+      "email": "メールアドレス",
+      "role": "部署・役職",
+      "roles": {
+        "authorized": "センター管理者",
+        "admin": "人事・システム管理者"
+      },
+      "password": "パスワード",
+      "confirmPassword": "パスワード (確認)",
+      "agreePrefix": "利用規約に同意します:",
+      "terms": "利用規約",
+      "and": "および",
+      "privacy": "プライバシーポリシー",
+      "submit": "アカウント登録"
+    },
+    "login": {
+      "title": "アカウントにログイン",
+      "subtitle": "システムにアクセスするための情報を入力してください。",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "remember": "ログイン状態を保存",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "submit": "ログイン",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "registerNow": "新規登録はこちら"
+    },
+    "forgotPassword": {
+      "title": "パスワードをお忘れですか？",
+      "subtitle": "ご登録のメールアドレスを入力してください。パスワード再設定用のリンクをお送りします。",
+      "email": "メールアドレス",
+      "submit": "再設定リンクを送信",
+      "sending": "送信中...",
+      "successTitle": "送信が完了しました！",
+      "successMsg": "メールをご確認の上、手順に従ってパスワードを再設定してください。",
+      "backToLogin": "ログイン画面に戻る"
+    },
+    "resetPassword": {
+      "mismatch": "パスワードが一致しません",
+      "invalidToken": "トークンが無効か、有効期限が切れています",
+      "missingToken": "トークンが見つかりません。リンクを確認してください。",
+      "newPassword": "新しいパスワード",
+      "confirmPassword": "パスワードの確認",
+      "submitting": "送信中...",
+      "submit": "パスワードを再設定"
+    },
+    "notFound": {
+      "heading": "お探しのページが見つかりません。",
+      "desc": "アクセスしようとしたページは削除されたか、名前が変更されたか、一時的に利用できない可能性があります。",
+      "backHome": "ホームに戻る (ダッシュボード)",
+      "relogin": "再度ログイン",
+      "needHelp": "お困りですか？",
+      "contactIt": "ITサポートに連絡"
+    },
+    "validation": {
+      "email": {
+        "required": "メールアドレスを入力してください。",
+        "invalid": "メールアドレスの形式が正しくありません。"
+      },
+      "password": {
+        "required": "パスワードを入力してください。",
+        "min": "パスワードは8文字以上で入力してください。",
+        "hasLetter": "英字を1文字以上含めてください。",
+        "hasNumber": "数字を1文字以上含めてください。",
+        "incorrect": "メールアドレスまたはパスワードが間違っています。"
+      },
+      "firstName": {
+        "required": "名を入力してください。",
+        "min": "名は2文字以上で入力してください。"
+      },
+      "lastName": {
+        "required": "姓を入力してください。",
+        "min": "姓は5文字以上で入力してください。"
+      },
+      "phone": {
+        "required": "電話番号を入力してください",
+        "invalid": "有効な電話番号を入力してください"
+      },
+      "role": {
+        "required": "部署・役職を選択してください"
+      },
+      "confirmPassword": {
+        "required": "確認用パスワードを入力してください。",
+        "mismatch": "パスワードが一致しません。"
+      }
+    }
   },
-  "login": {
-    "title": "アカウントにログイン",
-    "subtitle": "システムにアクセスするための情報を入力してください。",
-    "email": "メールアドレス",
-    "password": "パスワード",
-    "remember": "ログイン状態を保存",
-    "forgot_password": "パスワードをお忘れですか？",
-    "submit": "ログイン",
-    "no_account": "アカウントをお持ちでないですか？",
-    "register_now": "新規登録はこちら"
-  },
-  "forgot_password": {
-    "title": "パスワードをお忘れですか？",
-    "subtitle": "ご登録のメールアドレスを入力してください。パスワード再設定用のリンクをお送りします。",
-    "email": "メールアドレス",
-    "submit": "再設定リンクを送信",
-    "sending": "送信中...",
-    "success_title": "送信が完了しました！",
-    "success_msg": "メールをご確認の上、手順に従ってパスワードを再設定してください。",
-    "back_to_login": "ログイン画面に戻る"
-  },
-  "reset_password": {
-    "mismatch": "パスワードが一致しません",
-    "invalid_token": "トークンが無効か、有効期限が切れています",
-    "missing_token": "トークンが見つかりません。リンクを確認してください。",
-    "new_password": "新しいパスワード",
-    "confirm_password": "パスワードの確認",
-    "submitting": "送信中...",
-    "submit": "パスワードを再設定"
-  },
-  "not_found": {
-    "heading": "お探しのページが見つかりません。",
-    "desc": "アクセスしようとしたページは削除されたか、名前が変更されたか、一時的に利用できない可能性があります。",
-    "back_home": "ホームに戻る (ダッシュボード)",
-    "relogin": "再度ログイン",
-    "need_help": "お困りですか？",
-    "contact_it": "ITサポートに連絡"
-  },
-  "validation": {
-    "email": {
-      "required": "メールアドレスを入力してください。",
-      "invalid": "メールアドレスの形式が正しくありません。"
-    },
-    "password": {
-      "required": "パスワードを入力してください。",
-      "min": "パスワードは8文字以上で入力してください。",
-      "hasLetter": "英字を1文字以上含めてください。",
-      "hasNumber": "数字を1文字以上含めてください。"
-    },
-    "firstName": {
-      "required": "名を入力してください。",
-      "min": "名は2文字以上で入力してください。"
-    },
-    "lastName": {
-      "required": "姓を入力してください。",
-      "min": "姓は5文字以上で入力してください。"
-    },
-    "phone": {
-      "required": "電話番号を入力してください",
-      "invalid": "有効な電話番号を入力してください"
-    },
-    "role": {
-      "required": "部署・役職を選択してください"
-    },
-    "confirmPassword": {
-      "required": "確認用パスワードを入力してください。",
-      "mismatch": "パスワードが一致しません。"
+  "dashboardPage": {
+    "sidebar": {
+      "systemName": "教育管理システム",
+      "sections": {
+        "overview": "概要",
+        "salesAndAds": "営業 & 広告",
+        "trainingAndStudents": "トレーニング & 受講生",
+        "hrAndPayroll": "人事 & 給与"
+      },
+      "items": {
+        "dashboard": "ダッシュボード分析",
+        "adSources": "広告チャネル",
+        "preSalesData": "見込み客データ (Leads)",
+        "salesResults": "売上実績",
+        "classList": "クラス一覧",
+        "studentAttendance": "受講生出席管理",
+        "employeeList": "従業員一覧",
+        "staffTimekeeping": "従業員勤怠管理",
+        "payrollAndCommissions": "給与 & インセンティブ計算"
+      }
     }
   }
 }

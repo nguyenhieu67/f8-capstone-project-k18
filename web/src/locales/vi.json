@@ -1,98 +1,231 @@
 {
-  "brand": {
-    "subtitle": "Hệ Thống Quản Lý Đào Tạo",
-    "hero_title": "Quản lý trung tâm\nhiệu quả và toàn diện.",
-    "hero_desc": "Tối ưu hóa quy trình sales, quản lý học viên, nhân sự và tài chính chỉ trên một nền tảng duy nhất."
+  "homePage": {
+    "nav": {
+      "overview": "Tổng Quan",
+      "features": "Tính Năng Cốt Lõi",
+      "architecture": "Kiến Trúc & Mã Nguồn",
+      "reviews": "Đánh Giá (Review)"
+    },
+    "header": {
+      "signIn": "Đăng kí",
+      "login": "Đăng Nhập"
+    },
+    "hero": {
+      "badge": "Báo Cáo Review Hệ Thống Web EduCRM & Sales",
+      "title_1": "Giải Pháp Quản Lý",
+      "title_highlight": "Trung Tâm Đào Tạo",
+      "title_2": "& Sales Chuyên Nghiệp",
+      "desc": "Trang web tích hợp toàn bộ quy trình vận hành từ tiếp nhận Data Leads (Pre-Sales), quản lý lớp học, điểm danh sinh viên đến chấm công và tự động hóa tính lương - hoa hồng cho nhân sự.",
+      "cta_explore": "Khám Phá Tính Năng",
+      "cta_demo": "Trải Nghiệm Demo",
+      "preview_url": "https://educrm-sales.internal/dashboard",
+      "preview_badge": "Live System Overview",
+      "stats": {
+        "revenue": {
+          "label": "Doanh Thu Thu Được",
+          "value": "180.000.000 VNĐ"
+        },
+        "leads": {
+          "label": "Tổng Lead Pre-Sales",
+          "value": "128 Leads"
+        },
+        "students": {
+          "label": "Học Viên Đã Đăng Ký",
+          "value": "42 Học Viên"
+        },
+        "payroll": {
+          "label": "Quỹ Lương & HH Sales",
+          "value": "65.400.000 VNĐ"
+        }
+      }
+    },
+    "features": {
+      "heading": "Chi Tiết Các Phân Hệ Tính Năng",
+      "desc": "Hệ thống EduCRM & Sales giải quyết trọn vẹn bài toán vận hành của một trung tâm đào tạo hiện đại.",
+      "items": [
+        {
+          "title": "1. Quản Lý Nguồn Quảng Cáo",
+          "desc": "Theo dõi chính xác từng kênh tiếp thị (Google Ads, Facebook Ads, Zalo OA, Website) để đo lường tỷ lệ chuyển đổi và doanh thu thực tế thu được từ từng nguồn."
+        },
+        {
+          "title": "2. Pre-Sales Lead Management",
+          "desc": "Phân bổ Leads tự động cho từng tư vấn viên (Sales). Theo dõi chi tiết nhu cầu, đối tượng học viên, lý do từ chối và thực hiện thao tác \"Chốt đơn\" chuyển thành học viên chính thức."
+        },
+        {
+          "title": "3. Lớp Học & Điểm Danh Sinh Viên",
+          "desc": "Xếp lớp học viên tự động sau khi hoàn tất đăng ký. Giảng viên và quản lý có thể điểm danh hàng ngày, ghi chú tình trạng chuyên cần và lịch học trực quan."
+        },
+        {
+          "title": "4. Quản Lý Nhân Sự & Chấm Công",
+          "desc": "Lưu trữ hồ sơ nhân viên theo vị trí (Sales, Giảng Viên, Admin), theo dõi chấm công đi làm hằng ngày và quản lý số lượng người phụ thuộc để phục vụ tính thuế."
+        },
+        {
+          "title": "5. Tính Lương & Hoa Hồng Thuế Việt Nam",
+          "desc": "Tự động tính Gross/NET, hoa hồng bán hàng 3%, trích nộp Bảo hiểm bắt buộc (BHXH 8%, BHTN 1%, BHYT 1.5%) và Thuế TNCN lũy tiến từng phần chuẩn Luật Lao động."
+        },
+        {
+          "title": "6. Dashboard Analytics Realtime",
+          "desc": "Biểu đồ trực quan doanh thu theo lớp học, cơ cấu nguồn quảng cáo, bảng xếp hạng Sales xuất sắc và phân tích các lý do từ chối phổ biến nhất của khách hàng."
+        }
+      ]
+    },
+    "architecture": {
+      "eyebrow": "Đánh Giá Mã Nguồn Dự Án",
+      "heading": "Kiến Trúc Chuẩn Hiện Đại & Mở Rộng Dễ Dàng",
+      "desc": "Dựa trên cấu trúc dự án React + TypeScript + Vite kết hợp Tailwind CSS, hệ thống được phân tách mô-đun bài bản với cấu trúc thư mục tiêu chuẩn:",
+      "points": [
+        {
+          "title": "Đa ngôn ngữ (i18n):",
+          "desc": "Hỗ trợ Tiếng Việt (vi), Tiếng Anh (en), Tiếng Nhật (ja)."
+        },
+        {
+          "title": "Modular Services & Hooks:",
+          "desc": "Tách biệt lớp gọi API, Auth Context và các Custom Hooks."
+        },
+        {
+          "title": "Tối Ưu Giao Diện:",
+          "desc": "Sử dụng Tailwind CSS kết hợp Chart.js cho khả năng render mượt mà."
+        }
+      ],
+      "directoryTitle": "📂 Directory Tree Breakdown"
+    },
+    "reviews": {
+      "heading": "Tổng Kết Đánh Giá (Web Review)",
+      "desc": "Những điểm nổi bật giúp EduCRM trở thành hệ thống quản lý trung tâm toàn diện.",
+      "items": [
+        {
+          "title": "Trải Nghiệm UX/UI Xuất Sắc",
+          "desc": "Giao diện trực quan, phối màu hài hòa, hỗ trợ Responsive tốt. Thao tác chốt đơn, điểm danh sinh viên và chấm công mượt mà không bị gián đoạn."
+        },
+        {
+          "title": "Chuẩn Hóa Thuế & Bảo Hiểm VN",
+          "desc": "Hệ thống tích hợp thuật toán tính Lương NET từ Lương Gross tự động trừ BHXH 8%, BHTN 1%, BHYT 1.5% và biểu Thuế TNCN lũy tiến chính xác."
+        },
+        {
+          "title": "Liên Kết Mạch Lạc Giữa Các Khâu",
+          "desc": "Dữ liệu chảy liền mạch từ Nguồn Quảng Cáo -> Data Lead -> Doanh Số Sales -> Xếp Lớp Học Viên -> Tính Hoa Hồng Sales trong cùng một nền tảng."
+        }
+      ]
+    }
   },
-  "register": {
-    "title": "Tạo tài khoản nhân viên mới",
-    "or": "Hoặc",
-    "has_account": "đăng nhập nếu đã có tài khoản",
-    "firstName": "Họ",
-    "lastName": "Tên",
-    "phone": "Số điện thoại",
-    "email": "Email",
-    "role": "Bộ phận / Chức vụ",
-    "roles": {
-      "authorized": "Quản lý trung tâm",
-      "admin": "Quản trị viên / HR"
+  "authPage": {
+    "brand": {
+      "subtitle": "Hệ Thống Đào Tạo",
+      "heroTitle": "Quản lý trung tâm\nhiệu quả và toàn diện.",
+      "heroDesc": "Tối ưu hóa quy trình sales, quản lý học viên, nhân sự và tài chính chỉ trên một nền tảng duy nhất."
     },
-    "password": "Mật khẩu",
-    "confirm_password": "Xác nhận mật khẩu",
-    "agree_prefix": "Tôi đồng ý với",
-    "terms": "Điều khoản",
-    "and": "và",
-    "privacy": "Chính sách bảo mật",
-    "submit": "Đăng ký tài khoản"
+    "register": {
+      "title": "Tạo tài khoản nhân viên mới",
+      "or": "Hoặc",
+      "hasAccount": "đăng nhập nếu đã có tài khoản",
+      "firstName": "Họ",
+      "lastName": "Tên",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "role": "Bộ phận / Chức vụ",
+      "roles": {
+        "authorized": "Quản lý trung tâm",
+        "admin": "Quản trị viên / HR"
+      },
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "agreePrefix": "Tôi đồng ý với",
+      "terms": "Điều khoản",
+      "and": "và",
+      "privacy": "Chính sách bảo mật",
+      "submit": "Đăng ký tài khoản"
+    },
+    "login": {
+      "title": "Đăng nhập tài khoản",
+      "subtitle": "Vui lòng nhập thông tin để truy cập hệ thống.",
+      "email": "Email đăng nhập",
+      "password": "Mật khẩu",
+      "remember": "Ghi nhớ đăng nhập",
+      "forgotPassword": "Quên mật khẩu?",
+      "submit": "Đăng nhập hệ thống",
+      "noAccount": "Chưa có tài khoản?",
+      "registerNow": "Đăng ký ngay"
+    },
+    "forgotPassword": {
+      "title": "Quên mật khẩu?",
+      "subtitle": "Nhập địa chỉ email đã đăng ký. Chúng tôi sẽ gửi liên kết để đặt lại mật khẩu của bạn.",
+      "email": "Email đăng nhập",
+      "submit": "Gửi liên kết khôi phục",
+      "sending": "Đang gửi...",
+      "successTitle": "Đã gửi yêu cầu thành công!",
+      "successMsg": "Vui lòng kiểm tra hòm thư email của bạn để nhận hướng dẫn đặt lại mật khẩu.",
+      "backToLogin": "Quay lại đăng nhập"
+    },
+    "resetPassword": {
+      "mismatch": "Mật khẩu xác nhận không khớp",
+      "invalidToken": "Mã xác thực không hợp lệ hoặc đã hết hạn",
+      "missingToken": "Mã xác thực không tồn tại. Vui lòng kiểm tra lại liên kết.",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submitting": "Đang xử lý...",
+      "submit": "Đặt lại mật khẩu"
+    },
+    "notFound": {
+      "heading": "Ôi không! Trang này không tồn tại.",
+      "desc": "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi tên hoặc tạm thời không khả dụng. Vui lòng kiểm tra lại đường dẫn.",
+      "backHome": "Về Trang Chủ (Dashboard)",
+      "relogin": "Đăng Nhập Lại",
+      "needHelp": "Cần hỗ trợ?",
+      "contactIt": "Liên hệ bộ phận kỹ thuật IT"
+    },
+    "validation": {
+      "email": {
+        "required": "Vui lòng nhập email.",
+        "invalid": "Email không đúng định dạng."
+      },
+      "password": {
+        "required": "Vui lòng nhập mật khẩu.",
+        "min": "Mật khẩu phải từ 8 ký tự.",
+        "hasLetter": "Phải chứa ít nhất 1 chữ cái.",
+        "hasNumber": "Phải chứa ít nhất 1 con số.",
+        "incorrect": "Sai email hoặc mật khẩu."
+      },
+      "firstName": {
+        "required": "Vui lòng nhập tên.",
+        "min": "Tên phải có ít nhất 2 ký tự."
+      },
+      "lastName": {
+        "required": "Vui lòng nhập họ.",
+        "min": "Họ phải có ít nhất 5 ký tự."
+      },
+      "phone": {
+        "required": "Vui lòng nhập số điện thoại",
+        "invalid": "Số điện thoại không đúng định dạng"
+      },
+      "role": {
+        "required": "Vui lòng chọn bộ phận / chức vụ"
+      },
+      "confirmPassword": {
+        "required": "Vui lòng nhập xác nhận mật khẩu.",
+        "mismatch": "Mật khẩu xác nhận không khớp."
+      }
+    }
   },
-
-  "login": {
-    "title": "Đăng nhập tài khoản",
-    "subtitle": "Vui lòng nhập thông tin để truy cập hệ thống.",
-    "email": "Email đăng nhập",
-    "password": "Mật khẩu",
-    "remember": "Ghi nhớ đăng nhập",
-    "forgot_password": "Quên mật khẩu?",
-    "submit": "Đăng nhập hệ thống",
-    "no_account": "Chưa có tài khoản?",
-    "register_now": "Đăng ký ngay"
-  },
-  "forgot_password": {
-    "title": "Quên mật khẩu?",
-    "subtitle": "Nhập địa chỉ email đã đăng ký. Chúng tôi sẽ gửi liên kết để đặt lại mật khẩu của bạn.",
-    "email": "Email đăng nhập",
-    "submit": "Gửi liên kết khôi phục",
-    "sending": "Đang gửi...",
-    "success_title": "Đã gửi yêu cầu thành công!",
-    "success_msg": "Vui lòng kiểm tra hòm thư email của bạn để nhận hướng dẫn đặt lại mật khẩu.",
-    "back_to_login": "Quay lại đăng nhập"
-  },
-  "reset_password": {
-    "mismatch": "Mật khẩu xác nhận không khớp",
-    "invalid_token": "Mã xác thực không hợp lệ hoặc đã hết hạn",
-    "missing_token": "Mã xác thực không tồn tại. Vui lòng kiểm tra lại liên kết.",
-    "new_password": "Mật khẩu mới",
-    "confirm_password": "Xác nhận mật khẩu",
-    "submitting": "Đang xử lý...",
-    "submit": "Đặt lại mật khẩu"
-  },
-  "not_found": {
-    "heading": "Ôi không! Trang này không tồn tại.",
-    "desc": "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi tên hoặc tạm thời không khả dụng. Vui lòng kiểm tra lại đường dẫn.",
-    "back_home": "Về Trang Chủ (Dashboard)",
-    "relogin": "Đăng Nhập Lại",
-    "need_help": "Cần hỗ trợ?",
-    "contact_it": "Liên hệ bộ phận kỹ thuật IT"
-  },
-  "validation": {
-    "email": {
-      "required": "Vui lòng nhập email.",
-      "invalid": "Email không đúng định dạng."
-    },
-    "password": {
-      "required": "Vui lòng nhập mật khẩu.",
-      "min": "Mật khẩu phải từ 8 ký tự.",
-      "hasLetter": "Phải chứa ít nhất 1 chữ cái.",
-      "hasNumber": "Phải chứa ít nhất 1 con số."
-    },
-    "firstName": {
-      "required": "Vui lòng nhập tên.",
-      "min": "Tên phải có ít nhất 2 ký tự."
-    },
-    "lastName": {
-      "required": "Vui lòng nhập họ.",
-      "min": "Họ phải có ít nhất 5 ký tự."
-    },
-    "phone": {
-      "required": "Vui lòng nhập số điện thoại",
-      "invalid": "Số điện thoại không đúng định dạng"
-    },
-    "role": {
-      "required": "Vui lòng chọn bộ phận / chức vụ"
-    },
-    "confirmPassword": {
-      "required": "Vui lòng nhập xác nhận mật khẩu.",
-      "mismatch": "Mật khẩu xác nhận không khớp."
+  "dashboardPage": {
+    "sidebar": {
+      "systemName": "Hệ Thống Đào Tạo",
+      "sections": {
+        "overview": "Tổng quan",
+        "salesAndAds": "Kinh Doanh & Quảng Cáo",
+        "trainingAndStudents": "Đào Tạo & Học Viên",
+        "hrAndPayroll": "Nhân Sự & Lương"
+      },
+      "items": {
+        "dashboard": "Dashboard Analytics",
+        "adSources": "Nguồn Quảng Cáo",
+        "preSalesData": "Data Pre-Sales (Leads)",
+        "salesResults": "Kết Quả Bán Hàng",
+        "classList": "Danh Sách Lớp Học",
+        "studentAttendance": "Điểm Danh Sinh Viên",
+        "employeeList": "Danh Sách Nhân Viên",
+        "staffTimekeeping": "Chấm Công Nhân Viên",
+        "payrollAndCommissions": "Tính Lương & Hoa Hồng"
+      }
     }
   }
 }

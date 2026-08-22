@@ -3,17 +3,18 @@ import { ROUTE_PATHS } from "@/constants/routePaths";
 import AuthLayout from "@/layouts/Auth/AuthLayout";
 import {
   ForgotPassword,
-  Dashboard,
   Login,
   NotFound,
   Register,
   ResetPassword,
-} from "@/pages";
+  Review,
+} from "@/pages/public";
+import { Dashboard } from "@/pages/private";
 
 interface RoutesI {
   path: string;
   component: React.ComponentType<any>;
-  layout?: React.ComponentType<any>;
+  layout?: React.ComponentType<any> | null;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -34,7 +35,7 @@ const publicRoutes: RoutesI[] = [
     component: ResetPassword,
     layout: AuthRightLayout,
   },
-
+  { path: ROUTE_PATHS.REVIEW, component: Review, layout: null },
   { path: ROUTE_PATHS.NOT_FOUND, component: NotFound },
   // { path: "/login", component: "exmp", layout: "exmp" },
 ];

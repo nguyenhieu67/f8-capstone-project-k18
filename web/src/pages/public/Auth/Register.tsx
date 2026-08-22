@@ -11,7 +11,6 @@ import {
 import {
   CheckboxField,
   InputField,
-  LanguageSelect,
   SelectField,
   type SelectOption,
 } from "@/components/Form";
@@ -21,9 +20,10 @@ import { ROUTE_PATHS } from "@/constants/routePaths";
 import { register } from "@/services/auth";
 import Button from "@/components/Button";
 import { Logo } from "@/components/ui";
+import { type RegisterFormI } from "@/types/auth.types";
 
 export default function Register() {
-  const form = {
+  const form: RegisterFormI = {
     firstName: "",
     lastName: "",
     phone: "",
@@ -33,17 +33,15 @@ export default function Register() {
     confirmPassword: "",
   };
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState(form);
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
 
-  const currentLang = i18n.language ? i18n.language.split("-")[0] : "vi";
-
   const ROLE_OPTIONS: SelectOption[] = useMemo(
     () => [
-      { label: t("register.roles.admin"), value: "admin" },
-      { label: t("register.roles.authorized"), value: "authorized" },
+      { label: t("authPage.register.roles.admin"), value: "admin" },
+      { label: t("authPage.register.roles.authorized"), value: "authorized" },
     ],
     [t],
   );
@@ -82,25 +80,18 @@ export default function Register() {
 
   return (
     <div>
-      <div className="absolute top-4 right-4">
-        <LanguageSelect
-          value={currentLang}
-          onChange={(code) => i18n.changeLanguage(code)}
-        />
-      </div>
-
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo Mobile */}
         <div className="mb-8 flex justify-center lg:hidden">
-          <Logo variant="light" />
+          <Logo isLogin={false} variant="light" />
         </div>
         <h2 className="text-crm-heading-text mt-6 text-center text-2xl font-bold tracking-tight">
-          {t("register.title")}
+          {t("authPage.register.title")}
         </h2>
         <p className="text-crm-label-text mt-2 text-center text-sm">
-          {t("register.or")}
+          {t("authPage.register.or")}
           <Button to={ROUTE_PATHS.LOGIN} text>
-            {t("register.has_account")}
+            {t("authPage.register.hasAccount")}
           </Button>
         </p>
       </div>
@@ -114,8 +105,8 @@ export default function Register() {
               <InputField
                 id="firstName"
                 name="firstName"
-                label={t("register.firstName")}
-                placeholder={t("register.firstName")}
+                label={t("authPage.register.firstName")}
+                placeholder={t("authPage.register.firstName")}
                 icon={<UserIcon />}
                 value={formData.firstName}
                 error={errors.firstName ? t(errors.firstName) : ""}
@@ -125,8 +116,8 @@ export default function Register() {
               <InputField
                 id="lastName"
                 name="lastName"
-                label={t("register.lastName")}
-                placeholder={t("register.lastName")}
+                label={t("authPage.register.lastName")}
+                placeholder={t("authPage.register.lastName")}
                 icon={<UserIcon />}
                 value={formData.lastName}
                 error={errors.lastName ? t(errors.lastName) : ""}
@@ -140,7 +131,7 @@ export default function Register() {
               id="phone"
               name="phone"
               type="tel"
-              label={t("register.phone")}
+              label={t("authPage.register.phone")}
               placeholder="0987*******"
               icon={<PhoneIcon />}
               value={formData.phone}
@@ -154,7 +145,7 @@ export default function Register() {
               id="email"
               name="email"
               type="email"
-              label={t("register.email")}
+              label={t("authPage.register.email")}
               placeholder="email@domain.com"
               icon={<EmailIcon />}
               autoComplete="email"
@@ -168,7 +159,7 @@ export default function Register() {
             <SelectField
               id="role"
               name="role"
-              label={t("register.role")}
+              label={t("authPage.register.role")}
               options={ROLE_OPTIONS}
               value={formData.role}
               onChange={handleChange}
@@ -180,7 +171,7 @@ export default function Register() {
                 id="password"
                 name="password"
                 type="password"
-                label={t("register.password")}
+                label={t("authPage.register.password")}
                 placeholder="••••••••"
                 icon={<LockIcon />}
                 autoComplete="new-password"
@@ -193,7 +184,7 @@ export default function Register() {
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
-                label={t("register.confirm_password")}
+                label={t("authPage.register.confirmPassword")}
                 placeholder="••••••••"
                 icon={<ShieldHalvedIcon />}
                 autoComplete="new-password"
@@ -206,20 +197,20 @@ export default function Register() {
 
             {/* Terms */}
             <CheckboxField id="terms" name="terms" required>
-              {t("register.agree_prefix")}
+              {t("authPage.register.agreePrefix")}
               <Button href="#" text>
-                {t("register.terms")}
+                {t("authPage.register.terms")}
               </Button>
-              {t("register.and")}
+              {t("authPage.register.and")}
               <Button href="#" text>
-                {t("register.privacy")}
+                {t("authPage.register.privacy")}
               </Button>
             </CheckboxField>
 
             {/* Submit Button */}
             <div>
               <Button primary widthFull>
-                {t("register.submit")}
+                {t("authPage.register.submit")}
               </Button>
             </div>
           </form>

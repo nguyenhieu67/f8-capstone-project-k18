@@ -1,97 +1,231 @@
 {
-  "brand": {
-    "subtitle": "Training Management System",
-    "hero_title": "Manage your center\nefficiently and comprehensively.",
-    "hero_desc": "Optimize sales workflows, student management, HR, and finances on a single platform."
+  "homePage": {
+    "nav": {
+      "overview": "Overview",
+      "features": "Core Features",
+      "architecture": "Architecture & Source Code",
+      "reviews": "Review"
+    },
+    "header": {
+      "signIn": "Sign In",
+      "login": "Login"
+    },
+    "hero": {
+      "badge": "System Review Report - EduCRM & Sales",
+      "title_1": "A Professional",
+      "title_highlight": "Training Center",
+      "title_2": "& Sales Management Solution",
+      "desc": "A website that integrates the entire operating workflow, from receiving Pre-Sales leads and managing classes to student attendance, timekeeping, and automated payroll & commission calculation.",
+      "cta_explore": "Explore Features",
+      "cta_demo": "Try The Demo",
+      "preview_url": "https://educrm-sales.internal/dashboard",
+      "preview_badge": "Live System Overview",
+      "stats": {
+        "revenue": {
+          "label": "Revenue Collected",
+          "value": "180,000,000 VND"
+        },
+        "leads": {
+          "label": "Total Pre-Sales Leads",
+          "value": "128 Leads"
+        },
+        "students": {
+          "label": "Enrolled Students",
+          "value": "42 Students"
+        },
+        "payroll": {
+          "label": "Payroll & Sales Commission",
+          "value": "65,400,000 VND"
+        }
+      }
+    },
+    "features": {
+      "heading": "Core Feature Modules",
+      "desc": "The EduCRM & Sales system fully solves the operational challenges of a modern training center.",
+      "items": [
+        {
+          "title": "1. Advertising Source Management",
+          "desc": "Accurately track every marketing channel (Google Ads, Facebook Ads, Zalo OA, Website) to measure conversion rates and actual revenue generated from each source."
+        },
+        {
+          "title": "2. Pre-Sales Lead Management",
+          "desc": "Automatically assign leads to each sales consultant. Track needs, target students, rejection reasons, and \"Close Deal\" actions that convert leads into official students."
+        },
+        {
+          "title": "3. Classes & Student Attendance",
+          "desc": "Automatically assign students to classes after registration. Teachers and managers can take daily attendance, note attendance status, and view a visual class schedule."
+        },
+        {
+          "title": "4. HR Management & Timekeeping",
+          "desc": "Store employee records by position (Sales, Teacher, Admin), track daily timekeeping, and manage the number of dependents for tax purposes."
+        },
+        {
+          "title": "5. Vietnamese Payroll & Commission Tax",
+          "desc": "Automatically calculate Gross/NET pay, 3% sales commission, mandatory insurance contributions (SI 8%, UI 1%, HI 1.5%), and progressive personal income tax in line with Labor Law."
+        },
+        {
+          "title": "6. Real-Time Analytics Dashboard",
+          "desc": "Visual charts of revenue by class, advertising source breakdown, top-performing sales leaderboard, and analysis of the most common customer rejection reasons."
+        }
+      ]
+    },
+    "architecture": {
+      "eyebrow": "Project Source Code Review",
+      "heading": "A Modern, Easily Scalable Architecture",
+      "desc": "Built on a React + TypeScript + Vite project structure combined with Tailwind CSS, the system is cleanly split into modules with a standard folder structure:",
+      "points": [
+        {
+          "title": "Multilingual (i18n):",
+          "desc": "Supports Vietnamese (vi), English (en), and Japanese (ja)."
+        },
+        {
+          "title": "Modular Services & Hooks:",
+          "desc": "Separates the API layer, Auth Context, and Custom Hooks."
+        },
+        {
+          "title": "Optimized UI:",
+          "desc": "Uses Tailwind CSS combined with Chart.js for smooth rendering."
+        }
+      ],
+      "directoryTitle": "📂 Directory Tree Breakdown"
+    },
+    "reviews": {
+      "heading": "Overall Review Summary",
+      "desc": "The key strengths that make EduCRM a truly comprehensive center management system.",
+      "items": [
+        {
+          "title": "Excellent UX/UI Experience",
+          "desc": "Intuitive interface, harmonious color scheme, and strong responsive support. Closing deals, taking student attendance, and timekeeping all run smoothly without interruption."
+        },
+        {
+          "title": "Standardized VN Tax & Insurance",
+          "desc": "The system integrates an algorithm that automatically converts Gross to NET pay, deducting 8% SI, 1% UI, 1.5% HI, and applying the exact progressive personal income tax schedule."
+        },
+        {
+          "title": "Seamless Data Flow Between Stages",
+          "desc": "Data flows seamlessly from Ad Source -> Lead Data -> Sales Revenue -> Student Class Placement -> Sales Commission, all on a single platform."
+        }
+      ]
+    }
   },
-  "register": {
-    "title": "Create a new employee account",
-    "or": "Or",
-    "has_account": "log in if you already have an account",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "phone": "Phone Number",
-    "email": "Email",
-    "role": "Department / Role",
-    "roles": {
-      "authorized": "Center Manager",
-      "admin": "HR / Administrator"
+  "authPage": {
+    "brand": {
+      "subtitle": "Training Management System",
+      "heroTitle": "Manage your center\nefficiently and comprehensively.",
+      "heroDesc": "Optimize sales workflows, student management, HR, and finances on a single platform."
     },
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "agree_prefix": "I agree to the",
-    "terms": "Terms",
-    "and": "and",
-    "privacy": "Privacy Policy",
-    "submit": "Register Account"
+    "register": {
+      "title": "Create a new employee account",
+      "or": "Or",
+      "hasAccount": "log in if you already have an account",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone Number",
+      "email": "Email",
+      "role": "Department / Role",
+      "roles": {
+        "authorized": "Center Manager",
+        "admin": "HR / Administrator"
+      },
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agreePrefix": "I agree to the",
+      "terms": "Terms",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "submit": "Register Account"
+    },
+    "login": {
+      "title": "Sign in to your account",
+      "subtitle": "Please enter your details to access the system.",
+      "email": "Email Address",
+      "password": "Password",
+      "remember": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "registerNow": "Register now"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password?",
+      "subtitle": "Enter your registered email address. We will send you a link to reset your password.",
+      "email": "Email Address",
+      "submit": "Send Reset Link",
+      "sending": "Sending...",
+      "successTitle": "Request Sent Successfully!",
+      "successMsg": "Please check your inbox for instructions to reset your password.",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "mismatch": "Passwords do not match",
+      "invalidToken": "Invalid or expired reset token",
+      "missingToken": "Reset token is missing. Please check your link.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "submitting": "Submitting...",
+      "submit": "Reset password"
+    },
+    "notFound": {
+      "heading": "Oops! This page does not exist.",
+      "desc": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please check the URL.",
+      "backHome": "Back to Home (Dashboard)",
+      "relogin": "Log In Again",
+      "needHelp": "Need help?",
+      "contactIt": "Contact IT Support"
+    },
+    "validation": {
+      "email": {
+        "required": "Please enter your email.",
+        "invalid": "Invalid email format."
+      },
+      "password": {
+        "required": "Please enter your password.",
+        "min": "Password must be at least 8 characters.",
+        "hasLetter": "Must contain at least 1 letter.",
+        "hasNumber": "Must contain at least 1 number.",
+        "incorrect": "Incorrect email or password."
+      },
+      "firstName": {
+        "required": "Please enter your first name.",
+        "min": "First name must be at least 2 characters."
+      },
+      "lastName": {
+        "required": "Please enter your last name.",
+        "min": "Last name must be at least 5 characters."
+      },
+      "phone": {
+        "required": "Phone number is required",
+        "invalid": "Invalid phone number format"
+      },
+      "role": {
+        "required": "Please select a department / role"
+      },
+      "confirmPassword": {
+        "required": "Please confirm your password.",
+        "mismatch": "Passwords do not match."
+      }
+    }
   },
-  "login": {
-    "title": "Sign in to your account",
-    "subtitle": "Please enter your details to access the system.",
-    "email": "Email Address",
-    "password": "Password",
-    "remember": "Remember me",
-    "forgot_password": "Forgot password?",
-    "submit": "Sign In",
-    "no_account": "Don't have an account?",
-    "register_now": "Register now"
-  },
-  "forgot_password": {
-    "title": "Forgot Password?",
-    "subtitle": "Enter your registered email address and we will send you a link to reset your password.",
-    "email": "Email Address",
-    "submit": "Send Reset Link",
-    "sending": "Sending...",
-    "success_title": "Request Sent Successfully!",
-    "success_msg": "Please check your inbox for instructions to reset your password.",
-    "back_to_login": "Back to login"
-  },
-  "reset_password": {
-    "mismatch": "Passwords do not match",
-    "invalid_token": "Invalid or expired reset token",
-    "missing_token": "Reset token is missing. Please check your link.",
-    "new_password": "New password",
-    "confirm_password": "Confirm password",
-    "submitting": "Submitting...",
-    "submit": "Reset password"
-  },
-  "not_found": {
-    "heading": "Oops! Page not found.",
-    "desc": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
-    "back_home": "Back to Home (Dashboard)",
-    "relogin": "Log In Again",
-    "need_help": "Need help?",
-    "contact_it": "Contact IT Support"
-  },
-  "validation": {
-    "email": {
-      "required": "Please enter your email.",
-      "invalid": "Invalid email address format."
-    },
-    "password": {
-      "required": "Please enter your password.",
-      "min": "Password must be at least 8 characters.",
-      "hasLetter": "Must contain at least 1 letter.",
-      "hasNumber": "Must contain at least 1 number."
-    },
-    "firstName": {
-      "required": "Please enter your first name.",
-      "min": "First name must be at least 2 characters."
-    },
-    "lastName": {
-      "required": "Please enter your last name.",
-      "min": "Last name must be at least 5 characters."
-    },
-    "phone": {
-      "required": "Phone number is required",
-      "invalid": "Invalid phone number format"
-    },
-    "role": {
-      "required": "Please select a department or role"
-    },
-    "confirmPassword": {
-      "required": "Please confirm your password.",
-      "mismatch": "Passwords do not match."
+  "dashboardPage": {
+    "sidebar": {
+      "systemName": "Training Management System",
+      "sections": {
+        "overview": "Overview",
+        "salesAndAds": "Sales & Advertising",
+        "trainingAndStudents": "Training & Students",
+        "hrAndPayroll": "HR & Payroll"
+      },
+      "items": {
+        "dashboard": "Dashboard Analytics",
+        "adSources": "Ad Sources",
+        "preSalesData": "Pre-Sales Data (Leads)",
+        "salesResults": "Sales Results",
+        "classList": "Class List",
+        "studentAttendance": "Student Attendance",
+        "employeeList": "Employee List",
+        "staffTimekeeping": "Staff Timekeeping",
+        "payrollAndCommissions": "Payroll & Commissions"
+      }
     }
   }
 }

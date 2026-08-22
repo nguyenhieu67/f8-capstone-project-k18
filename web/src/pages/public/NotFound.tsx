@@ -22,9 +22,11 @@ export default function NotFound() {
 
         <div className="mt-8 space-y-4">
           <h2 className="text-3xl font-bold text-slate-900">
-            {t("not_found.heading")}
+            {t("authPage.notFound.heading")}
           </h2>
-          <p className="text-base text-slate-500">{t("not_found.desc")}</p>
+          <p className="text-base text-slate-500">
+            {t("authPage.notFound.desc")}
+          </p>
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -45,7 +47,7 @@ export default function NotFound() {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            {t("not_found.back_home")}
+            {t("authPage.notFound.backHome")}
           </Link>
 
           <Link
@@ -65,14 +67,14 @@ export default function NotFound() {
                 d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
               />
             </svg>
-            {t("not_found.relogin")}
+            {t("authPage.notFound.relogin")}
           </Link>
         </div>
 
         <div className="mt-12 text-sm text-slate-400">
-          {t("not_found.need_help")}{" "}
+          {t("authPage.notFound.needHelp")}{" "}
           <a href="#" className="text-indigo-500 hover:underline">
-            {t("not_found.contact_it")}
+            {t("authPage.notFound.contactIt")}
           </a>
         </div>
       </div>

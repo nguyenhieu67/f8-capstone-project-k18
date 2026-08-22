@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import env from "@/config/environment";
+import { ROUTE_PATHS } from "@/constants/routePaths";
 
 const baseURL = env.API_ROOT;
 const api = axios.create({
@@ -10,6 +11,26 @@ const api = axios.create({
 });
 
 let refreshTokenPromise: Promise<void> | null = null;
+
+const SKIP_REFRESH_PATHS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/refresh-token",
+  "/auth/logout",
+];
+
+const SILENT_CHECK_PATHS = ["/auth/me"];
+
+function matchesPath(url: string | undefined, paths: string[]) {
+  if (!url) return false;
+  return paths.some((path) => url.includes(path));
+}
+
+function redirectToLogin() {
+  if (window.location.pathname !== ROUTE_PATHS.LOGIN) {
+    window.location.href = ROUTE_PATHS.LOGIN;
+  }
+}
 
 api.interceptors.request.use(
   (config) => {
@@ -31,7 +52,16 @@ api.interceptors.response.use(
       error.response?.status === 401 ||
       error.response?.data?.message === "Need to refresh token!";
 
-    if (isTokenExpired && !originalRequest._retry) {
+    const requestUrl = originalRequest?.url as string | undefined;
+    const shouldSkipRefresh = matchesPath(requestUrl, SKIP_REFRESH_PATHS);
+    const isSilentCheck = matchesPath(requestUrl, SILENT_CHECK_PATHS);
+
+    if (
+      isTokenExpired &&
+      !shouldSkipRefresh &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -51,7 +81,9 @@ api.interceptors.response.use(
         await refreshTokenPromise;
         return api(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/login";
+        if (!isSilentCheck) {
+          redirectToLogin();
+        }
         return Promise.reject(refreshError);
       }
     }

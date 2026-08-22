@@ -53,7 +53,7 @@ class AuthService extends BaseService {
     if (!user) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
 
     const isValid = await bcrypt.compare(data.password, (user as UserEntity).password);
-    if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
+    if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest), null];
 
     const userTokens = await this.generateUserTokens(user, data.userAgent);
     return [null, userTokens];
@@ -91,6 +91,14 @@ class AuthService extends BaseService {
     await refreshTokenService.revoke(refreshToken.id);
 
     return [null, userTokens];
+  }
+
+  async revokeRefreshToken(token: string) {
+    const refreshToken = await refreshTokenService.findValidToken(token);
+    if (refreshToken) {
+      await refreshTokenService.revoke(refreshToken.id);
+    }
+    return [null, null];
   }
 
   async getUserById(id: number) {

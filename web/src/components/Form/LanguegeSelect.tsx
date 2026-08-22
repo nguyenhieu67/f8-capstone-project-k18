@@ -9,8 +9,8 @@ export interface LanguageOption {
 
 const DEFAULT_LANGUAGES: LanguageOption[] = [
   { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
-  { code: "ja", label: "日本語", flag: "🇯🇵" },
   { code: "en", label: "English", flag: "🇺🇸" },
+  { code: "ja", label: "日本語", flag: "🇯🇵" },
 ];
 
 export interface LanguageSelectProps {

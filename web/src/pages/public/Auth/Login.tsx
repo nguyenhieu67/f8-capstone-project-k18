@@ -2,26 +2,28 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { EmailIcon, LockIcon } from "@/components/Icons";
-import { CheckboxField, InputField, LanguageSelect } from "@/components/Form";
+import { CheckboxField, InputField } from "@/components/Form";
 import { Logo } from "@/components/ui";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import { loginSchema, validationForm, type FormErrors } from "@/utils";
-import { login } from "@/services/auth";
+import { getMe, login } from "@/services/auth";
 import Button from "@/components/Button";
+import type { LoginFormI } from "@/types/auth.types";
+import { useAuth, type User } from "@/context/AuthContext";
 
 export default function Login() {
-  const form = {
+  const form: LoginFormI = {
     email: "",
     password: "",
   };
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+
+  const { setUser } = useAuth();
   const [formData, setFormData] = useState(form);
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
-
-  const currentLang = i18n.language ? i18n.language.split("-")[0] : "vi";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -45,34 +47,33 @@ export default function Login() {
     try {
       const payload = { ...formData };
       await login(payload);
+      const me = await getMe();
+      setUser(me as User);
       setFormData(form);
       navigate(ROUTE_PATHS.DASHBOARD);
     } catch (error) {
       console.error(error);
+      setErrors({
+        email: "",
+        password: t("authPage.validation.password.incorrect"),
+      });
     }
   };
 
   return (
     <>
-      <div className="absolute top-4 right-4 z-50">
-        <LanguageSelect
-          value={currentLang}
-          onChange={(code) => i18n.changeLanguage(code)}
-        />
-      </div>
-
       <div className="w-full max-w-lg space-y-8">
         {/* Logo Mobile */}
         <div className="mb-8 flex justify-center lg:hidden">
-          <Logo variant="light" />
+          <Logo isLogin={false} variant="light" />
         </div>
 
         <div>
           <h2 className="text-crm-heading-text text-center text-2xl font-bold lg:text-left">
-            {t("login.title")}
+            {t("authPage.login.title")}
           </h2>
           <p className="text-crm-label-text mt-2 text-center text-sm lg:text-left">
-            {t("login.subtitle")}
+            {t("authPage.login.subtitle")}
           </p>
         </div>
 
@@ -84,7 +85,7 @@ export default function Login() {
               id="email"
               name="email"
               type="email"
-              label={t("login.email")}
+              label={t("authPage.login.email")}
               placeholder="admin@center.edu"
               icon={<EmailIcon size="md" />}
               autoComplete="email"
@@ -98,7 +99,7 @@ export default function Login() {
               id="password"
               name="password"
               type="password"
-              label={t("login.password")}
+              label={t("authPage.login.password")}
               placeholder="••••••••"
               icon={<LockIcon size="md" />}
               autoComplete="current-password"
@@ -111,7 +112,7 @@ export default function Login() {
 
           <div className="flex items-center justify-between">
             <CheckboxField id="remember-me" name="remember-me">
-              {t("login.remember")}
+              {t("authPage.login.remember")}
             </CheckboxField>
 
             {/* Forgot password Button */}
@@ -120,25 +121,25 @@ export default function Login() {
                 to={ROUTE_PATHS.FORGOT_PASSWORD}
                 className="text-crm-primary font-semibold transition-opacity hover:opacity-80"
               >
-                {t("login.forgot_password")}
+                {t("authPage.login.forgotPassword")}
               </Button>
             </div>
           </div>
 
           {/* Submit Button */}
           <Button widthFull primary>
-            {t("login.submit")}
+            {t("authPage.login.submit")}
           </Button>
         </form>
 
         {/* Register Button */}
         <p className="text-crm-label-text text-center text-sm">
-          {t("login.no_account")}
+          {t("authPage.login.noAccount")}
           <Button
             to={ROUTE_PATHS.REGISTER}
             className="text-crm-primary font-semibold transition-opacity hover:opacity-80"
           >
-            {t("login.register_now")}
+            {t("authPage.login.registerNow")}
           </Button>
         </p>
       </div>

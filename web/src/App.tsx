@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { privateRoutes, publicRoutes } from "@/routes/routes";
@@ -12,7 +13,13 @@ export default function App() {
           <Routes>
             {publicRoutes.map((route, index) => {
               const Page = route.component;
-              const Layout = route.layout || DefaultLayout;
+              let Layout = route.layout || DefaultLayout;
+
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
               return (
                 <Route
@@ -29,7 +36,13 @@ export default function App() {
 
             {privateRoutes.map((route, index) => {
               const Page = route.component;
-              const Layout = route.layout || DefaultLayout;
+              let Layout = route.layout || DefaultLayout;
+
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
               return (
                 <Route

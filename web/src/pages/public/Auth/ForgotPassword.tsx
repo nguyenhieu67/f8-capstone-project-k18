@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowUpIcon, CheckIcon, EmailIcon } from "@/components/Icons";
-import { InputField, LanguageSelect } from "@/components/Form";
+import { InputField } from "@/components/Form";
 import { Logo } from "@/components/ui";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import Button from "@/components/Button";
@@ -9,13 +9,11 @@ import { forgotPassword } from "@/services/auth";
 import { forgotPasswordSchema, validationForm, type FormErrors } from "@/utils";
 
 export default function ForgotPassword() {
-  const { t, i18n } = useTranslation();
-  const [email, setEmail] = useState("");
+  const { t } = useTranslation();
+  const [email, setEmail] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-
-  const currentLang = i18n.language ? i18n.language.split("-")[0] : "vi";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,25 +34,18 @@ export default function ForgotPassword() {
 
   return (
     <div>
-      <div className="absolute top-4 right-4 z-50">
-        <LanguageSelect
-          value={currentLang}
-          onChange={(code) => i18n.changeLanguage(code)}
-        />
-      </div>
-
       <div className="w-full max-w-lg space-y-8">
         {/* Logo Mobile */}
         <div className="mb-8 flex justify-center lg:hidden">
-          <Logo variant="light" />
+          <Logo isLogin={false} variant="light" />
         </div>
 
         <div>
           <h2 className="text-crm-heading-text text-center text-2xl font-bold lg:text-left">
-            {t("forgot_password.title")}
+            {t("authPage.forgotPassword.title")}
           </h2>
           <p className="text-crm-label-text mt-2 text-center text-sm lg:text-left">
-            {t("forgot_password.subtitle")}
+            {t("authPage.forgotPassword.subtitle")}
           </p>
         </div>
 
@@ -65,7 +56,7 @@ export default function ForgotPassword() {
               id="email"
               name="email"
               type="email"
-              label={t("forgot_password.email")}
+              label={t("authPage.forgotPassword.email")}
               placeholder="admin@center.edu"
               icon={<EmailIcon size="md" />}
               autoComplete="email"
@@ -78,8 +69,8 @@ export default function ForgotPassword() {
             <div className="flex justify-center">
               <Button large primary>
                 {isLoading
-                  ? t("forgot_password.sending")
-                  : t("forgot_password.submit")}
+                  ? t("authPage.forgotPassword.sending")
+                  : t("authPage.forgotPassword.submit")}
               </Button>
             </div>
           </form>
@@ -89,10 +80,10 @@ export default function ForgotPassword() {
               {<CheckIcon />}
             </div>
             <h3 className="text-crm-heading-text text-lg font-semibold">
-              {t("forgot_password.success_title")}
+              {t("authPage.forgotPassword.successTitle")}
             </h3>
             <p className="text-crm-label-text mt-2 text-sm">
-              {t("forgot_password.success_msg")}
+              {t("authPage.forgotPassword.successMsg")}
             </p>
           </div>
         )}
@@ -104,7 +95,7 @@ export default function ForgotPassword() {
             className="text-crm-primary inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-80"
             leftIcon={<ArrowUpIcon className="-rotate-90" />}
           >
-            <span>{t("forgot_password.back_to_login")}</span>
+            <span>{t("authPage.forgotPassword.backToLogin")}</span>
           </Button>
         </div>
       </div>

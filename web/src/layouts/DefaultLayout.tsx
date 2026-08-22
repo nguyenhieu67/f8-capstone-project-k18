@@ -1,3 +1,5 @@
+import Sidebar from "@/components/ui/Sidebar";
+
 interface Props {
   children: React.ReactNode;
 }
@@ -9,6 +11,7 @@ export default function DefaultLayout({ children }: Props) {
       {/* Main */}
       <div>
         {/* SideBar */}
+        <Sidebar />
         {children}
       </div>
       {/* Footer */}

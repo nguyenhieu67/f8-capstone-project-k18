@@ -9,6 +9,10 @@ export async function login(payload: RequestBody) {
   return await fetchApi.post("/auth/login", payload);
 }
 
+export async function logout() {
+  return await fetchApi.post("/auth/logout", {});
+}
+
 export async function getMe() {
   return await fetchApi.get("/auth/me");
 }

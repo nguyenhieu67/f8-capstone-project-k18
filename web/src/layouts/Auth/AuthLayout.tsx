@@ -26,13 +26,13 @@ export default function AuthLayout({
         </div>
 
         <div className="relative z-10">
-          <Logo subTitle={true} variant="dark" />
+          <Logo isLogin={false} subTitle variant="dark" />
           <div className="mt-20">
             <h2 className="mb-6 text-5xl leading-tight font-bold whitespace-pre-line">
-              {t("brand.hero_title")}
+              {t("authPage.brand.heroTitle")}
             </h2>
             <p className="max-w-md text-lg text-slate-400">
-              {t("brand.hero_desc")}
+              {t("authPage.brand.heroDesc")}
             </p>
           </div>
         </div>

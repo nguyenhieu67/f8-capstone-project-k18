@@ -12,7 +12,7 @@ import { LoadingSpinner } from "@/components/ui";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import { getMe } from "@/services/auth";
 
-type User = {
+export type User = {
   id: number;
   email: string;
   firstName: string;
@@ -31,9 +31,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await getMe();
-      setUser(user as User);
-      setIsLoading(false);
+      try {
+        const user = await getMe();
+        setUser(user as User);
+      } catch {
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     getUser();

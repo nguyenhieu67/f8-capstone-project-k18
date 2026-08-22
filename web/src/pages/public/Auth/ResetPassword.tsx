@@ -13,9 +13,9 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const token = searchParams.get("token") || "";
 
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +23,7 @@ export default function ResetPassword() {
     setError("");
 
     if (newPassword !== confirmPassword) {
-      setError(t("reset_password.mismatch"));
+      setError(t("authPage.resetPassword.mismatch"));
       return;
     }
 
@@ -39,14 +39,14 @@ export default function ResetPassword() {
       await resetPassword(payload);
       navigate(ROUTE_PATHS.LOGIN);
     } catch {
-      setError(t("reset_password.invalid_token"));
+      setError(t("authPage.resetPassword.invalidToken"));
     } finally {
       setIsLoading(false);
     }
   };
 
   if (!token) {
-    return <p>{t("reset_password.missing_token")}</p>;
+    return <p>{t("authPage.resetPassword.missingToken")}</p>;
   }
 
   return (
@@ -55,7 +55,7 @@ export default function ResetPassword() {
         id="newPassword"
         name="newPassword"
         type="password"
-        label={t("reset_password.new_password")}
+        label={t("authPage.resetPassword.newPassword")}
         icon={<LockIcon />}
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
@@ -65,7 +65,7 @@ export default function ResetPassword() {
         id="confirmPassword"
         name="confirmPassword"
         type="password"
-        label={t("reset_password.confirm_password")}
+        label={t("authPage.resetPassword.confirmPassword")}
         icon={<LockIcon />}
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -74,8 +74,8 @@ export default function ResetPassword() {
       />
       <Button large primary disabled={isLoading}>
         {isLoading
-          ? t("reset_password.submitting")
-          : t("reset_password.submit")}
+          ? t("authPage.resetPassword.submitting")
+          : t("authPage.resetPassword.submit")}
       </Button>
     </form>
   );

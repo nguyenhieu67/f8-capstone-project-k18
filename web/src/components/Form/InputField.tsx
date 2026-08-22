@@ -14,6 +14,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   className = "",
   ...props
 }) => {
+  const borderStyles = error
+    ? "border-crm-danger focus:border-crm-danger focus:ring-crm-danger"
+    : "border-crm-border focus:border-crm-primary focus:ring-crm-primary";
+
   return (
     <FormGroup label={label} htmlFor={id} error={error}>
       <div className="relative">
@@ -26,7 +30,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           id={id}
           className={`block w-full ${
             icon ? "pl-10" : "px-3"
-          } bg-crm-surface text-crm-heading-text border-crm-border placeholder:text-crm-label-text/60 focus:border-crm-primary focus:ring-crm-primary rounded-xl border py-2.5 pr-3 text-sm transition-colors focus:ring-1 focus:outline-none ${className}`}
+          } bg-crm-surface text-crm-heading-text placeholder:text-crm-label-text/60 rounded-xl border py-2.5 pr-3 text-sm transition-colors focus:ring-1 focus:outline-none ${borderStyles} ${className}`}
           {...props}
         />
       </div>
