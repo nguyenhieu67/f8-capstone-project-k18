@@ -1,4 +1,4 @@
-import { ChevronUpIcon, GlobeIcon } from "@/components/Icons";
+import { CheckIcon, ChevronUpIcon, GlobeIcon } from "@/components/Icons";
 import { useClickOutside } from "@/hooks";
 
 export interface LanguageOption {
@@ -18,6 +18,7 @@ export interface LanguageSelectProps {
   onChange?: (code: string) => void;
   languages?: LanguageOption[];
   showIcon?: boolean;
+  showLable?: boolean;
   className?: string;
 }
 
@@ -26,6 +27,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
   onChange,
   languages = DEFAULT_LANGUAGES,
   showIcon = true,
+  showLable = true,
   className = "",
 }) => {
   const { isOpen, setIsOpen, ref } = useClickOutside<HTMLDivElement>();
@@ -57,7 +59,7 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
           )}
           <span className="truncate">
             {selectedLang.flag && `${selectedLang.flag} `}
-            {selectedLang.label}
+            {showLable && selectedLang.label}
           </span>
         </div>
 
@@ -90,12 +92,10 @@ export const LanguageSelect: React.FC<LanguageSelectProps> = ({
                     </span>
 
                     {isSelected && (
-                      <svg
+                      <CheckIcon
+                        size={"sm"}
                         className="text-crm-primary h-4 w-4 fill-current"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
-                      </svg>
+                      />
                     )}
                   </button>
                 </li>

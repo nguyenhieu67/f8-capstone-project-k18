@@ -1,1 +1,9 @@
-export {default as Dashboard } from "./Dashboard"
+export { default as Dashboard } from "./Dashboard";
+export { default as PreSale } from "./PreSale";
+export { default as Source } from "./Source";
+export { default as Classe } from "./Classe";
+export { default as Employee } from "./Employee";
+export { default as Payroll } from "./Payroll";
+export { default as SaleResult } from "./SaleResult";
+export { default as StaffTimeKeeping } from "./StaffTimeKeeping";
+export { default as StudentAttendance } from "./StudentAttendance";

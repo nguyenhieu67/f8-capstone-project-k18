@@ -227,6 +227,15 @@
         "staffTimekeeping": "従業員勤怠管理",
         "payrollAndCommissions": "給与 & インセンティブ計算"
       }
+    },
+    "header": {
+      "add": {
+        "lead": "リードを追加",
+        "source": "流入元を追加",
+        "class": " meクラスを追加",
+        "employee": "従業員を追加",
+        "student": " me生徒を追加"
+      }
     }
   }
 }

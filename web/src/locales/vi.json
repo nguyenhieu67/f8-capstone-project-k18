@@ -227,6 +227,15 @@
         "staffTimekeeping": "Chấm Công Nhân Viên",
         "payrollAndCommissions": "Tính Lương & Hoa Hồng"
       }
+    },
+    "header": {
+      "add": {
+        "lead": "Thêm khách hàng tiềm năng",
+        "source": "Thêm nguồn",
+        "class": "Thêm lớp học",
+        "employee": "Thêm nhân viên",
+        "student": "Thêm học viên"
+      }
     }
   }
 }

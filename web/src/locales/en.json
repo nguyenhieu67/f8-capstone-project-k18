@@ -227,6 +227,15 @@
         "staffTimekeeping": "Staff Timekeeping",
         "payrollAndCommissions": "Payroll & Commissions"
       }
+    },
+    "header": {
+      "add": {
+        "lead": "Add Lead",
+        "source": "Add Source",
+        "class": "Add Class",
+        "employee": "Add Employee",
+        "student": "Add Student"
+      }
     }
   }
 }

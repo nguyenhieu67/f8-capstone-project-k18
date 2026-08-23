@@ -9,7 +9,17 @@ import {
   ResetPassword,
   Review,
 } from "@/pages/public";
-import { Dashboard } from "@/pages/private";
+import {
+  Classe,
+  Dashboard,
+  Employee,
+  Payroll,
+  PreSale,
+  SaleResult,
+  Source,
+  StaffTimeKeeping,
+  StudentAttendance,
+} from "@/pages/private";
 
 interface RoutesI {
   path: string;
@@ -42,6 +52,14 @@ const publicRoutes: RoutesI[] = [
 
 const privateRoutes: RoutesI[] = [
   { path: ROUTE_PATHS.DASHBOARD, component: Dashboard },
+  { path: ROUTE_PATHS.PRESALE, component: PreSale },
+  { path: ROUTE_PATHS.SOURCE, component: Source },
+  { path: ROUTE_PATHS.CLASSE, component: Classe },
+  { path: ROUTE_PATHS.EMPLOYEE, component: Employee },
+  { path: ROUTE_PATHS.PAYROLL, component: Payroll },
+  { path: ROUTE_PATHS.SALERESULT, component: SaleResult },
+  { path: ROUTE_PATHS.STAFFTIMEKEEPING, component: StaffTimeKeeping },
+  { path: ROUTE_PATHS.STUDENTATTENDANCE, component: StudentAttendance },
 ];
 
 export { publicRoutes, privateRoutes };

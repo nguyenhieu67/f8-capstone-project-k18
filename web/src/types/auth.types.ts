@@ -23,6 +23,7 @@ interface MeI {
 interface UserI extends MeI {
   phone?: string;
   role?: "authorized" | "admin";
+  langCode?: "vi" | "en" | "ja";
   avatarUrl?: string;
 }
 

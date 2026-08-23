@@ -1,114 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  ChartPieIcon,
-  RectangleAdIcon,
-  FilterCircleDollarIcon,
-  TrophyIcon,
-  ChalkboardUserIcon,
-  ClipboardUserIcon,
-  BusinessTimeIcon,
-  FileInvoiceDollarIcon,
-  UsersGroupIcon,
-  RightToBracketIcon,
-} from "@/components/Icons";
-import Logo from "./Logo";
-import Button from "../Button";
+import { RightToBracketIcon } from "@/components/Icons";
 import { useAuth } from "@/context/AuthContext";
 import { updateUser } from "@/services/user";
-
-interface NavItemConfig {
-  id: string;
-  translationKey: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-interface NavSectionConfig {
-  translationKey: string;
-  items: NavItemConfig[];
-}
-
-const navigationSections: NavSectionConfig[] = [
-  {
-    translationKey: "dashboardPage.sidebar.sections.overview",
-    items: [
-      {
-        id: "dashboard",
-        translationKey: "dashboardPage.sidebar.items.dashboard",
-        icon: ChartPieIcon,
-      },
-    ],
-  },
-  {
-    translationKey: "dashboardPage.sidebar.sections.salesAndAds",
-    items: [
-      {
-        id: "sources",
-        translationKey: "dashboardPage.sidebar.items.adSources",
-        icon: RectangleAdIcon,
-      },
-      {
-        id: "presales",
-        translationKey: "dashboardPage.sidebar.items.preSalesData",
-        icon: FilterCircleDollarIcon,
-      },
-      {
-        id: "saleresults",
-        translationKey: "dashboardPage.sidebar.items.salesResults",
-        icon: TrophyIcon,
-      },
-    ],
-  },
-  {
-    translationKey: "dashboardPage.sidebar.sections.trainingAndStudents",
-    items: [
-      {
-        id: "classes",
-        translationKey: "dashboardPage.sidebar.items.classList",
-        icon: ChalkboardUserIcon,
-      },
-      {
-        id: "studentattendance",
-        translationKey: "dashboardPage.sidebar.items.studentAttendance",
-        icon: ClipboardUserIcon,
-      },
-    ],
-  },
-  {
-    translationKey: "dashboardPage.sidebar.sections.hrAndPayroll",
-    items: [
-      {
-        id: "employees",
-        translationKey: "dashboardPage.sidebar.items.employeeList",
-        icon: UsersGroupIcon,
-      },
-      {
-        id: "stafftimekeeping",
-        translationKey: "dashboardPage.sidebar.items.staffTimekeeping",
-        icon: BusinessTimeIcon,
-      },
-      {
-        id: "payroll",
-        translationKey: "dashboardPage.sidebar.items.payrollAndCommissions",
-        icon: FileInvoiceDollarIcon,
-      },
-    ],
-  },
-];
+import { navigationSections } from "./Navigation";
+import { Logo } from "@/components/ui";
+import Button from "@/components/Button";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "@/constants/routePaths";
 
 interface SidebarProps {
-  activeTab?: string;
-  onTabChange?: (tabId: string) => void;
+  activeTab: string;
+  onTabChange: (tabId: string) => void;
 }
 
-export default function Sidebar({
-  activeTab: externalActiveTab,
-  onTabChange,
-}: SidebarProps) {
+export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const { t, i18n } = useTranslation();
-  const [internalActiveTab, setInternalActiveTab] = useState("dashboard");
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
@@ -118,17 +28,7 @@ export default function Sidebar({
     })();
   }, [user, i18n]);
 
-  if (!user) return;
-
-  const currentTab = externalActiveTab ?? internalActiveTab;
-
-  const handleSwitchTab = (tabId: string) => {
-    if (onTabChange) {
-      onTabChange(tabId);
-    } else {
-      setInternalActiveTab(tabId);
-    }
-  };
+  if (!user) return null;
 
   const handleLogout = async () => {
     try {
@@ -158,12 +58,17 @@ export default function Sidebar({
             </div>
             {section.items.map((item) => {
               const IconComponent = item.icon;
-              const isActive = currentTab === item.id;
+              const isActive = activeTab === item.id;
 
               return (
                 <button
                   key={item.id}
-                  onClick={() => handleSwitchTab(item.id)}
+                  onClick={() => {
+                    onTabChange(item.id);
+                    const routeKey =
+                      item.id.toUpperCase() as keyof typeof ROUTE_PATHS;
+                    navigate(ROUTE_PATHS[routeKey]);
+                  }}
                   id={`nav-${item.id}`}
                   className={`nav-btn flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left font-medium transition ${
                     isActive
@@ -192,7 +97,7 @@ export default function Sidebar({
       {/* User profile section */}
       <div className="flex items-center gap-3 border-t border-slate-800 bg-slate-950/50 p-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/20 text-sm font-bold text-indigo-400">
-          {`${user.firstName[0] ?? ""}${user.lastName.split(" ").at(-1)?.[0] ?? ""} `}
+          {`${user.firstName[0] ?? ""}${user.lastName.split(" ").at(-1)?.[0] ?? ""}`}
         </div>
         <div className="flex-1 truncate">
           <div className="truncate text-sm font-semibold text-white">

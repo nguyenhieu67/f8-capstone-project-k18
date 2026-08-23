@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { EmailIcon, LockIcon } from "@/components/Icons";
 import { CheckboxField, InputField } from "@/components/Form";
-import { Logo } from "@/components/ui";
+import { LoadingSpinner, Logo } from "@/components/ui";
 import Button from "@/components/Button";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import { login } from "@/services/auth";
@@ -23,7 +23,24 @@ export default function Login() {
   const { refetchUser } = useAuth();
   const [formData, setFormData] = useState(form);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [checking, setChecking] = useState<boolean>(true);
+  const { handleCheckAuth } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const check = async () => {
+      const isValid = await handleCheckAuth();
+      if (isValid) {
+        navigate(ROUTE_PATHS.DASHBOARD, { replace: true });
+      } else {
+        setChecking(false);
+      }
+    };
+    check();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (checking) return <LoadingSpinner />;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
