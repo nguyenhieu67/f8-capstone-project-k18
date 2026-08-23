@@ -235,7 +235,8 @@
         "class": "Add Class",
         "employee": "Add Employee",
         "student": "Add Student"
-      }
+      },
+      "liveStatus": "System Live"
     }
   }
 }

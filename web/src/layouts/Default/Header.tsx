@@ -21,12 +21,12 @@ interface HeaderProps {
 export default function Header({
   title,
   showLiveStatus = true,
-  liveStatusLabel = "System Live",
+  liveStatusLabel = "dashboardPage.header.liveStatus",
   primaryAction,
   onRefresh,
   refreshTooltip = "Khôi phục dữ liệu mẫu",
 }: HeaderProps) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const currentLang = i18n.language
     ? i18n.language.split("-")[0]
@@ -40,7 +40,7 @@ export default function Header({
         {showLiveStatus && (
           <span className="flex items-center gap-1.5 rounded-full border border-indigo-200/60 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700">
             <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            {liveStatusLabel}
+            {t(liveStatusLabel)}
           </span>
         )}
       </div>

@@ -235,7 +235,8 @@
         "class": "Thêm lớp học",
         "employee": "Thêm nhân viên",
         "student": "Thêm học viên"
-      }
+      },
+      "liveStatus": "System Live"
     }
   }
 }
