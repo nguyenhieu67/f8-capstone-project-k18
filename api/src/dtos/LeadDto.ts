@@ -1,4 +1,5 @@
 import { IsNumber, IsString } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
 
 export class LeadCreateDto {
   @IsNumber()
@@ -11,4 +12,4 @@ export class LeadCreateDto {
   lastName!: string;
 }
 
-export class LeadUpdateDto extends LeadCreateDto {}
+export class LeadUpdateDto extends PartialType(LeadCreateDto) {}

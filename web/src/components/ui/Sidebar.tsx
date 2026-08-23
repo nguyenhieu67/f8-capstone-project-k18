@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -16,8 +15,8 @@ import {
 } from "@/components/Icons";
 import Logo from "./Logo";
 import Button from "../Button";
-import { ROUTE_PATHS } from "@/constants/routePaths";
-import { logout } from "@/services/auth";
+import { useAuth } from "@/context/AuthContext";
+import { updateUser } from "@/services/user";
 
 interface NavItemConfig {
   id: string;
@@ -107,9 +106,19 @@ export default function Sidebar({
   activeTab: externalActiveTab,
   onTabChange,
 }: SidebarProps) {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [internalActiveTab, setInternalActiveTab] = useState("dashboard");
+  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+
+    (async () => {
+      updateUser(user.id, { langCode: i18n.language });
+    })();
+  }, [user, i18n]);
+
+  if (!user) return;
 
   const currentTab = externalActiveTab ?? internalActiveTab;
 
@@ -126,8 +135,6 @@ export default function Sidebar({
       await logout();
     } catch (error) {
       console.error(error);
-    } finally {
-      navigate(ROUTE_PATHS.REVIEW);
     }
   };
 
@@ -179,21 +186,21 @@ export default function Sidebar({
         className="mb-2 hover:bg-slate-800"
         onClick={handleLogout}
       >
-        Logout
+        {t("authPage.logout")}
       </Button>
 
       {/* User profile section */}
       <div className="flex items-center gap-3 border-t border-slate-800 bg-slate-950/50 p-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/20 text-sm font-bold text-indigo-400">
-          AD
+          {`${user.firstName[0] ?? ""}${user.lastName.split(" ").at(-1)?.[0] ?? ""} `}
         </div>
         <div className="flex-1 truncate">
           <div className="truncate text-sm font-semibold text-white">
-            Admin Manager
+            {user.role === "authorized"
+              ? t("authPage.register.roles.authorized")
+              : t("authPage.register.roles.admin")}
           </div>
-          <div className="truncate text-xs text-slate-400">
-            nguyenphuongnga@center.edu
-          </div>
+          <div className="truncate text-xs text-slate-400">{user.email}</div>
         </div>
       </div>
     </aside>

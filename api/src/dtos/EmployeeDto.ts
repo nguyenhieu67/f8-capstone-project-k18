@@ -1,4 +1,5 @@
 import { IsString, IsEnum } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
 
 import { EmployeeRole } from "@/entities";
 
@@ -13,4 +14,4 @@ export class EmployeeCreateDto {
   role!: EmployeeRole;
 }
 
-export class EmployeeUpdateDto extends EmployeeCreateDto {}
+export class EmployeeUpdateDto extends PartialType(EmployeeCreateDto) {}

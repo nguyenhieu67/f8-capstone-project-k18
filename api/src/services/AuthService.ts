@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { constants, env } from "@/config";
-import { UserEntity, UserRole } from "@/entities";
+import { UserEntity, UserLangCode, UserRole } from "@/entities";
 import { AppError, randomString, sendEmail } from "@/utils";
 import { BaseService } from "./BaseService";
 import refreshTokenService from "./RefreshTokenService";
@@ -16,8 +16,8 @@ interface RegisterI {
   lastName: string;
   phone?: string;
   role?: UserRole;
+  langCode?: UserLangCode;
   avatarUrl?: string;
-  lastLoginAt?: Date;
 }
 
 interface LoginI {
@@ -55,6 +55,7 @@ class AuthService extends BaseService {
     const isValid = await bcrypt.compare(data.password, (user as UserEntity).password);
     if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest), null];
 
+    await this.updateById(user.id, { lastLoginAt: new Date() });
     const userTokens = await this.generateUserTokens(user, data.userAgent);
     return [null, userTokens];
   }

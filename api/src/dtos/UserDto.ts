@@ -1,5 +1,6 @@
-import { UserRole } from "@/entities";
+import { UserLangCode, UserRole } from "@/entities";
 import { IsEnum, IsOptional, IsString } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
 
 export class UserCreateDto {
   @IsString()
@@ -21,6 +22,10 @@ export class UserCreateDto {
   @IsOptional()
   @IsEnum(UserRole)
   role?: UserRole;
+
+  @IsOptional()
+  @IsEnum(UserLangCode)
+  langCode?: UserLangCode;
 }
 
-export class UserUpdateDto extends UserCreateDto {}
+export class UserUpdateDto extends PartialType(UserCreateDto) {}

@@ -22,7 +22,7 @@ class AuthController extends BaseController {
   };
 
   register = async (req: Request, res: Response) => {
-    const { email, password, firstName, lastName, role, phone, avatarUrl, lastLoginAt } = req.body;
+    const { email, password, firstName, lastName, role, phone, langCode, avatarUrl } = req.body;
     const userAgent = req.headers["user-agent"];
     const user = await authService.register({
       email,
@@ -31,8 +31,8 @@ class AuthController extends BaseController {
       lastName,
       role,
       phone,
+      langCode,
       avatarUrl,
-      lastLoginAt,
     });
     const { accessToken, accessTokenTtl, refreshToken } = await authService.generateUserTokens(user, userAgent);
 

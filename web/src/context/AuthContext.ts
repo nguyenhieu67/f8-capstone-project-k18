@@ -10,44 +10,83 @@ import { Navigate } from "react-router-dom";
 
 import { LoadingSpinner } from "@/components/ui";
 import { ROUTE_PATHS } from "@/constants/routePaths";
-import { getMe } from "@/services/auth";
-
-export type User = {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+import { getMe, logout as logoutService } from "@/services/auth";
+import { getUserById } from "@/services/user";
+import type { MeI, UserI } from "@/types/auth.types";
 
 const AuthContext = createContext<{
-  user: User | null;
   isLoading: boolean;
-  setUser: (u: User | null) => void;
-}>({ user: null, isLoading: true, setUser: () => {} });
+  me: MeI | null;
+  setMe: (m: MeI | null) => void;
+  user: UserI | null;
+  setUser: (u: UserI) => void;
+  refetchUser: () => void;
+  logout: () => Promise<void>;
+  handleCheckAuth: () => Promise<boolean>;
+}>({
+  isLoading: true,
+  me: null,
+  setMe: () => {},
+  user: null,
+  setUser: () => {},
+  refetchUser: () => {},
+  logout: async () => {},
+  handleCheckAuth: async () => false,
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [me, setMe] = useState<MeI | null>(null);
+  const [user, setUser] = useState<UserI | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const user = await getMe();
-        setUser(user as User);
-      } catch {
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      const me = (await getMe()) as MeI;
+      setMe(me);
+      const user = await getUserById(me.id);
+      setUser(user as UserI);
+      return true;
+    } catch {
+      setMe(null);
+      setUser(null);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    getUser();
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchUser();
   }, []);
+
+  const logout = async () => {
+    try {
+      await logoutService();
+    } finally {
+      setMe(null);
+      setUser(null);
+    }
+  };
+
+  const handleCheckAuth = async () => {
+    const isValid = await fetchUser();
+    return isValid;
+  };
 
   return createElement(
     AuthContext.Provider,
     {
-      value: { user, isLoading, setUser },
+      value: {
+        isLoading,
+        me,
+        setMe,
+        user,
+        setUser,
+        logout,
+        refetchUser: fetchUser,
+        handleCheckAuth,
+      },
     },
     children,
   );
@@ -56,9 +95,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export const useAuth = () => useContext(AuthContext);
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { user, isLoading } = useAuth();
+  const { me, isLoading } = useAuth();
   if (isLoading) return createElement(LoadingSpinner);
-  if (!user)
+  if (!me)
     return createElement(Navigate, { to: ROUTE_PATHS.LOGIN, replace: true });
   return children;
 }

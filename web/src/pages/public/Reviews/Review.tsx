@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import Button from "@/components/Button";
-import { Logo } from "@/components/ui";
+import { LoadingSpinner, Logo } from "@/components/ui";
 import { LanguageSelect } from "@/components/Form";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import {
@@ -17,7 +17,11 @@ import {
   CompassIcon,
   DesktopIcon,
   StarIcon,
+  BarsIcon,
 } from "@/components/Icons";
+import { useClickOutside } from "@/hooks";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 interface TitleDescI {
   title: string;
@@ -85,6 +89,30 @@ export default function Review() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language ? i18n.language.split("-")[0] : "vi";
 
+  const { isOpen, setIsOpen, ref } = useClickOutside<HTMLDivElement>();
+  const { handleCheckAuth } = useAuth();
+  const navigate = useNavigate();
+  const [checking, setChecking] = useState<boolean>(true);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const check = async () => {
+      const isValid = await handleCheckAuth();
+      if (isValid) {
+        navigate(ROUTE_PATHS.DASHBOARD, { replace: true });
+      } else {
+        setChecking(false);
+      }
+    };
+    check();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (checking) return <LoadingSpinner />;
+
   const features = t("homePage.features.items", {
     returnObjects: true,
   }) as TitleDescI[];
@@ -99,7 +127,10 @@ export default function Review() {
     <div className="bg-crm-bg text-crm-heading-text min-h-screen font-sans antialiased">
       {/* Header */}
       <header className="bg-crm-surface/90 border-crm-border sticky top-0 z-40 w-full border-b backdrop-blur-md transition-all">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div
+          ref={ref}
+          className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
+        >
           <Logo isLogin={false} variant="light" />
 
           {/* Navigation Links */}
@@ -121,8 +152,8 @@ export default function Review() {
             </a>
           </nav>
 
-          {/* Language */}
-          <div className="flex items-center gap-3">
+          {/* Language normal */}
+          <div className="hidden items-center gap-3 md:flex">
             <LanguageSelect
               value={currentLang}
               onChange={(code) => i18n.changeLanguage(code)}
@@ -146,6 +177,74 @@ export default function Review() {
               {t("homePage.header.login")}
             </Button>
           </div>
+
+          {/* Language mobile */}
+          <div className="relative md:hidden">
+            <BarsIcon onClick={() => setIsOpen(!isOpen)} />
+          </div>
+          {isOpen && (
+            <div className="absolute top-0 right-0 z-10 mt-20 ml-auto w-[60%] rounded-bl-xl bg-white sm:w-[40%] md:hidden">
+              <div className="p-6">
+                <nav className="text-crm-label-text flex flex-col items-start gap-8 text-sm font-semibold md:hidden">
+                  <a
+                    href="#overview"
+                    className="hover:text-crm-primary transition"
+                    onClick={handleClose}
+                  >
+                    {t("homePage.nav.overview")}
+                  </a>
+                  <a
+                    href="#feature"
+                    className="hover:text-crm-primary transition"
+                    onClick={handleClose}
+                  >
+                    {t("homePage.nav.features")}
+                  </a>
+                  <a
+                    href="#architecture"
+                    className="hover:text-crm-primary transition"
+                    onClick={handleClose}
+                  >
+                    {t("homePage.nav.architecture")}
+                  </a>
+                  <a
+                    href="#overall"
+                    className="hover:text-crm-primary transition"
+                    onClick={handleClose}
+                  >
+                    {t("homePage.nav.reviews")}
+                  </a>
+                </nav>
+
+                <div className="mt-10 flex flex-col items-start gap-3 md:hidden">
+                  <LanguageSelect
+                    value={currentLang}
+                    onChange={(code) => i18n.changeLanguage(code)}
+                    showIcon={false}
+                    className="w-auto"
+                  />
+                  <Button
+                    to={ROUTE_PATHS.REGISTER}
+                    text
+                    small
+                    className="hidden sm:inline-flex"
+                    onClick={handleClose}
+                  >
+                    {t("homePage.header.signIn")}
+                  </Button>
+                  <Button
+                    to={ROUTE_PATHS.LOGIN}
+                    primary
+                    rounded
+                    leftIcon={<RightToBracketIcon size="sm" />}
+                    onClick={handleClose}
+                  >
+                    {t("homePage.header.login")}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 

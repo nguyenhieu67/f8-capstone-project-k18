@@ -146,6 +146,7 @@
       "noAccount": "Chưa có tài khoản?",
       "registerNow": "Đăng ký ngay"
     },
+    "logout": "Đăng xuất",
     "forgotPassword": {
       "title": "Quên mật khẩu?",
       "subtitle": "Nhập địa chỉ email đã đăng ký. Chúng tôi sẽ gửi liên kết để đặt lại mật khẩu của bạn.",

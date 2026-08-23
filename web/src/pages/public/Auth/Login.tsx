@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { EmailIcon, LockIcon } from "@/components/Icons";
 import { CheckboxField, InputField } from "@/components/Form";
 import { Logo } from "@/components/ui";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "@/constants/routePaths";
-import { loginSchema, validationForm, type FormErrors } from "@/utils";
-import { getMe, login } from "@/services/auth";
 import Button from "@/components/Button";
+import { ROUTE_PATHS } from "@/constants/routePaths";
+import { login } from "@/services/auth";
 import type { LoginFormI } from "@/types/auth.types";
-import { useAuth, type User } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
+import { loginSchema, validationForm, type FormErrors } from "@/utils";
 
 export default function Login() {
   const form: LoginFormI = {
@@ -20,7 +20,7 @@ export default function Login() {
 
   const { t } = useTranslation();
 
-  const { setUser } = useAuth();
+  const { refetchUser } = useAuth();
   const [formData, setFormData] = useState(form);
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
@@ -47,8 +47,7 @@ export default function Login() {
     try {
       const payload = { ...formData };
       await login(payload);
-      const me = await getMe();
-      setUser(me as User);
+      await refetchUser();
       setFormData(form);
       navigate(ROUTE_PATHS.DASHBOARD);
     } catch (error) {

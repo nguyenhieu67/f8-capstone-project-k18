@@ -3,7 +3,7 @@ export const ROUTE_PATHS = {
   LOGIN: "/login",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
-  REVIEW: "/review",
+  REVIEW: "/",
 
   DASHBOARD: "/dashboard",
 

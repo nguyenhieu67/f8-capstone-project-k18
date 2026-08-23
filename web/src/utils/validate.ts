@@ -38,7 +38,6 @@ export const registerSchema = loginSchema
         /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
         "authPage.validation.phone.invalid",
       ),
-    role: z.string().min(1, "authPage.validation.role.required"),
     confirmPassword: z
       .string()
       .min(1, "authPage.validation.confirmPassword.required"),

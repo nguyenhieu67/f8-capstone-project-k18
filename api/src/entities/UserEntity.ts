@@ -7,6 +7,12 @@ export enum UserRole {
   AUTHORIZED = "authorized",
 }
 
+export enum UserLangCode {
+  VI = "vi",
+  EN = "en",
+  JA = "ja",
+}
+
 @Entity("user")
 export class UserEntity extends BaseEntity {
   @Column({ type: "text" })
@@ -30,6 +36,13 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: "text" })
   phone!: string;
+
+  @Column({
+    type: "enum",
+    enum: UserLangCode,
+    enumName: "user_lang_code",
+  })
+  langCode?: UserLangCode;
 
   @Column({ type: "text" })
   avatarUrl?: string;

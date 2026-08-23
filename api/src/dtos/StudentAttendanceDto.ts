@@ -1,4 +1,5 @@
 import { IsDate, IsEnum, IsNumber } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
 
 import { AttendanceStatus } from "@/entities";
 
@@ -16,4 +17,4 @@ export class StudentCreateDto {
   status!: AttendanceStatus;
 }
 
-export class StudentUpdateDto extends StudentCreateDto {}
+export class StudentUpdateDto extends PartialType(StudentCreateDto) {}

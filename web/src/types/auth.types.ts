@@ -13,4 +13,17 @@ interface LoginFormI {
   password: string;
 }
 
-export type { RegisterFormI, LoginFormI };
+interface MeI {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
+interface UserI extends MeI {
+  phone?: string;
+  role?: "authorized" | "admin";
+  avatarUrl?: string;
+}
+
+export type { RegisterFormI, LoginFormI, MeI, UserI };
