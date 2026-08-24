@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { env } from "@/config";
-import { userService } from "@/services";
+import userService from "@/modules/users/UserService";
 
 async function authRequired(req: Request, res: Response, next: NextFunction) {
   try {
