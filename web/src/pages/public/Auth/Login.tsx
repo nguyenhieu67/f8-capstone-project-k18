@@ -135,17 +135,14 @@ export default function Login() {
             <div className="text-sm">
               <Button
                 to={ROUTE_PATHS.FORGOT_PASSWORD}
+                buttonTitle="authPage.login.forgotPassword"
                 className="text-crm-primary font-semibold transition-opacity hover:opacity-80"
-              >
-                {t("authPage.login.forgotPassword")}
-              </Button>
+              />
             </div>
           </div>
 
           {/* Submit Button */}
-          <Button widthFull primary>
-            {t("authPage.login.submit")}
-          </Button>
+          <Button widthFull primary buttonTitle="authPage.login.submit" />
         </form>
 
         {/* Register Button */}
@@ -153,10 +150,9 @@ export default function Login() {
           {t("authPage.login.noAccount")}
           <Button
             to={ROUTE_PATHS.REGISTER}
+            buttonTitle="authPage.login.registerNow"
             className="text-crm-primary font-semibold transition-opacity hover:opacity-80"
-          >
-            {t("authPage.login.registerNow")}
-          </Button>
+          />
         </p>
       </div>
     </>

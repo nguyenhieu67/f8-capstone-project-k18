@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { CardBase } from "./CardBase";
 
 interface StatCardProps {
@@ -35,6 +36,7 @@ export function StatCard({
   icon,
   status = "success",
 }: StatCardProps) {
+  const { t } = useTranslation();
   const currentStyle = STATUS_STYLES[status] || STATUS_STYLES.success;
 
   const formattedValue =
@@ -45,16 +47,16 @@ export function StatCard({
   return (
     <CardBase>
       <div className="flex items-center justify-between gap-2 text-sm">
-        <div className="space-y-1">
+        <div className="space-y-2">
           <p className="text-crm-label-text text-xs font-bold tracking-wider uppercase">
-            {title}
+            {t(title)}
           </p>
           <h3 className="text-crm-heading-text text-2xl font-bold">
             {formattedValue}
           </h3>
           {subtext && (
             <p className={`text-xs font-medium ${currentStyle.text}`}>
-              {subtext}
+              {t(subtext)}
             </p>
           )}
         </div>

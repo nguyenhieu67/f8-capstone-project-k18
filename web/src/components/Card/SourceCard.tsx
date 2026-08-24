@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { CardBase } from "./CardBase";
 
 interface SourceCardProps {
@@ -19,34 +20,37 @@ export function SourceCard({
   revenue = 0,
   iconBgClass = "bg-blue-500",
 }: SourceCardProps) {
-  const sourceMetrics = [
-    {
-      id: "leads",
-      label: "Số Leads mang về",
-      displayValue: `${leadsCount} khách`,
-      textColor: "text-crm-heading-text",
-    },
-    {
-      id: "converted",
-      label: "Đã chốt đơn",
-      displayValue: `${convertedCount} học viên`,
-      textColor: "text-crm-success",
-    },
-    {
-      id: "revenue",
-      label: "Doanh thu tạo ra",
-      displayValue:
-        typeof revenue === "number"
-          ? `${revenue.toLocaleString("vi-VN")} VNĐ`
-          : `${revenue} VNĐ`,
-      textColor: "text-crm-primary",
-    },
-  ];
+  const sourceMetrics = useMemo(
+    () => [
+      {
+        id: "leads",
+        label: "Số Leads mang về",
+        displayValue: `${leadsCount} khách`,
+        textColor: "text-crm-heading-text",
+      },
+      {
+        id: "converted",
+        label: "Đã chốt đơn",
+        displayValue: `${convertedCount} học viên`,
+        textColor: "text-crm-success",
+      },
+      {
+        id: "revenue",
+        label: "Doanh thu tạo ra",
+        displayValue:
+          typeof revenue === "number"
+            ? `${revenue.toLocaleString("vi-VN")} VNĐ`
+            : `${revenue} VNĐ`,
+        textColor: "text-crm-primary",
+      },
+    ],
+    [convertedCount, leadsCount, revenue],
+  );
 
   return (
     <CardBase className="flex flex-col gap-4">
       {/* Header Card */}
-      <div className="flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg text-white shadow-sm ${iconBgClass}`}

@@ -90,9 +90,11 @@ export default function Register() {
         </h2>
         <p className="text-crm-label-text mt-2 text-center text-sm">
           {t("authPage.register.or")}
-          <Button to={ROUTE_PATHS.LOGIN} text>
-            {t("authPage.register.hasAccount")}
-          </Button>
+          <Button
+            to={ROUTE_PATHS.LOGIN}
+            text
+            buttonTitle="authPage.register.hasAccount"
+          />
         </p>
       </div>
 
@@ -198,20 +200,18 @@ export default function Register() {
             {/* Terms */}
             <CheckboxField id="terms" name="terms" required>
               {t("authPage.register.agreePrefix")}
-              <Button href="#" text>
-                {t("authPage.register.terms")}
-              </Button>
+              <Button href="#" text buttonTitle="authPage.register.terms" />
               {t("authPage.register.and")}
-              <Button href="#" text>
-                {t("authPage.register.privacy")}
-              </Button>
+              <Button href="#" text buttonTitle="authPage.register.terms" />
             </CheckboxField>
 
             {/* Submit Button */}
             <div>
-              <Button primary widthFull>
-                {t("authPage.register.submit")}
-              </Button>
+              <Button
+                primary
+                widthFull
+                buttonTitle="authPage.register.submit"
+              />
             </div>
           </form>
         </div>

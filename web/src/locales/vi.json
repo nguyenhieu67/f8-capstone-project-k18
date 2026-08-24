@@ -1,4 +1,74 @@
 {
+  "common": {
+    "summaryTitle": {
+      "totalRevenue": "Tổng Doanh Thu",
+      "totalLeads": "Tổng Số Leads (Pre-sales)",
+      "registeredStudents": "Học Viên Đã Đăng Ký",
+      "totalPayrollAndCommission": "Tổng Quỹ Lương & HH"
+    },
+    "summaryDesc": {
+      "comparedToLastMonth": "so với tháng trước",
+      "leadSources": "Từ các kênh Google, FB, Zalo",
+      "conversionRate": "Tỷ lệ chuyển đổi",
+      "salaryAndCommissionDetail": "Gồm lương cứng + 3% hoa hồng"
+    },
+    "tableTitle": {
+      "salesLeaderboard": "Bảng Xếp Hạng Sales (Doanh Số)",
+      "commonRejectionReasons": "Lý Do Từ Chối Phổ Biến (Pre-Sales)",
+      "salesAndRevenueStats": "Thống Kê Kết Quả Bán Hàng & Doanh Thu",
+      "courseAndClassManagement": "Quản Lý Khóa Học & Lớp Học",
+      "employeeList": "Danh Sách Nhân Viên Công Ty",
+      "adSourceList": "Danh Sách Nguồn Quảng Cáo",
+      "attendanceSheet": "Bảng Chấm Công Đi Làm",
+      "payrollAndTaxStatement": "Bảng Tính Lương & Doanh Số Cân Đối TT",
+      "classAttendance": "Điểm Danh Lớp"
+    },
+    "tableHeader": {
+      "stt": "STT",
+      "employee": "Nhân Viên",
+      "employeeCode": "Mã NV",
+      "fullName": "Họ và Tên",
+      "position": "Chức Vụ",
+      "phone": "Số Điện Thoại",
+      "ordersCount": "Số Đơn",
+      "salesVolume": "Doanh Số",
+      "commission": "Hoa Hồng",
+      "commissionRate": "% Hoa Hồng Sales",
+      "customerPhone": "Khách Hàng / SĐT",
+      "adSource": "Nguồn QC",
+      "learningPurpose": "Mục Đích Học",
+      "targetAudience": "Đối Tượng (Who are you)",
+      "purposeAndTarget": "Mục Đích / Đối Tượng",
+      "assignedSeller": "Seller Phụ Trách",
+      "closedBySeller": "Seller Chốt",
+      "status": "Trạng Thái",
+      "rejectionReason": "Lý Do Từ Chối",
+      "student": "Học Viên",
+      "class": "Lớp Học",
+      "revenue": "Doanh Thu",
+      "attendanceStatus": "Trạng Thái Đi Học",
+      "notes": "Ghi Chú",
+      "baseSalary": "Lương Cơ Bản",
+      "workStatus": "Trạng Thái Làm Việc",
+      "checkInTime": "Giờ Vào Ca",
+      "commission3Percent": "Hoa Hồng (3%)",
+      "grossIncome": "Tổng Thu Nhập (Gross)",
+      "insuranceTotal": "Tổng Bảo Hiểm (10.5%)",
+      "pitTax": "Thuế TNCN",
+      "netSalary": "Lương Thực Nhận (NET)",
+      "details": "Chi Tiết",
+      "actions": "Thao Tác"
+    },
+    "buttonTitle": {
+      "addSource": "Thêm Nguồn Mới",
+      "addLead": "Thêm Pre-Sales Lead",
+      "addClass": "Tạo Lớp Mới",
+      "saveAttendance": "Lưu Điểm Danh",
+      "addEmployee": "Thêm Nhân Viên",
+      "saveTimekeeping": "Lưu Chấm Công",
+      "printPayroll": "In Bảng Lương"
+    }
+  },
   "homePage": {
     "nav": {
       "overview": "Tổng Quan",
@@ -229,13 +299,6 @@
       }
     },
     "header": {
-      "add": {
-        "lead": "Thêm khách hàng tiềm năng",
-        "source": "Thêm nguồn",
-        "class": "Thêm lớp học",
-        "employee": "Thêm nhân viên",
-        "student": "Thêm học viên"
-      },
       "liveStatus": "System Live"
     }
   }

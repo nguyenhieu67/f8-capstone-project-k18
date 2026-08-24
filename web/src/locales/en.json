@@ -1,4 +1,74 @@
 {
+  "common": {
+    "summaryTitle": {
+      "totalRevenue": "Total Revenue",
+      "totalLeads": "Total Leads (Pre-sales)",
+      "registeredStudents": "Registered Students",
+      "totalPayrollAndCommission": "Total Salary & Commission Pool"
+    },
+    "summaryDesc": {
+      "comparedToLastMonth": "compared to last month",
+      "leadSources": "From Google, FB, Zalo channels",
+      "conversionRate": "Conversion rate",
+      "salaryAndCommissionDetail": "Includes base salary + 3% commission"
+    },
+    "tableTitle": {
+      "salesLeaderboard": "Sales Leaderboard (Revenue)",
+      "commonRejectionReasons": "Common Rejection Reasons (Pre-Sales)",
+      "salesAndRevenueStats": "Sales & Revenue Statistics",
+      "courseAndClassManagement": "Course & Class Management",
+      "employeeList": "Company Employee List",
+      "adSourceList": "Ad Source List",
+      "attendanceSheet": "Daily Attendance Sheet",
+      "payrollAndTaxStatement": "Payroll & Tax Balancing Statement",
+      "classAttendance": "Class Attendance"
+    },
+    "tableHeader": {
+      "stt": "No.",
+      "employee": "Employee",
+      "employeeCode": "Employee ID",
+      "fullName": "Full Name",
+      "position": "Position",
+      "phone": "Phone Number",
+      "ordersCount": "Total Orders",
+      "salesVolume": "Sales Volume",
+      "commission": "Commission",
+      "commissionRate": "Sales Commission %",
+      "customerPhone": "Customer / Phone",
+      "adSource": "Ad Source",
+      "learningPurpose": "Learning Purpose",
+      "targetAudience": "Target Audience",
+      "purposeAndTarget": "Purpose / Target",
+      "assignedSeller": "Assigned Seller",
+      "closedBySeller": "Closed By Seller",
+      "status": "Status",
+      "rejectionReason": "Rejection Reason",
+      "student": "Student",
+      "class": "Class",
+      "revenue": "Revenue",
+      "attendanceStatus": "Attendance Status",
+      "notes": "Notes",
+      "baseSalary": "Base Salary",
+      "workStatus": "Work Status",
+      "checkInTime": "Check-in Time",
+      "commission3Percent": "Commission (3%)",
+      "grossIncome": "Gross Income",
+      "insuranceTotal": "Total Insurance (10.5%)",
+      "pitTax": "Personal Income Tax",
+      "netSalary": "Net Salary",
+      "details": "Details",
+      "actions": "Actions"
+    },
+    "buttonTitle": {
+      "addSource": "Add New Source",
+      "addLead": "Add Pre-Sales Lead",
+      "addClass": "Create New Class",
+      "saveAttendance": "Save Attendance",
+      "addEmployee": "Add Employee",
+      "saveTimekeeping": "Save Timekeeping",
+      "printPayroll": "Print Payroll"
+    }
+  },
   "homePage": {
     "nav": {
       "overview": "Overview",
@@ -229,13 +299,6 @@
       }
     },
     "header": {
-      "add": {
-        "lead": "Add Lead",
-        "source": "Add Source",
-        "class": "Add Class",
-        "employee": "Add Employee",
-        "student": "Add Student"
-      },
       "liveStatus": "System Live"
     }
   }
