@@ -37,11 +37,12 @@
       "employeeCode": "Employee ID",
       "fullName": "Full Name",
       "position": "Position",
+      "role": "Role",
       "phone": "Phone Number",
       "ordersCount": "Total Orders",
       "salesVolume": "Sales Volume",
       "commission": "Commission",
-      "commissionRate": "Sales Commission %",
+      "commissionRate": "Commission %",
       "customerPhone": "Customer / Phone",
       "adSource": "Ad Source",
       "learningPurpose": "Learning Purpose",
@@ -65,16 +66,26 @@
       "pitTax": "Personal Income Tax",
       "netSalary": "Net Salary",
       "details": "Details",
+      "dependents": "Dependents",
       "actions": "Actions"
     },
-    "buttonTitle": {
-      "addSource": "Add New Source",
+    "button": {
+      "addSource": "Add Source",
       "addLead": "Add Pre-Sales Lead",
-      "addClass": "Create New Class",
+      "addClass": "Create Class",
       "saveAttendance": "Save Attendance",
       "addEmployee": "Add Employee",
       "saveTimekeeping": "Save Timekeeping",
-      "printPayroll": "Print Payroll"
+      "printPayroll": "Print Payroll",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "update": "Update Information"
+    },
+    "dialog": {
+      "confirmDelete": "Confirm Delete",
+      "deleteWarning": "This action cannot be undone. Are you sure you want to delete this item?"
     },
     "status": {
       "active": "Active",

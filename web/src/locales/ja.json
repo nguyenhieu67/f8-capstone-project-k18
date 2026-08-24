@@ -37,6 +37,7 @@
       "employeeCode": "従業員ID",
       "fullName": "氏名",
       "position": "役職",
+      "role": "役割",
       "phone": "電話番号",
       "ordersCount": "受注数",
       "salesVolume": "売上高",
@@ -65,16 +66,26 @@
       "pitTax": "所得税",
       "netSalary": "手取り額 (NET)",
       "details": "詳細",
+      "dependents": "扶養家族数",
       "actions": "操作"
     },
-    "buttonTitle": {
+    "button": {
       "addSource": "新規チャネル追加",
       "addLead": "リード追加",
       "addClass": "新規クラス作成",
       "saveAttendance": "出席情報を保存",
       "addEmployee": "従業員追加",
       "saveTimekeeping": "勤怠ログを保存",
-      "printPayroll": "給与明細を印刷"
+      "printPayroll": "給与明細を印刷",
+      "cancel": "キャンセル",
+      "save": "保存",
+      "saving": "保存中...",
+      "delete": "削除",
+      "update": "情報の更新"
+    },
+    "dialog": {
+      "confirmDelete": "削除の確認",
+      "deleteWarning": "この操作は取り消せません。本当にこの項目を削除しますか？"
     },
     "status": {
       "active": "有効",

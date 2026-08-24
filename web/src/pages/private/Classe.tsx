@@ -12,7 +12,7 @@ export default function Classe() {
           className="flex items-center justify-between"
         >
           <Button
-            buttonTitle="common.buttonTitle.addClass"
+            buttonTitle="common.button.addClass"
             gradient
             leftIcon={<PlusIcon size="sm" />}
           />

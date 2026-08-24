@@ -20,7 +20,7 @@ export default function PreSale() {
       <div>
         <CardBase>
           <Button
-            buttonTitle="common.buttonTitle.addLead"
+            buttonTitle="common.button.addLead"
             gradient
             leftIcon={<PlusIcon size="sm" />}
           />

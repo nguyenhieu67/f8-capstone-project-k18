@@ -22,7 +22,7 @@ export default function StaffTimeKeeping() {
           className="flex items-center justify-between"
         >
           <Button
-            buttonTitle="common.buttonTitle.saveTimekeeping"
+            buttonTitle="common.button.saveTimekeeping"
             success
             leftIcon={<CheckDoubleIcon />}
           />

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FormGroup } from "./FormGroup";
 
 export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,10 +11,12 @@ export const InputField: React.FC<InputFieldProps> = ({
   label,
   icon,
   id,
+  placeholder,
   error,
   className = "",
   ...props
 }) => {
+  const { t } = useTranslation();
   const borderStyles = error
     ? "border-crm-danger focus:border-crm-danger focus:ring-crm-danger"
     : "border-crm-border focus:border-crm-primary focus:ring-crm-primary";
@@ -28,6 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         )}
         <input
           id={id}
+          placeholder={`${t(placeholder || "")}...`}
           className={`block w-full ${
             icon ? "pl-10" : "px-3"
           } bg-crm-surface text-crm-heading-text placeholder:text-crm-label-text/60 rounded-xl border py-2.5 pr-3 text-sm transition-colors focus:ring-1 focus:outline-none ${borderStyles} ${className}`}

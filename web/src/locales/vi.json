@@ -37,11 +37,12 @@
       "employeeCode": "Mã NV",
       "fullName": "Họ và Tên",
       "position": "Chức Vụ",
+      "role": "Vai trò (Role)",
       "phone": "Số Điện Thoại",
       "ordersCount": "Số Đơn",
       "salesVolume": "Doanh Số",
       "commission": "Hoa Hồng",
-      "commissionRate": "% Hoa Hồng Sales",
+      "commissionRate": "% Hoa Hồng",
       "customerPhone": "Khách Hàng / SĐT",
       "adSource": "Nguồn QC",
       "learningPurpose": "Mục Đích Học",
@@ -65,16 +66,26 @@
       "pitTax": "Thuế TNCN",
       "netSalary": "Lương Thực Nhận (NET)",
       "details": "Chi Tiết",
+      "dependents": "Người phụ thuộc",
       "actions": "Thao Tác"
     },
-    "buttonTitle": {
+    "button": {
       "addSource": "Thêm Nguồn Mới",
       "addLead": "Thêm Pre-Sales Lead",
       "addClass": "Tạo Lớp Mới",
       "saveAttendance": "Lưu Điểm Danh",
       "addEmployee": "Thêm Nhân Viên",
       "saveTimekeeping": "Lưu Chấm Công",
-      "printPayroll": "In Bảng Lương"
+      "printPayroll": "In Bảng Lương",
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "saving": "Đang lưu...",
+      "delete": "Xóa",
+      "update": "Cập nhật thông tin"
+    },
+    "dialog": {
+      "confirmDelete": "Xác nhận xóa",
+      "deleteWarning": "Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa mục này?"
     },
     "status": {
       "active": "Hoạt động",
@@ -200,7 +211,7 @@
       "title": "Tạo tài khoản nhân viên mới",
       "or": "Hoặc",
       "hasAccount": "đăng nhập nếu đã có tài khoản",
-      "firstName": "Họ",
+      "firstName": "Họ & Tên đệm",
       "lastName": "Tên",
       "phone": "Số điện thoại",
       "email": "Email",

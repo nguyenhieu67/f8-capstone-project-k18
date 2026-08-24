@@ -53,10 +53,10 @@ export default function Source() {
           className="flex items-center justify-between"
         >
           <Button
-            buttonTitle="common.buttonTitle.addSource"
+            buttonTitle="common.button.addSource"
             gradient
             leftIcon={<PlusIcon size="sm" />}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen(true)}
           />
           <SourceDialog
             isOpen={isOpen}

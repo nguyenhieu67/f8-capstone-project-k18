@@ -4,7 +4,7 @@ interface ColumnI {
 }
 
 interface RowI {
-  id: number | string;
+  id?: number | string;
   [key: string]: string | number | undefined | object;
 }
 

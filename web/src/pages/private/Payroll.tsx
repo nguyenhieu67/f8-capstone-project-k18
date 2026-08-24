@@ -28,7 +28,7 @@ export default function Payroll() {
           className="flex items-center justify-between"
         >
           <Button
-            buttonTitle="common.buttonTitle.printPayroll"
+            buttonTitle="common.button.printPayroll"
             info
             leftIcon={<PrintIcon />}
           />

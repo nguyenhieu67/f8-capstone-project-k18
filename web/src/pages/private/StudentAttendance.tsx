@@ -17,7 +17,7 @@ export default function StudentAttendance() {
       <div>
         <CardBase>
           <Button
-            buttonTitle="common.buttonTitle.saveAttendance"
+            buttonTitle="common.button.saveAttendance"
             success
             leftIcon={<SaveIcon />}
           />

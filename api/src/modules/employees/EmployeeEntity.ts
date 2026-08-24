@@ -5,7 +5,7 @@ import { BaseEntity } from "@/common";
 export enum EmployeeRole {
   TRAINER = "trainer",
   SALE = "sale",
-  ACCOUNTANT = "accountant",
+  ASSISTANT = "assistant",
   MANAGER = "manager",
   ADMIN = "admin",
 }

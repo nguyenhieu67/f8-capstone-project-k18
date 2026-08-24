@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export interface FormGroupProps {
   label?: string;
@@ -13,6 +14,8 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   error,
   children,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       {label && (
@@ -20,7 +23,7 @@ export const FormGroup: React.FC<FormGroupProps> = ({
           htmlFor={htmlFor}
           className="text-crm-label-text mb-1 block text-sm font-semibold"
         >
-          {label}
+          {t(label)}
         </label>
       )}
       {children}

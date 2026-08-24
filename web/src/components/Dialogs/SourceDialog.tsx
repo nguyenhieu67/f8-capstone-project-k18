@@ -72,8 +72,7 @@ export default function SourceDialog({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setLoading(true);
 
     try {
@@ -91,9 +90,12 @@ export default function SourceDialog({
   return (
     <Dialog
       isOpen={isOpen}
-      title="common.buttonTitle.addSource"
+      loading={loading}
+      title="common.button.addSource"
+      buttonAction="common.button.addSource"
       icon={<PlusIcon />}
       onClose={onClose}
+      onSubmit={handleSubmit}
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {/* Source name */}
@@ -126,24 +128,6 @@ export default function SourceDialog({
           value={formData.status}
           onChange={handleChange}
         />
-
-        {/* Action Buttons */}
-        <div className="border-crm-border flex justify-end gap-2 border-t pt-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="border-crm-border bg-crm-surface text-crm-heading-text hover:bg-crm-menu-item-bg-hover rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
-          >
-            Hủy
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-crm-primary rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? "Đang lưu..." : "Lưu nguồn"}
-          </button>
-        </div>
       </form>
     </Dialog>
   );
