@@ -1,4 +1,97 @@
 {
+  "common": {
+    "summaryTitle": {
+      "totalRevenue": "Total Revenue",
+      "totalLeads": "Total Leads (Pre-sales)",
+      "registeredStudents": "Registered Students",
+      "totalPayrollAndCommission": "Total Salary & Commission Pool"
+    },
+    "summaryDesc": {
+      "comparedToLastMonth": "compared to last month",
+      "leadSources": "From Google, FB, Zalo channels",
+      "conversionRate": "Conversion rate",
+      "salaryAndCommissionDetail": "Includes base salary + 3% commission"
+    },
+    "cardTitle": {
+      "salesLeaderboard": "Sales Leaderboard (Revenue)",
+      "commonRejectionReasons": "Common Rejection Reasons (Pre-Sales)",
+      "salesAndRevenueStats": "Sales & Revenue Statistics",
+      "courseAndClassManagement": "Course & Class Management",
+      "employeeList": "Company Employee List",
+      "adSourceList": "Ad Source List",
+      "attendanceSheet": "Daily Attendance Sheet",
+      "payrollAndTaxStatement": "Payroll & Tax Balancing Statement",
+      "classAttendance": "Class Attendance"
+    },
+    "cardDesc": {
+      "marketingChannels": "Effectively manage marketing performance from advertising channels",
+      "enrolledStudents": "List of official students who have completed tuition payment",
+      "openedClasses": "Active and upcoming classes at the center",
+      "staffManagement": "Manage Sales, Lecturers, and Admin team",
+      "dailyAttendance": "Daily employee timekeeping for payroll calculation",
+      "payrollCalculation": "Automatically calculates Base Salary + Commission (3%) - Social Insurance (8%), Unemployment Insurance (1%), Health Insurance (1.5%) & Personal Income Tax"
+    },
+    "tableHeader": {
+      "stt": "No.",
+      "employee": "Employee",
+      "employeeCode": "Employee ID",
+      "fullName": "Full Name",
+      "position": "Position",
+      "role": "Role",
+      "phone": "Phone Number",
+      "ordersCount": "Total Orders",
+      "salesVolume": "Sales Volume",
+      "commission": "Commission",
+      "commissionRate": "Commission %",
+      "customerPhone": "Customer / Phone",
+      "adSource": "Ad Source",
+      "learningPurpose": "Learning Purpose",
+      "targetAudience": "Target Audience",
+      "purposeAndTarget": "Purpose / Target",
+      "assignedSeller": "Assigned Seller",
+      "closedBySeller": "Closed By Seller",
+      "status": "Status",
+      "rejectionReason": "Rejection Reason",
+      "student": "Student",
+      "class": "Class",
+      "revenue": "Revenue",
+      "attendanceStatus": "Attendance Status",
+      "notes": "Notes",
+      "baseSalary": "Base Salary",
+      "workStatus": "Work Status",
+      "checkInTime": "Check-in Time",
+      "commission3Percent": "Commission (3%)",
+      "grossIncome": "Gross Income",
+      "insuranceTotal": "Total Insurance (10.5%)",
+      "pitTax": "Personal Income Tax",
+      "netSalary": "Net Salary",
+      "details": "Details",
+      "dependents": "Dependents",
+      "actions": "Actions"
+    },
+    "button": {
+      "addSource": "Add Source",
+      "addLead": "Add Pre-Sales Lead",
+      "addClass": "Create Class",
+      "saveAttendance": "Save Attendance",
+      "addEmployee": "Add Employee",
+      "saveTimekeeping": "Save Timekeeping",
+      "printPayroll": "Print Payroll",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "update": "Update Information"
+    },
+    "dialog": {
+      "confirmDelete": "Confirm Delete",
+      "deleteWarning": "This action cannot be undone. Are you sure you want to delete this item?"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "homePage": {
     "nav": {
       "overview": "Overview",
@@ -229,13 +322,6 @@
       }
     },
     "header": {
-      "add": {
-        "lead": "Add Lead",
-        "source": "Add Source",
-        "class": "Add Class",
-        "employee": "Add Employee",
-        "student": "Add Student"
-      },
       "liveStatus": "System Live"
     }
   }

@@ -164,18 +164,16 @@ export default function Review() {
               to={ROUTE_PATHS.REGISTER}
               text
               small
+              buttonTitle="homePage.header.signIn"
               className="hidden sm:inline-flex"
-            >
-              {t("homePage.header.signIn")}
-            </Button>
+            />
             <Button
               to={ROUTE_PATHS.LOGIN}
               primary
               rounded
               leftIcon={<RightToBracketIcon size="sm" />}
-            >
-              {t("homePage.header.login")}
-            </Button>
+              buttonTitle="homePage.header.login"
+            />
           </div>
 
           {/* Language mobile */}
@@ -227,20 +225,18 @@ export default function Review() {
                     to={ROUTE_PATHS.REGISTER}
                     text
                     small
+                    buttonTitle="homePage.header.signIn"
                     className="hidden sm:inline-flex"
                     onClick={handleClose}
-                  >
-                    {t("homePage.header.signIn")}
-                  </Button>
+                  />
                   <Button
                     to={ROUTE_PATHS.LOGIN}
                     primary
                     rounded
                     leftIcon={<RightToBracketIcon size="sm" />}
+                    buttonTitle="homePage.header.login"
                     onClick={handleClose}
-                  >
-                    {t("homePage.header.login")}
-                  </Button>
+                  />
                 </div>
               </div>
             </div>

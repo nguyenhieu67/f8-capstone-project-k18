@@ -1,0 +1,134 @@
+import { useState } from "react";
+import { PlusIcon } from "../Icons";
+import Dialog from "./Dialog";
+import { InputField, SelectField } from "../Form";
+import { createSource } from "@/services/source";
+
+export interface SourceI {
+  id?: number;
+  name: string;
+  color: string;
+  icon: string;
+  status: "active" | "inactive";
+}
+
+interface SourceDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+const ICON_OPTIONS = [
+  { label: "Facebook", value: "facebook" },
+  { label: "Zalo", value: "zalo" },
+  { label: "Instagram", value: "instagram" },
+  { label: "Google", value: "google" },
+  { label: "Website", value: "website" },
+];
+
+const ICON_COLOR_MAP: Record<string, string> = {
+  facebook: "#1877F2",
+  zalo: "#0068FF",
+  instagram: "#E95950",
+  google: "#FBBC05",
+  website: "#8B5CF6",
+};
+
+const STATUS_OPTIONS = [
+  { label: "common.status.active", value: "active" },
+  { label: "common.status.inactive", value: "inactive" },
+];
+
+const INITIAL_FORM: SourceI = {
+  name: "",
+  color: "#1877F2",
+  icon: "facebook",
+  status: "active",
+};
+
+export default function SourceDialog({
+  isOpen,
+  onClose,
+  onSuccess,
+}: SourceDialogProps) {
+  const [formData, setFormData] = useState<SourceI>(INITIAL_FORM);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === "icon") {
+      const autoColor = ICON_COLOR_MAP[value] || "#1877F2";
+      setFormData((prev) => ({
+        ...prev,
+        icon: value,
+        color: autoColor,
+      }));
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      await createSource({ ...formData });
+      setFormData(INITIAL_FORM);
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      console.error("Failed to save source:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog
+      isOpen={isOpen}
+      loading={loading}
+      title="common.button.addSource"
+      buttonAction="common.button.addSource"
+      icon={<PlusIcon />}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    >
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        {/* Source name */}
+        <InputField
+          id="name"
+          name="name"
+          label="Tên nguồn"
+          required
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Ví dụ: Zalo OA, Facebook Ads..."
+        />
+
+        {/* Icon Select */}
+        <SelectField
+          id="icon"
+          name="icon"
+          label="Icon"
+          options={ICON_OPTIONS}
+          value={formData.icon}
+          onChange={handleChange}
+        />
+
+        {/* Status */}
+        <SelectField
+          id="status"
+          name="status"
+          label="Trạng thái"
+          options={STATUS_OPTIONS}
+          value={formData.status}
+          onChange={handleChange}
+        />
+      </form>
+    </Dialog>
+  );
+}

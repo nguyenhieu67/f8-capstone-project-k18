@@ -7,11 +7,10 @@ import {
   EmployeeEntity,
   LeadEntity,
   SourceEntity,
-  StudentAttendanceEntity,
   StudentEntity,
   RefreshTokenEntity,
   PasswordResetEntity,
-} from "@/entities";
+} from "@/modules";
 import { SnakeNamingStrategy } from "./SnakeNamingStrategy";
 
 const AppDataSource = new DataSource({
@@ -32,7 +31,6 @@ const AppDataSource = new DataSource({
     ClasseEntity,
     LeadEntity,
     StudentEntity,
-    StudentAttendanceEntity,
   ],
   subscribers: [],
   migrations: [],

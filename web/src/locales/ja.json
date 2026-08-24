@@ -1,4 +1,97 @@
 {
+  "common": {
+    "summaryTitle": {
+      "totalRevenue": "総売上",
+      "totalLeads": "総リード数（インサイドセールス）",
+      "registeredStudents": "登録済み受講生数",
+      "totalPayrollAndCommission": "人件費・歩合給総額"
+    },
+    "summaryDesc": {
+      "comparedToLastMonth": "前月比",
+      "leadSources": "Google、FB、Zaloチャネルより",
+      "conversionRate": "成約率",
+      "salaryAndCommissionDetail": "基本給 ＋ 3%歩合給を含む"
+    },
+    "cardTitle": {
+      "salesLeaderboard": "営業売上ランキング",
+      "commonRejectionReasons": "主な失注理由（インサイドセールス）",
+      "salesAndRevenueStats": "売上・収益統計",
+      "courseAndClassManagement": "コース・クラス管理",
+      "employeeList": "全社員名簿",
+      "adSourceList": "広告チャネル一覧",
+      "attendanceSheet": "出勤タイムカード",
+      "payrollAndTaxStatement": "給与計算・税額調整表",
+      "classAttendance": "クラス出席確認"
+    },
+    "cardDesc": {
+      "marketingChannels": "各広告チャネルからのマーケティング効果の管理",
+      "enrolledStudents": "受講料の支払いが完了した正式な受講生リスト",
+      "openedClasses": "開講中および開講予定のクラス一覧",
+      "staffManagement": "営業、講師、管理者チームの管理",
+      "dailyAttendance": "給与計算のための毎日の従業員出勤打刻",
+      "payrollCalculation": "基本給 ＋ 歩合給(3%) － 社会保険料(8%)・雇用保険料(1%)・健康保険料(1.5%)および所得税を自動計算"
+    },
+    "tableHeader": {
+      "stt": "No.",
+      "employee": "従業員",
+      "employeeCode": "従業員ID",
+      "fullName": "氏名",
+      "position": "役職",
+      "role": "役割",
+      "phone": "電話番号",
+      "ordersCount": "受注数",
+      "salesVolume": "売上高",
+      "commission": "歩合給",
+      "commissionRate": "営業歩合率",
+      "customerPhone": "顧客 / 電話番号",
+      "adSource": "広告チャネル",
+      "learningPurpose": "受講目的",
+      "targetAudience": "対象属性",
+      "purposeAndTarget": "目的 / 属性",
+      "assignedSeller": "担当営業",
+      "closedBySeller": "成約営業",
+      "status": "ステータス",
+      "rejectionReason": "失注理由",
+      "student": "受講生",
+      "class": "クラス",
+      "revenue": "売上",
+      "attendanceStatus": "出欠状況",
+      "notes": "備考",
+      "baseSalary": "基本給",
+      "workStatus": "勤務状況",
+      "checkInTime": "出勤時刻",
+      "commission3Percent": "歩合給 (3%)",
+      "grossIncome": "総支給額 (Gross)",
+      "insuranceTotal": "社会保険料合計 (10.5%)",
+      "pitTax": "所得税",
+      "netSalary": "手取り額 (NET)",
+      "details": "詳細",
+      "dependents": "扶養家族数",
+      "actions": "操作"
+    },
+    "button": {
+      "addSource": "新規チャネル追加",
+      "addLead": "リード追加",
+      "addClass": "新規クラス作成",
+      "saveAttendance": "出席情報を保存",
+      "addEmployee": "従業員追加",
+      "saveTimekeeping": "勤怠ログを保存",
+      "printPayroll": "給与明細を印刷",
+      "cancel": "キャンセル",
+      "save": "保存",
+      "saving": "保存中...",
+      "delete": "削除",
+      "update": "情報の更新"
+    },
+    "dialog": {
+      "confirmDelete": "削除の確認",
+      "deleteWarning": "この操作は取り消せません。本当にこの項目を削除しますか？"
+    },
+    "status": {
+      "active": "有効",
+      "inactive": "無効"
+    }
+  },
   "homePage": {
     "nav": {
       "overview": "概要",
@@ -229,13 +322,6 @@
       }
     },
     "header": {
-      "add": {
-        "lead": "リードを追加",
-        "source": "流入元を追加",
-        "class": " クラスを追加",
-        "employee": "従業員を追加",
-        "student": " 生徒を追加"
-      },
       "liveStatus": "システム稼働中"
     }
   }

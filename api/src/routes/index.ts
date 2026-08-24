@@ -2,13 +2,7 @@ import express from "express";
 
 import { authRequired } from "@/middlewares";
 
-import authRoute from "./authRoute";
-import userRoute from "./userRoute";
-import sourceRoute from "./sourceRoute";
-import employeeRoute from "./employeeRoute";
-import classeRoute from "./classeRoute";
-import leadRoute from "./leadRoute";
-import studentRoute from "./studentRoute";
+import { authRoute, classeRoute, employeeRoute, leadRoute, sourceRoute, studentRoute, userRoute } from "@/modules";
 
 const router = express.Router();
 

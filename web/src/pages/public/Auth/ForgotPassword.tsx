@@ -67,11 +67,15 @@ export default function ForgotPassword() {
             />
 
             <div className="flex justify-center">
-              <Button large primary>
-                {isLoading
-                  ? t("authPage.forgotPassword.sending")
-                  : t("authPage.forgotPassword.submit")}
-              </Button>
+              <Button
+                large
+                primary
+                buttonTitle={
+                  isLoading
+                    ? "authPage.forgotPassword.sending"
+                    : "authPage.forgotPassword.submit"
+                }
+              />
             </div>
           </form>
         ) : (
@@ -92,11 +96,10 @@ export default function ForgotPassword() {
         <div className="text-center">
           <Button
             to={ROUTE_PATHS.LOGIN}
-            className="text-crm-primary inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-80"
+            buttonTitle="authPage.forgotPassword.backToLogin"
             leftIcon={<ArrowUpIcon className="-rotate-90" />}
-          >
-            <span>{t("authPage.forgotPassword.backToLogin")}</span>
-          </Button>
+            className="text-crm-primary inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-80"
+          />
         </div>
       </div>
     </div>

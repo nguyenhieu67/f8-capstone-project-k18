@@ -97,7 +97,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       {/* User profile section */}
       <div className="flex items-center gap-3 border-t border-slate-800 bg-slate-950/50 p-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/20 text-sm font-bold text-indigo-400">
-          {`${user.firstName[0] ?? ""}${user.lastName.split(" ").at(-1)?.[0] ?? ""}`}
+          {`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`}
         </div>
         <div className="flex-1 truncate">
           <div className="truncate text-sm font-semibold text-white">

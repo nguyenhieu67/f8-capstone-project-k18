@@ -1,4 +1,97 @@
 {
+  "common": {
+    "summaryTitle": {
+      "totalRevenue": "Tổng Doanh Thu",
+      "totalLeads": "Tổng Số Leads (Pre-sales)",
+      "registeredStudents": "Học Viên Đã Đăng Ký",
+      "totalPayrollAndCommission": "Tổng Quỹ Lương & HH"
+    },
+    "summaryDesc": {
+      "comparedToLastMonth": "so với tháng trước",
+      "leadSources": "Từ các kênh Google, FB, Zalo",
+      "conversionRate": "Tỷ lệ chuyển đổi",
+      "salaryAndCommissionDetail": "Gồm lương cứng + 3% hoa hồng"
+    },
+    "cardTitle": {
+      "salesLeaderboard": "Bảng Xếp Hạng Sales (Doanh Số)",
+      "commonRejectionReasons": "Lý Do Từ Chối Phổ Biến (Pre-Sales)",
+      "salesAndRevenueStats": "Thống Kê Kết Quả Bán Hàng & Doanh Thu",
+      "courseAndClassManagement": "Quản Lý Khóa Học & Lớp Học",
+      "employeeList": "Danh Sách Nhân Viên Công Ty",
+      "adSourceList": "Danh Sách Nguồn Quảng Cáo",
+      "attendanceSheet": "Bảng Chấm Công Đi Làm",
+      "payrollAndTaxStatement": "Bảng Tính Lương & Doanh Số Cân Đối TT",
+      "classAttendance": "Điểm Danh Lớp"
+    },
+    "cardDesc": {
+      "marketingChannels": "Quản lý hiệu quả tiếp thị từ các kênh quảng cáo",
+      "enrolledStudents": "Danh sách học viên đã đóng học phí chính thức",
+      "openedClasses": "Các lớp đã mở và sắp khai giảng tại trung tâm",
+      "staffManagement": "Quản lý đội ngũ Sales, Giảng Viên, Admin",
+      "dailyAttendance": "Điểm danh nhân viên hằng ngày để tính công phiếu lương",
+      "payrollCalculation": "Tự động tính Lương cứng + Hoa hồng (3%) - BHXH (8%), BHTN (1%), BHYT (1.5%) & Thuế TNCN"
+    },
+    "tableHeader": {
+      "stt": "STT",
+      "employee": "Nhân Viên",
+      "employeeCode": "Mã NV",
+      "fullName": "Họ và Tên",
+      "position": "Chức Vụ",
+      "role": "Vai trò (Role)",
+      "phone": "Số Điện Thoại",
+      "ordersCount": "Số Đơn",
+      "salesVolume": "Doanh Số",
+      "commission": "Hoa Hồng",
+      "commissionRate": "% Hoa Hồng",
+      "customerPhone": "Khách Hàng / SĐT",
+      "adSource": "Nguồn QC",
+      "learningPurpose": "Mục Đích Học",
+      "targetAudience": "Đối Tượng (Who are you)",
+      "purposeAndTarget": "Mục Đích / Đối Tượng",
+      "assignedSeller": "Seller Phụ Trách",
+      "closedBySeller": "Seller Chốt",
+      "status": "Trạng Thái",
+      "rejectionReason": "Lý Do Từ Chối",
+      "student": "Học Viên",
+      "class": "Lớp Học",
+      "revenue": "Doanh Thu",
+      "attendanceStatus": "Trạng Thái Đi Học",
+      "notes": "Ghi Chú",
+      "baseSalary": "Lương Cơ Bản",
+      "workStatus": "Trạng Thái Làm Việc",
+      "checkInTime": "Giờ Vào Ca",
+      "commission3Percent": "Hoa Hồng (3%)",
+      "grossIncome": "Tổng Thu Nhập (Gross)",
+      "insuranceTotal": "Tổng Bảo Hiểm (10.5%)",
+      "pitTax": "Thuế TNCN",
+      "netSalary": "Lương Thực Nhận (NET)",
+      "details": "Chi Tiết",
+      "dependents": "Người phụ thuộc",
+      "actions": "Thao Tác"
+    },
+    "button": {
+      "addSource": "Thêm Nguồn Mới",
+      "addLead": "Thêm Pre-Sales Lead",
+      "addClass": "Tạo Lớp Mới",
+      "saveAttendance": "Lưu Điểm Danh",
+      "addEmployee": "Thêm Nhân Viên",
+      "saveTimekeeping": "Lưu Chấm Công",
+      "printPayroll": "In Bảng Lương",
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "saving": "Đang lưu...",
+      "delete": "Xóa",
+      "update": "Cập nhật thông tin"
+    },
+    "dialog": {
+      "confirmDelete": "Xác nhận xóa",
+      "deleteWarning": "Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa mục này?"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Ngừng hoạt động"
+    }
+  },
   "homePage": {
     "nav": {
       "overview": "Tổng Quan",
@@ -118,7 +211,7 @@
       "title": "Tạo tài khoản nhân viên mới",
       "or": "Hoặc",
       "hasAccount": "đăng nhập nếu đã có tài khoản",
-      "firstName": "Họ",
+      "firstName": "Họ & Tên đệm",
       "lastName": "Tên",
       "phone": "Số điện thoại",
       "email": "Email",
@@ -229,13 +322,6 @@
       }
     },
     "header": {
-      "add": {
-        "lead": "Thêm khách hàng tiềm năng",
-        "source": "Thêm nguồn",
-        "class": "Thêm lớp học",
-        "employee": "Thêm nhân viên",
-        "student": "Thêm học viên"
-      },
       "liveStatus": "System Live"
     }
   }

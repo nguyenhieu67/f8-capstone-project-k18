@@ -1,7 +1,9 @@
+import { useMemo } from "react";
 import { CardBase } from "./CardBase";
+import { useTranslation } from "react-i18next";
 
 interface SourceCardProps {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   title: string;
   status: string;
   leadsCount?: number;
@@ -19,44 +21,52 @@ export function SourceCard({
   revenue = 0,
   iconBgClass = "bg-blue-500",
 }: SourceCardProps) {
-  const sourceMetrics = [
-    {
-      id: "leads",
-      label: "Số Leads mang về",
-      displayValue: `${leadsCount} khách`,
-      textColor: "text-crm-heading-text",
-    },
-    {
-      id: "converted",
-      label: "Đã chốt đơn",
-      displayValue: `${convertedCount} học viên`,
-      textColor: "text-crm-success",
-    },
-    {
-      id: "revenue",
-      label: "Doanh thu tạo ra",
-      displayValue:
-        typeof revenue === "number"
-          ? `${revenue.toLocaleString("vi-VN")} VNĐ`
-          : `${revenue} VNĐ`,
-      textColor: "text-crm-primary",
-    },
-  ];
+  const { t } = useTranslation();
+
+  const sourceMetrics = useMemo(
+    () => [
+      {
+        id: "leads",
+        label: "Số Leads mang về",
+        displayValue: `${leadsCount} khách`,
+        textColor: "text-crm-heading-text",
+      },
+      {
+        id: "converted",
+        label: "Đã chốt đơn",
+        displayValue: `${convertedCount} học viên`,
+        textColor: "text-crm-success",
+      },
+      {
+        id: "revenue",
+        label: "Doanh thu tạo ra",
+        displayValue:
+          typeof revenue === "number"
+            ? `${revenue.toLocaleString("vi-VN")} VNĐ`
+            : `${revenue} VNĐ`,
+        textColor: "text-crm-primary",
+      },
+    ],
+    [convertedCount, leadsCount, revenue],
+  );
 
   return (
     <CardBase className="flex flex-col gap-4">
       {/* Header Card */}
-      <div className="flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg text-white shadow-sm ${iconBgClass}`}
+            style={{ backgroundColor: iconBgClass }}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-lg text-white shadow-sm"
           >
             {icon}
           </div>
           <h4 className="text-crm-heading-text text-base font-bold">{title}</h4>
         </div>
-        <span className="text-crm-success rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium">
-          {status}
+        <span
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${status === "active" ? "text-crm-success bg-emerald-100" : "text-crm-danger bg-red-100"}`}
+        >
+          {t(`common.status.${status}`)}
         </span>
       </div>
 

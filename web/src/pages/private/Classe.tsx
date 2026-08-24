@@ -1,18 +1,52 @@
-import { useHeaderAction } from "@/context/HeaderActionContext";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import Button from "@/components/Button";
+import { CardBase, ClassCard } from "@/components/Card";
+import { PlusIcon } from "@/components/Icons";
 
 export default function Classe() {
-  const { t } = useTranslation();
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  useHeaderAction(
-    {
-      label: t("dashboardPage.header.add.class"),
-      onClick: () => setModalOpen(true),
-    },
-    [t],
+  return (
+    <>
+      <div>
+        <CardBase
+          title="common.cardTitle.courseAndClassManagement"
+          desc="common.cardDesc.openedClasses"
+          className="flex items-center justify-between"
+        >
+          <Button
+            buttonTitle="common.button.addClass"
+            gradient
+            leftIcon={<PlusIcon size="sm" />}
+          />
+        </CardBase>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ClassCard
+          code="K19"
+          name="Fullstack K19"
+          status="Đang mở"
+          schedule="T2 - T4 - T6 (18:30 - 21:00)"
+          trainer="Lê Thị Thu"
+          fee={18000000}
+          totalStudents="10"
+        />
+        <ClassCard
+          code="K19"
+          name="Fullstack K19"
+          status="Đang mở"
+          schedule="T2 - T4 - T6 (18:30 - 21:00)"
+          trainer="Lê Thị Thu"
+          fee={18000000}
+          totalStudents="10"
+        />
+        <ClassCard
+          code="K19"
+          name="Fullstack K19"
+          status="Đang mở"
+          schedule="T2 - T4 - T6 (18:30 - 21:00)"
+          trainer="Lê Thị Thu"
+          fee={18000000}
+          totalStudents="10"
+        />
+      </div>
+    </>
   );
-
-  return <div>Classe</div>;
 }

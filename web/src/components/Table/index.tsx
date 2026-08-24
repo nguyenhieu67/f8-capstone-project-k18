@@ -11,8 +11,8 @@ interface TableProps {
 }
 
 export default function Table({
-  columns,
-  rows,
+  columns = [],
+  rows = [],
   height = "h-125",
   onEdit,
   onDelete,

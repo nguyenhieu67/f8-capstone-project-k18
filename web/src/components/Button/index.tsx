@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 interface ButtonProps {
@@ -7,11 +8,15 @@ interface ButtonProps {
   outline?: boolean;
   text?: boolean;
   rounded?: boolean;
+  gradient?: boolean;
+  success?: boolean;
+  info?: boolean;
   disabled?: boolean;
   small?: boolean;
   large?: boolean;
   widthFull?: boolean;
-  children: React.ReactNode;
+  buttonTitle?: string;
+  children?: React.ReactNode;
   className?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -25,10 +30,14 @@ export default function Button({
   outline = false,
   text = false,
   rounded = false,
+  gradient = false,
+  success = false,
+  info = false,
   disabled = false,
   small = false,
   large = false,
   widthFull = false,
+  buttonTitle,
   children,
   className,
   leftIcon,
@@ -36,6 +45,8 @@ export default function Button({
   onClick,
   ...passProps
 }: ButtonProps) {
+  const { t } = useTranslation();
+
   const classes = [
     "inline-flex items-center justify-center gap-2 font-medium transition-opacity",
     primary && "bg-crm-primary text-white hover:opacity-90",
@@ -43,6 +54,10 @@ export default function Button({
       "border border-crm-primary text-crm-primary hover:bg-crm-primary/10",
     text && "text-crm-primary hover:underline px-2! py-0!",
     rounded ? "rounded-full" : "rounded-md",
+    gradient &&
+      "bg-linear-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white",
+    success && "bg-crm-success text-white",
+    info && "bg-crm-info text-white",
     small && "px-3 py-1.5 text-sm",
     large && "px-6 py-3 text-base",
     widthFull && "w-full",
@@ -56,7 +71,7 @@ export default function Button({
   const content = (
     <>
       {leftIcon}
-      <span>{children}</span>
+      <span>{buttonTitle ? t(buttonTitle) : children}</span>
       {rightIcon}
     </>
   );

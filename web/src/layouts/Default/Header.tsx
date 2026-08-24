@@ -1,19 +1,12 @@
 import { LanguageSelect } from "@/components/Form";
-import { PlusIcon, RotateRightIcon } from "@/components/Icons";
+import { RotateRightIcon } from "@/components/Icons";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
-
-export interface HeaderAction {
-  label: string;
-  onClick: () => void;
-  icon?: React.ReactNode;
-}
 
 interface HeaderProps {
   title: string;
   showLiveStatus?: boolean;
   liveStatusLabel?: string;
-  primaryAction?: HeaderAction;
   onRefresh?: () => void;
   refreshTooltip?: string;
 }
@@ -22,7 +15,6 @@ export default function Header({
   title,
   showLiveStatus = true,
   liveStatusLabel = "dashboardPage.header.liveStatus",
-  primaryAction,
   onRefresh,
   refreshTooltip = "Khôi phục dữ liệu mẫu",
 }: HeaderProps) {
@@ -46,17 +38,6 @@ export default function Header({
       </div>
 
       <div className="flex items-center gap-3">
-        {primaryAction && (
-          <button
-            type="button"
-            onClick={primaryAction.onClick}
-            className="flex items-center gap-2 rounded-lg bg-linear-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:from-indigo-700 hover:to-violet-700"
-          >
-            {primaryAction.icon ?? <PlusIcon size="sm" />}
-            {primaryAction.label}
-          </button>
-        )}
-
         {onRefresh && (
           <button
             type="button"

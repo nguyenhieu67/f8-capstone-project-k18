@@ -72,11 +72,16 @@ export default function ResetPassword() {
         error={error}
         required
       />
-      <Button large primary disabled={isLoading}>
-        {isLoading
-          ? t("authPage.resetPassword.submitting")
-          : t("authPage.resetPassword.submit")}
-      </Button>
+      <Button
+        large
+        primary
+        disabled={isLoading}
+        buttonTitle={
+          isLoading
+            ? "authPage.resetPassword.submitting"
+            : "authPage.resetPassword.submit"
+        }
+      />
     </form>
   );
 }
