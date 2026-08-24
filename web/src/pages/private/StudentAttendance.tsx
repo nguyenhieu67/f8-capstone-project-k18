@@ -23,8 +23,10 @@ export default function StudentAttendance() {
           />
         </CardBase>
       </div>
-      <CardBase title="common.tableTitle.classAttendance">
-        <Table columns={COLUMNS} />
+      <CardBase title="common.cardTitle.classAttendance">
+        <div className="mt-4">
+          <Table columns={COLUMNS} />
+        </div>
       </CardBase>
     </>
   );

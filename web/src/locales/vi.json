@@ -12,7 +12,7 @@
       "conversionRate": "Tỷ lệ chuyển đổi",
       "salaryAndCommissionDetail": "Gồm lương cứng + 3% hoa hồng"
     },
-    "tableTitle": {
+    "cardTitle": {
       "salesLeaderboard": "Bảng Xếp Hạng Sales (Doanh Số)",
       "commonRejectionReasons": "Lý Do Từ Chối Phổ Biến (Pre-Sales)",
       "salesAndRevenueStats": "Thống Kê Kết Quả Bán Hàng & Doanh Thu",
@@ -22,6 +22,14 @@
       "attendanceSheet": "Bảng Chấm Công Đi Làm",
       "payrollAndTaxStatement": "Bảng Tính Lương & Doanh Số Cân Đối TT",
       "classAttendance": "Điểm Danh Lớp"
+    },
+    "cardDesc": {
+      "marketingChannels": "Quản lý hiệu quả tiếp thị từ các kênh quảng cáo",
+      "enrolledStudents": "Danh sách học viên đã đóng học phí chính thức",
+      "openedClasses": "Các lớp đã mở và sắp khai giảng tại trung tâm",
+      "staffManagement": "Quản lý đội ngũ Sales, Giảng Viên, Admin",
+      "dailyAttendance": "Điểm danh nhân viên hằng ngày để tính công phiếu lương",
+      "payrollCalculation": "Tự động tính Lương cứng + Hoa hồng (3%) - BHXH (8%), BHTN (1%), BHYT (1.5%) & Thuế TNCN"
     },
     "tableHeader": {
       "stt": "STT",
@@ -67,6 +75,10 @@
       "addEmployee": "Thêm Nhân Viên",
       "saveTimekeeping": "Lưu Chấm Công",
       "printPayroll": "In Bảng Lương"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Ngừng hoạt động"
     }
   },
   "homePage": {

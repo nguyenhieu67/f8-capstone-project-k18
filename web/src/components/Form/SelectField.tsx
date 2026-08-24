@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FormGroup } from "./FormGroup";
 
 export interface SelectOption {
@@ -19,6 +20,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   className = "",
   ...props
 }) => {
+  const { t } = useTranslation();
   return (
     <FormGroup label={label} htmlFor={id} error={error}>
       <div className="relative">
@@ -33,7 +35,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               value={opt.value}
               className="bg-crm-surface text-crm-heading-text"
             >
-              {opt.label}
+              {t(opt.label)}
             </option>
           ))}
         </select>

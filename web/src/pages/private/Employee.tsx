@@ -17,7 +17,11 @@ export default function Employee() {
   return (
     <>
       <div>
-        <CardBase title="common.tableTitle.employeeList">
+        <CardBase
+          title="common.cardTitle.employeeList"
+          desc="common.cardDesc.staffManagement"
+          className="flex items-center justify-between"
+        >
           <Button
             buttonTitle="common.buttonTitle.addEmployee"
             gradient

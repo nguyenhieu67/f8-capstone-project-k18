@@ -30,6 +30,8 @@ export abstract class BaseController {
   };
 
   create = async (req: Request, res: Response) => {
+    console.log(req.body);
+
     res.success(await this.service.create(req.body));
   };
 

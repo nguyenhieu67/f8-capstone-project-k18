@@ -12,7 +12,7 @@
       "conversionRate": "Conversion rate",
       "salaryAndCommissionDetail": "Includes base salary + 3% commission"
     },
-    "tableTitle": {
+    "cardTitle": {
       "salesLeaderboard": "Sales Leaderboard (Revenue)",
       "commonRejectionReasons": "Common Rejection Reasons (Pre-Sales)",
       "salesAndRevenueStats": "Sales & Revenue Statistics",
@@ -22,6 +22,14 @@
       "attendanceSheet": "Daily Attendance Sheet",
       "payrollAndTaxStatement": "Payroll & Tax Balancing Statement",
       "classAttendance": "Class Attendance"
+    },
+    "cardDesc": {
+      "marketingChannels": "Effectively manage marketing performance from advertising channels",
+      "enrolledStudents": "List of official students who have completed tuition payment",
+      "openedClasses": "Active and upcoming classes at the center",
+      "staffManagement": "Manage Sales, Lecturers, and Admin team",
+      "dailyAttendance": "Daily employee timekeeping for payroll calculation",
+      "payrollCalculation": "Automatically calculates Base Salary + Commission (3%) - Social Insurance (8%), Unemployment Insurance (1%), Health Insurance (1.5%) & Personal Income Tax"
     },
     "tableHeader": {
       "stt": "No.",
@@ -67,6 +75,10 @@
       "addEmployee": "Add Employee",
       "saveTimekeeping": "Save Timekeeping",
       "printPayroll": "Print Payroll"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
     }
   },
   "homePage": {

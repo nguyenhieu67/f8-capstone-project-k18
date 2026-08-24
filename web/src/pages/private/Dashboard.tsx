@@ -57,16 +57,18 @@ export default function Dashboard() {
       <div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <CardBase
-            title={"common.tableTitle.salesLeaderboard"}
+            title={"common.cardTitle.salesLeaderboard"}
             icon={<MedalIcon className="text-crm-warning" />}
           >
-            <Table columns={COLUMNS} />
+            <div className="mt-4">
+              <Table columns={COLUMNS} />
+            </div>
           </CardBase>
           <CardBase
-            title={"common.tableTitle.commonRejectionReasons"}
+            title={"common.cardTitle.commonRejectionReasons"}
             icon={<TriangleExclIcon className="text-crm-danger" />}
           >
-            123
+            <div className="mt-4">123</div>
           </CardBase>
         </div>
       </div>

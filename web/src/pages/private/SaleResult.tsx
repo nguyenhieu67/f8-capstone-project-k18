@@ -15,7 +15,11 @@ export default function SaleResult() {
   return (
     <>
       <div>
-        <CardBase title={"common.tableTitle.salesAndRevenueStats"}>
+        <CardBase
+          title="common.cardTitle.salesAndRevenueStats"
+          desc="common.cardDesc.enrolledStudents"
+          className="flex items-center justify-between"
+        >
           Tổng Doanh Thu Đã Thu
         </CardBase>
       </div>

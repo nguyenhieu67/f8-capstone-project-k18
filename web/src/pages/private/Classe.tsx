@@ -6,7 +6,11 @@ export default function Classe() {
   return (
     <>
       <div>
-        <CardBase title="common.tableTitle.courseAndClassManagement">
+        <CardBase
+          title="common.cardTitle.courseAndClassManagement"
+          desc="common.cardDesc.openedClasses"
+          className="flex items-center justify-between"
+        >
           <Button
             buttonTitle="common.buttonTitle.addClass"
             gradient

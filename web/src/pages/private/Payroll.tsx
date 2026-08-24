@@ -22,7 +22,11 @@ export default function Payroll() {
   return (
     <>
       <div>
-        <CardBase title="common.tableTitle.payrollAndTaxStatement">
+        <CardBase
+          title="common.cardTitle.payrollAndTaxStatement"
+          desc="common.cardDesc.payrollCalculation"
+          className="flex items-center justify-between"
+        >
           <Button
             buttonTitle="common.buttonTitle.printPayroll"
             info

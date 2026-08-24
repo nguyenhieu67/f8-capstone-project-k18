@@ -12,7 +12,7 @@
       "conversionRate": "成約率",
       "salaryAndCommissionDetail": "基本給 ＋ 3%歩合給を含む"
     },
-    "tableTitle": {
+    "cardTitle": {
       "salesLeaderboard": "営業売上ランキング",
       "commonRejectionReasons": "主な失注理由（インサイドセールス）",
       "salesAndRevenueStats": "売上・収益統計",
@@ -22,6 +22,14 @@
       "attendanceSheet": "出勤タイムカード",
       "payrollAndTaxStatement": "給与計算・税額調整表",
       "classAttendance": "クラス出席確認"
+    },
+    "cardDesc": {
+      "marketingChannels": "各広告チャネルからのマーケティング効果の管理",
+      "enrolledStudents": "受講料の支払いが完了した正式な受講生リスト",
+      "openedClasses": "開講中および開講予定のクラス一覧",
+      "staffManagement": "営業、講師、管理者チームの管理",
+      "dailyAttendance": "給与計算のための毎日の従業員出勤打刻",
+      "payrollCalculation": "基本給 ＋ 歩合給(3%) － 社会保険料(8%)・雇用保険料(1%)・健康保険料(1.5%)および所得税を自動計算"
     },
     "tableHeader": {
       "stt": "No.",
@@ -67,6 +75,10 @@
       "addEmployee": "従業員追加",
       "saveTimekeeping": "勤怠ログを保存",
       "printPayroll": "給与明細を印刷"
+    },
+    "status": {
+      "active": "有効",
+      "inactive": "無効"
     }
   },
   "homePage": {

@@ -16,7 +16,11 @@ export default function StaffTimeKeeping() {
   return (
     <>
       <div>
-        <CardBase title="common.tableTitle.attendanceSheet">
+        <CardBase
+          title="common.cardTitle.attendanceSheet"
+          desc="common.cardDesc.dailyAttendance"
+          className="flex items-center justify-between"
+        >
           <Button
             buttonTitle="common.buttonTitle.saveTimekeeping"
             success
