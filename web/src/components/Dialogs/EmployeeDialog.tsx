@@ -3,6 +3,7 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createEmployee, updateEmployee } from "@/services/employee";
+import { useForm } from "@/hooks";
 
 export interface EmployeeI {
   id?: number;
@@ -16,7 +17,7 @@ export interface EmployeeI {
   dependents: number;
 }
 
-interface EmployeeFormDialogProps {
+interface EmployeeDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
@@ -42,37 +43,24 @@ const DEFAULT_FORM: EmployeeI = {
   dependents: 0,
 };
 
-export default function EmployeeFormDialog({
+export default function EmployeeDialog({
   isOpen,
   onClose,
   onSuccess,
   initialData,
-}: EmployeeFormDialogProps) {
-  const [formData, setFormData] = useState<EmployeeI>(DEFAULT_FORM);
+}: EmployeeDialogProps) {
   const [loading, setLoading] = useState(false);
+  const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
+    numberFields: ["salary", "commissionRate", "dependents"],
+  });
 
   const isEdit = Boolean(initialData?.id);
 
   useEffect(() => {
     if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData(initialData || DEFAULT_FORM);
     }
-  }, [isOpen, initialData]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    const isNumberField = ["salary", "commissionRate", "dependents"].includes(
-      name,
-    );
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: isNumberField ? Number(value) || 0 : value,
-    }));
-  };
+  }, [isOpen, initialData, setFormData]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -101,7 +89,7 @@ export default function EmployeeFormDialog({
       onClose={onClose}
       onSubmit={handleSubmit}
     >
-      <form className="space-y-4" noValidate>
+      <form className="mb-5 space-y-4" noValidate>
         {/* First & Last Name */}
         <div className="grid grid-cols-2 gap-4">
           <InputField

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function useTableActions<T extends { id?: number | string }>(
   fetchDataList: () => void | Promise<void>,
-  deleteApi: (id: number | string) => Promise<void>,
+  deleteApi?: (id: number | string) => Promise<void>,
 ) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -44,9 +44,13 @@ export default function useTableActions<T extends { id?: number | string }>(
 
   const handleConfirmDelete = async () => {
     if (!deleteId) return;
+
+    handleCloseDelete();
+    handleCloseForm();
+
     setDeleteLoading(true);
     try {
-      await deleteApi(deleteId);
+      await deleteApi?.(deleteId);
       handleCloseDelete();
       await fetchDataList();
     } catch (error) {

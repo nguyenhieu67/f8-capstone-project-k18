@@ -45,9 +45,10 @@ export abstract class BaseService {
     return query.where(this.applyActiveCondition(condition));
   }
 
-  async getList(condition = {}) {
+  async getList(condition = {}, sortBy = "id", sortOrder: "ASC" | "DESC" = "ASC") {
     let query = this.handleSelect();
     query = this.handleFind(query, condition);
+    query = query.orderBy(`${this.getTableName()}.${sortBy}`, sortOrder);
     return await query.getMany();
   }
 

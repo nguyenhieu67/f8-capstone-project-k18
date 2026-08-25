@@ -1,13 +1,14 @@
+import { useMemo } from "react";
+
 import Button from "@/components/Button";
 import { CardBase } from "@/components/Card";
 import { ConfirmDeleteDialog, EmployeeDialog } from "@/components/Dialogs";
 import type { EmployeeI } from "@/components/Dialogs/EmployeeDialog";
 import { UserPlusIcon } from "@/components/Icons";
 import Table from "@/components/Table";
-import { useTableActions } from "@/hooks";
+import { useFetchData, useTableActions } from "@/hooks";
 import { deleteEmployee, getEmployees } from "@/services/employee";
 import { formatCurrency } from "@/utils/format";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
 const COLUMNS = [
   { value: "employeeCode", text: "common.tableHeader.employeeCode" },
@@ -20,28 +21,18 @@ const COLUMNS = [
 ];
 
 export default function Employee() {
-  const [employees, setEmployees] = useState<EmployeeI[]>([]);
-
-  const fetchEmployee = useCallback(async () => {
-    try {
-      const res = await getEmployees();
-      setEmployees(res as EmployeeI[]);
-    } catch (error) {
-      console.error("Failed to fetch employees:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchEmployee();
-  }, [fetchEmployee]);
+  const { data: employees, refetch } = useFetchData(
+    () => getEmployees() as Promise<EmployeeI[]>,
+    [],
+  );
 
   const actions = useTableActions<EmployeeI>(
-    fetchEmployee,
+    refetch,
     deleteEmployee as (id: string | number) => Promise<void>,
   );
 
   const rows = useMemo(() => {
+    if (!employees) return [];
     return employees.map((e) => ({
       employeeCode: e.id,
       fullName: `${e.firstName} ${e.lastName}`,
@@ -67,7 +58,7 @@ export default function Employee() {
           <EmployeeDialog
             isOpen={actions.isFormOpen}
             onClose={actions.handleCloseForm}
-            onSuccess={fetchEmployee}
+            onSuccess={refetch}
             initialData={actions.selectedItem}
           />
         </CardBase>
@@ -77,7 +68,7 @@ export default function Employee() {
           <Table
             columns={COLUMNS}
             rows={rows}
-            onEdit={(row) => actions.handleOpenEdit(employees, row)}
+            onEdit={(row) => actions.handleOpenEdit(employees || [], row)}
             onDelete={actions.handleOpenDelete}
           />
           <ConfirmDeleteDialog

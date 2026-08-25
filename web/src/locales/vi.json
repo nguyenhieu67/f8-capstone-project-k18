@@ -324,5 +324,55 @@
     "header": {
       "liveStatus": "System Live"
     }
+  },
+  "classPage": {
+    "createModal": {
+      "title": "Tạo lớp học",
+      "classCode": "Mã lớp",
+      "classCodePlaceholder": "VD: K19...",
+      "className": "Tên lớp",
+      "classNamePlaceholder": "VD: Fullstack K19...",
+      "trainer": "Giảng viên",
+      "tuition": "Học phí",
+      "schedule": "Lịch học",
+      "status": "Trạng thái",
+      "cancel": "Hủy",
+      "submit": "Tạo lớp học"
+    },
+    "status": {
+      "opening": "Sắp mở",
+      "ongoing": "Đang học",
+      "completed": "Hoàn thành",
+      "closed": "Đã hủy/Đóng"
+    },
+    "filter": {
+      "selectTrainer": "-- Chọn giảng viên --"
+    },
+    "details": {
+      "schedule": "Lịch",
+      "trainer": "Giảng viên",
+      "tuition": "Học phí"
+    },
+    "students": {
+      "currentSize": "Sĩ số hiện tại",
+      "unit": "học viên"
+    },
+    "scheduleModal": {
+      "title": "Lịch học",
+      "selectDayAndTime": "Chọn thứ và thời gian học",
+      "selectDaysHeader": "Chọn ngày học trong tuần",
+      "fromTime": "Từ giờ",
+      "toTime": "Đến giờ",
+      "confirm": "Xác nhận",
+      "days": {
+        "Mon": "Thứ 2",
+        "Tue": "Thứ 3",
+        "Wed": "Thứ 4",
+        "Thu": "Thứ 5",
+        "Fri": "Thứ 6",
+        "Sat": "Thứ 7",
+        "Sun": "Chủ nhật"
+      }
+    }
   }
 }

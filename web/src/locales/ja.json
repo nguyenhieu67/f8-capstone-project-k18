@@ -324,5 +324,55 @@
     "header": {
       "liveStatus": "システム稼働中"
     }
+  },
+  "classPage": {
+    "createModal": {
+      "title": "クラス作成",
+      "classCode": "クラスコード",
+      "classCodePlaceholder": "例: K19...",
+      "className": "クラス名",
+      "classNamePlaceholder": "例: フルスタック K19...",
+      "trainer": "講師",
+      "tuition": "受講料",
+      "schedule": "授業スケジュール",
+      "status": "ステータス",
+      "cancel": "キャンセル",
+      "submit": "クラスを作成"
+    },
+    "status": {
+      "opening": "募集前 / 開講予定",
+      "ongoing": "受講中",
+      "completed": "完了",
+      "closed": "キャンセル / 終了"
+    },
+    "filter": {
+      "selectTrainer": "-- 講師を選択 --"
+    },
+    "details": {
+      "schedule": "スケジュール",
+      "trainer": "講師",
+      "tuition": "受講料"
+    },
+    "students": {
+      "currentSize": "現在の受講生数",
+      "unit": "名"
+    },
+    "scheduleModal": {
+      "title": "授業スケジュール",
+      "selectDayAndTime": "曜日と時間を選択",
+      "selectDaysHeader": "曜日を選択",
+      "fromTime": "開始時間",
+      "toTime": "終了時間",
+      "confirm": "確認",
+      "days": {
+        "Mon": "月",
+        "Tue": "火",
+        "Wed": "水",
+        "Thu": "木",
+        "Fri": "金",
+        "Sat": "土",
+        "Sun": "日"
+      }
+    }
   }
 }

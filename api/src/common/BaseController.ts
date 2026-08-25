@@ -19,7 +19,9 @@ export abstract class BaseController {
   }
 
   getList = async (req: Request, res: Response) => {
-    res.success(this.serializeList(await this.service.getList()));
+    const sortBy = (req.query.sortBy as string) || "id";
+    const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
+    res.success(this.serializeList(await this.service.getList({}, sortBy, sortOrder)));
   };
 
   getOne = async (req: Request, res: Response) => {

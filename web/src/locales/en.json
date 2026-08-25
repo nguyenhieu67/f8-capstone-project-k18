@@ -324,5 +324,55 @@
     "header": {
       "liveStatus": "System Live"
     }
+  },
+  "classPage": {
+    "createModal": {
+      "title": "Create Class",
+      "classCode": "Class Code",
+      "classCodePlaceholder": "e.g., K19...",
+      "className": "Class Name",
+      "classNamePlaceholder": "e.g., Fullstack K19...",
+      "trainer": "Trainer",
+      "tuition": "Tuition",
+      "schedule": "Class Schedule",
+      "status": "Status",
+      "cancel": "Cancel",
+      "submit": "Create Class"
+    },
+    "status": {
+      "opening": "Opening",
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "closed": "Cancelled / Closed"
+    },
+    "filter": {
+      "selectTrainer": "-- Select Trainer --"
+    },
+    "details": {
+      "schedule": "Schedule",
+      "trainer": "Trainer",
+      "tuition": "Tuition Fee"
+    },
+    "students": {
+      "currentSize": "Current Enrollment",
+      "unit": "students"
+    },
+    "scheduleModal": {
+      "title": "Class Schedule",
+      "selectDayAndTime": "Select Days and Time",
+      "selectDaysHeader": "Select Days of the Week",
+      "fromTime": "Start Time",
+      "toTime": "End Time",
+      "confirm": "Confirm",
+      "days": {
+        "Mon": "Mon",
+        "Tue": "Tue",
+        "Wed": "Wed",
+        "Thu": "Thu",
+        "Fri": "Fri",
+        "Sat": "Sat",
+        "Sun": "Sun"
+      }
+    }
   }
 }

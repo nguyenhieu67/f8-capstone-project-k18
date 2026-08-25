@@ -1,16 +1,46 @@
 import { useMemo } from "react";
 import { CalenDarDaysIcon, ChalkboardUserIcon, TagIcon } from "../Icons";
 import { CardBase } from "./CardBase";
+import { formatCurrency } from "@/utils/format";
+import type { ClassStatus } from "../Dialogs/ClassDialog";
+import { useTranslation } from "react-i18next";
 
 interface ClassCardProps {
   code: string;
   name: string;
-  status: string;
+  status: ClassStatus;
   schedule: string;
   trainer: string;
-  fee: number;
-  totalStudents: string;
+  tuition: number;
+  totalStudents?: string;
+  className?: string;
+  onClick?: () => void;
 }
+const STATUS_MAP: Record<
+  ClassStatus,
+  { label: string; bg: string; text: string }
+> = {
+  opening: {
+    label: "classPage.status.opening",
+    bg: "bg-blue-100",
+    text: "text-blue-700",
+  },
+  ongoing: {
+    label: "classPage.status.ongoing",
+    bg: "bg-emerald-100",
+    text: "text-emerald-700",
+  },
+  completed: {
+    label: "classPage.status.completed",
+    bg: "bg-purple-100",
+    text: "text-purple-700",
+  },
+  closed: {
+    label: "classPage.status.closed",
+    bg: "bg-slate-100",
+    text: "text-slate-600",
+  },
+};
 
 export function ClassCard({
   code,
@@ -18,41 +48,43 @@ export function ClassCard({
   status,
   schedule,
   trainer,
-  fee,
+  tuition,
   totalStudents,
+  onClick,
 }: ClassCardProps) {
-  // Đưa mảng vào trong để nhận giá trị từ Props
-  const formattedFee =
-    typeof fee === "number" && fee >= 100000
-      ? `${fee.toLocaleString("vi-VN")} VNĐ`
-      : fee;
+  const { t } = useTranslation();
 
   const classDetails = useMemo(
     () => [
       {
         id: "schedule",
         icon: <CalenDarDaysIcon />,
-        label: "Lịch:",
+        label: "classPage.details.schedule",
         value: schedule,
       },
       {
         id: "trainer",
         icon: <ChalkboardUserIcon />,
-        label: "Giảng viên:",
+        label: "classPage.details.trainer",
         value: trainer,
       },
       {
-        id: "fee",
+        id: "tuition",
         icon: <TagIcon />,
-        label: "Học phí:",
-        value: formattedFee,
+        label: "classPage.details.tuition",
+        value: formatCurrency(tuition),
       },
     ],
-    [formattedFee, schedule, trainer],
+    [schedule, trainer, tuition],
   );
 
+  const currentStatus = STATUS_MAP[status] || STATUS_MAP.opening;
+
   return (
-    <CardBase className="flex flex-col justify-between gap-4">
+    <CardBase
+      className="hover:border-crm-primary flex cursor-pointer flex-col justify-between gap-4"
+      onClick={onClick}
+    >
       <div className="mb-4">
         <div className="flex items-start justify-between gap-2 text-xs">
           <div>
@@ -63,8 +95,10 @@ export function ClassCard({
               {name}
             </h4>
           </div>
-          <span className="text-crm-success shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 font-semibold">
-            {status}
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${currentStatus.bg} ${currentStatus.text}`}
+          >
+            {t(currentStatus.label)}
           </span>
         </div>
 
@@ -73,7 +107,8 @@ export function ClassCard({
             <div key={item.id} className="flex items-center gap-2">
               <span className="shrink-0 text-slate-500">{item.icon}</span>
               <span className="text-slate-600">
-                {item.label}{" "}
+                {t(item.label)}
+                {": "}
                 <strong className="font-medium text-slate-800">
                   {item.value}
                 </strong>
@@ -84,9 +119,11 @@ export function ClassCard({
       </div>
 
       <div className="flex items-center justify-between border-t border-slate-100 pt-3">
-        <span className="text-xs text-slate-500">Sĩ số hiện tại:</span>
+        <span className="text-xs text-slate-500">
+          {t("classPage.students.currentSize")}
+        </span>
         <span className="text-sm font-bold text-indigo-600">
-          {totalStudents} học viên
+          {totalStudents} {t("classPage.students.unit")}
         </span>
       </div>
     </CardBase>

@@ -2,17 +2,30 @@ import { useEffect } from "react";
 import { CloseIcon } from "../Icons";
 import { useTranslation } from "react-i18next";
 
+const DIALOG_SIZE_MAP = {
+  sm: "24rem",
+  md: "32rem",
+  lg: "48rem",
+  xl: "64rem",
+  full: "calc(100vw - 2rem)",
+};
+
+type WidthSize = keyof typeof DIALOG_SIZE_MAP | number;
+
 interface DialogProps {
   isOpen: boolean;
   loading: boolean;
   title?: string;
   icon?: React.ReactNode;
+  widthSize?: WidthSize;
   buttonAction?: string;
   buttonColor?: string;
   children: React.ReactNode;
   className?: string;
   onClose: () => void;
   onSubmit: () => Promise<void>;
+  onReset?: () => void;
+  onDelete?: () => void;
 }
 
 export default function Dialog({
@@ -20,14 +33,21 @@ export default function Dialog({
   loading,
   title,
   icon,
+  widthSize = "md",
   buttonAction,
   buttonColor,
   children,
   className = "",
   onClose,
   onSubmit,
+  onReset,
+  onDelete,
 }: DialogProps) {
   const { t } = useTranslation();
+  const pixelSize =
+    typeof widthSize === "number"
+      ? widthSize
+      : (DIALOG_SIZE_MAP[widthSize] ?? DIALOG_SIZE_MAP.md);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -55,7 +75,8 @@ export default function Dialog({
       />
 
       <div
-        className={`relative z-10 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl transition-all ${className}`}
+        style={{ width: pixelSize }}
+        className={`relative z-10 rounded-lg bg-white p-6 shadow-xl transition-all ${className}`}
       >
         <div className="absolute top-0 left-0 flex w-full items-center justify-between rounded-t-lg bg-linear-to-r from-indigo-600 to-violet-600 p-5 text-white">
           {title && (
@@ -76,20 +97,35 @@ export default function Dialog({
         <div className="mt-20">{children}</div>
 
         {/* Action Buttons */}
-        <div className="border-crm-border flex justify-end gap-2 border-t pt-10">
-          <button
-            className="border-crm-border bg-crm-surface text-crm-heading-text hover:bg-crm-menu-item-bg-hover rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
-            onClick={onClose}
-          >
-            {t("common.button.cancel")}
-          </button>
-          <button
-            disabled={loading}
-            className={`rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 ${buttonColor ? buttonColor : "bg-crm-primary"}`}
-            onClick={onSubmit}
-          >
-            {loading ? t("common.button.saving") : t(buttonAction || "Save")}
-          </button>
+        <div className="border-crm-border flex border-t pt-5">
+          {onDelete && (
+            <button
+              type="button"
+              disabled={loading}
+              className="bg-crm-danger cursor-pointer rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={onDelete}
+            >
+              {t("common.button.delete")}
+            </button>
+          )}
+          <div className="ml-auto flex">
+            <button
+              className="border-crm-border bg-crm-surface text-crm-heading-text hover:bg-crm-menu-item-bg-hover rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
+              onClick={onClose}
+            >
+              {t("common.button.cancel")}
+            </button>
+            <button
+              disabled={loading}
+              className={`ml-3 rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 ${buttonColor ? buttonColor : "bg-crm-primary"}`}
+              onClick={() => {
+                onSubmit();
+                if (onReset) onReset();
+              }}
+            >
+              {loading ? t("common.button.saving") : t(buttonAction || "Save")}
+            </button>
+          </div>
         </div>
       </div>
     </div>

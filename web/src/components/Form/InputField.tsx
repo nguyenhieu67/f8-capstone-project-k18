@@ -31,7 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         )}
         <input
           id={id}
-          placeholder={`${t(placeholder || "")}...`}
+          placeholder={t(placeholder || "")}
           className={`block w-full ${
             icon ? "pl-10" : "px-3"
           } bg-crm-surface text-crm-heading-text placeholder:text-crm-label-text/60 rounded-xl border py-2.5 pr-3 text-sm transition-colors focus:ring-1 focus:outline-none ${borderStyles} ${className}`}
