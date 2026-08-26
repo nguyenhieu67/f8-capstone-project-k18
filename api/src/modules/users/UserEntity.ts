@@ -1,6 +1,7 @@
 import { Entity, Column } from "typeorm";
 
 import { BaseEntity } from "@/common";
+import { Expose } from "class-transformer";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -49,4 +50,9 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: "timestamptz" })
   lastLoginAt?: Date;
+
+  @Expose()
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

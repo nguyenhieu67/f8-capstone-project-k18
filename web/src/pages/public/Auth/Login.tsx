@@ -8,23 +8,23 @@ import { LoadingSpinner, Logo } from "@/components/ui";
 import Button from "@/components/Button";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import { login } from "@/services/auth";
-import type { LoginFormI } from "@/types/auth.types";
+import type { LoginFormI } from "@/types/auth";
 import { useAuth } from "@/context/AuthContext";
 import { loginSchema, validationForm, type FormErrors } from "@/utils";
+import { useForm } from "@/hooks";
+
+const DEFAULT_FORM: LoginFormI = {
+  email: "",
+  password: "",
+};
 
 export default function Login() {
-  const form: LoginFormI = {
-    email: "",
-    password: "",
-  };
-
   const { t } = useTranslation();
+  const { refetchUser, handleCheckAuth } = useAuth();
+  const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM);
 
-  const { refetchUser } = useAuth();
-  const [formData, setFormData] = useState(form);
   const [errors, setErrors] = useState<FormErrors>({});
   const [checking, setChecking] = useState<boolean>(true);
-  const { handleCheckAuth } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,20 +42,6 @@ export default function Login() {
 
   if (checking) return <LoadingSpinner />;
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -65,7 +51,7 @@ export default function Login() {
       const payload = { ...formData };
       await login(payload);
       await refetchUser();
-      setFormData(form);
+      setFormData(DEFAULT_FORM);
       navigate(ROUTE_PATHS.DASHBOARD);
     } catch (error) {
       console.error(error);

@@ -3,14 +3,8 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createSource } from "@/services/source";
-
-export interface SourceI {
-  id?: number;
-  name: string;
-  color: string;
-  icon: string;
-  status: "active" | "inactive";
-}
+import type { SourceI } from "@/types/database";
+import { useForm } from "@/hooks";
 
 interface SourceDialogProps {
   isOpen: boolean;
@@ -39,7 +33,7 @@ const STATUS_OPTIONS = [
   { label: "common.status.inactive", value: "inactive" },
 ];
 
-const INITIAL_FORM: SourceI = {
+const DEFAULT_FORM: SourceI = {
   name: "",
   color: "#1877F2",
   icon: "facebook",
@@ -51,33 +45,21 @@ export default function SourceDialog({
   onClose,
   onSuccess,
 }: SourceDialogProps) {
-  const [formData, setFormData] = useState<SourceI>(INITIAL_FORM);
+  const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
+    customHandlers: {
+      icon: (value) => ({
+        color: ICON_COLOR_MAP[value] || "#1877F2",
+      }),
+    },
+  });
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    if (name === "icon") {
-      const autoColor = ICON_COLOR_MAP[value] || "#1877F2";
-      setFormData((prev) => ({
-        ...prev,
-        icon: value,
-        color: autoColor,
-      }));
-      return;
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async () => {
     setLoading(true);
 
     try {
       await createSource({ ...formData });
-      setFormData(INITIAL_FORM);
+      setFormData(DEFAULT_FORM);
       onSuccess?.();
       onClose();
     } catch (error) {
@@ -97,16 +79,16 @@ export default function SourceDialog({
       onClose={onClose}
       onSubmit={handleSubmit}
     >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="mb-5 space-y-4" noValidate>
         {/* Source name */}
         <InputField
           id="name"
           name="name"
-          label="Tên nguồn"
+          label="sourcePage.form.sourceName"
           required
           value={formData.name}
           onChange={handleChange}
-          placeholder="Ví dụ: Zalo OA, Facebook Ads..."
+          placeholder="sourcePage.form.sourceNamePlaceholder"
         />
 
         {/* Icon Select */}
@@ -123,7 +105,7 @@ export default function SourceDialog({
         <SelectField
           id="status"
           name="status"
-          label="Trạng thái"
+          label="common.tableHeader.status"
           options={STATUS_OPTIONS}
           value={formData.status}
           onChange={handleChange}

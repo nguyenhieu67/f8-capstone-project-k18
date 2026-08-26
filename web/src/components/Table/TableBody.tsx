@@ -1,19 +1,19 @@
-import type { ColumnI, RowI } from "@/types";
+import type { ColumnI, RowI } from "@/types/table";
 import TableRow from "./TableRow";
 
-interface TableBodyProps {
-  columns: ColumnI[];
-  rows: RowI[];
-  onEdit?: (row: RowI) => void;
-  onDelete?: (row: RowI) => void;
+interface TableBodyProps<T extends RowI = RowI> {
+  columns: ColumnI<T>[];
+  rows: T[];
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
-export default function TableBody({
+export default function TableBody<T extends RowI = RowI>({
   columns,
   rows,
   onEdit,
   onDelete,
-}: TableBodyProps) {
+}: TableBodyProps<T>) {
   return (
     <tbody className="divide-y divide-slate-100">
       {rows.map((row) => (

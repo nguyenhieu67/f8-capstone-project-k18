@@ -1,11 +1,14 @@
 import { Entity, Column } from "typeorm";
 
 import { BaseEntity } from "@/common";
+import { Expose } from "class-transformer";
 
 export enum LeadStatus {
   NEW = "new",
+  CONTACTED = "contacted",
+  QUALIFIED = "qualified",
   CONVERTED = "converted",
-  REJECTED = "rejected",
+  LOST = "lost",
 }
 
 @Entity("lead")
@@ -40,4 +43,9 @@ export class LeadEntity extends BaseEntity {
 
   @Column({ type: "text" })
   rejectionReason?: string;
+
+  @Expose()
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

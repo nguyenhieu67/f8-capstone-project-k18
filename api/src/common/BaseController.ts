@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { instanceToPlain } from "class-transformer";
 
 import { BaseService } from "./BaseService";
 import { constants } from "@/config";
@@ -10,7 +11,7 @@ export abstract class BaseController {
 
   constructor(
     service: BaseService,
-    serialize: (item: any) => any = (item) => item,
+    serialize: (item: any) => any = (item) => instanceToPlain(item),
     serializeList?: (items: any[]) => any[],
   ) {
     this.service = service;
@@ -32,8 +33,6 @@ export abstract class BaseController {
   };
 
   create = async (req: Request, res: Response) => {
-    console.log(req.body);
-
     res.success(await this.service.create(req.body));
   };
 

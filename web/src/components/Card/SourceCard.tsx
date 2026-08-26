@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { CardBase } from "./CardBase";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "@/utils/format";
 
 interface SourceCardProps {
   icon?: React.ReactNode;
@@ -27,27 +28,24 @@ export function SourceCard({
     () => [
       {
         id: "leads",
-        label: "Số Leads mang về",
-        displayValue: `${leadsCount} khách`,
+        label: "sourcePage.stats.leadsCount",
+        displayValue: `${leadsCount} ${t("sourcePage.stats.leadsUnit")}`,
         textColor: "text-crm-heading-text",
       },
       {
         id: "converted",
-        label: "Đã chốt đơn",
-        displayValue: `${convertedCount} học viên`,
+        label: "sourcePage.stats.convertedCount",
+        displayValue: `${convertedCount} ${t("sourcePage.stats.convertedUnit")}`,
         textColor: "text-crm-success",
       },
       {
         id: "revenue",
-        label: "Doanh thu tạo ra",
-        displayValue:
-          typeof revenue === "number"
-            ? `${revenue.toLocaleString("vi-VN")} VNĐ`
-            : `${revenue} VNĐ`,
+        label: "sourcePage.stats.revenue",
+        displayValue: formatCurrency(revenue, "VNĐ"),
         textColor: "text-crm-primary",
       },
     ],
-    [convertedCount, leadsCount, revenue],
+    [convertedCount, leadsCount, revenue, t],
   );
 
   return (
@@ -74,7 +72,7 @@ export function SourceCard({
       <div className="space-y-2.5 border-t border-slate-100 pt-3 text-xs">
         {sourceMetrics.map((item) => (
           <div key={item.id} className="flex items-center justify-between">
-            <span className="text-crm-label-text">{item.label}: </span>
+            <span className="text-crm-label-text">{t(item.label)}: </span>
             <span className={`font-bold ${item.textColor}`}>
               {item.displayValue}
             </span>

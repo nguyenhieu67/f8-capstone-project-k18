@@ -212,7 +212,9 @@
       "or": "または",
       "hasAccount": "既にアカウントをお持ちの方はこちら",
       "firstName": "氏",
+      "firstNamePlaceholder": "例: 山田",
       "lastName": "名",
+      "lastNamePlaceholder": "例: 太郎",
       "phone": "電話番号",
       "email": "メールアドレス",
       "role": "部署・役職",
@@ -373,6 +375,50 @@
         "Sat": "土",
         "Sun": "日"
       }
+    }
+  },
+  "leadPage": {
+    "filter": {
+      "searchPlaceholder": "顧客名、電話番号で検索...",
+      "allSources": "すべての広告チャネル",
+      "allSellers": "すべての営業担当",
+      "allStatuses": "すべてのステータス"
+    },
+    "form": {
+      "selectSales": "-- 担当営業を選択 --",
+      "selectSource": "-- リード元を選択 --",
+      "demandPlaceholder": "例: 就職のため / 転職したい",
+      "jobPlaceholder": "例: 学生 / 社会人",
+      "reasonPlaceholder": "例: 学費が高い / 時間が合わない"
+    },
+    "status": {
+      "new": "新規",
+      "contacted": "対応中",
+      "qualified": "見込みあり",
+      "converted": "成約済み",
+      "lost": "失注 / 辞退"
+    }
+  },
+  "empPage": {
+    "roles": {
+      "sale": "営業担当 (Sales)",
+      "trainer": "講師 (Trainer)",
+      "assistant": "TA・ティーチングアシスタント",
+      "manager": "マネージャー",
+      "admin": "管理者 (Admin)"
+    }
+  },
+  "sourcePage": {
+    "form": {
+      "sourceName": "チャネル名",
+      "sourceNamePlaceholder": "例: Zalo OA, Facebook Ads..."
+    },
+    "stats": {
+      "leadsCount": "獲得リード数",
+      "leadsUnit": "件",
+      "convertedCount": "成約数",
+      "convertedUnit": "名",
+      "revenue": "創出売上"
     }
   }
 }

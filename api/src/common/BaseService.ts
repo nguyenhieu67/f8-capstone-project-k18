@@ -37,6 +37,13 @@ export abstract class BaseService {
     return this.useSoftDelete ? { ...condition, isActive: true } : condition;
   }
 
+  private pickEntityColumns<T extends Record<string, any>>(data: T): Partial<T> {
+    const validColumns = new Set(
+      AppDataSource.getRepository(this.entity).metadata.columns.map((col) => col.propertyName),
+    );
+    return Object.fromEntries(Object.entries(data).filter(([key]) => validColumns.has(key))) as Partial<T>;
+  }
+
   handleSelect() {
     return AppDataSource.getRepository(this.entity).createQueryBuilder(this.getTableName()).select();
   }
@@ -67,12 +74,13 @@ export abstract class BaseService {
   }
 
   async create(data: any) {
-    await this.runFkValidators(data);
+    const safeData = this.pickEntityColumns(data);
+    await this.runFkValidators(safeData);
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .insert()
       .into(this.entity)
-      .values([data])
+      .values([safeData])
       .returning(["id"])
       .execute();
 
@@ -80,12 +88,13 @@ export abstract class BaseService {
     return this.getById(insertedId);
   }
 
-  async createMany(data: any) {
+  async createMany(data: any[]) {
+    const safeData = data.map((item) => this.pickEntityColumns(item));
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
       .insert()
       .into(this.entity)
-      .values(data)
+      .values(safeData)
       .returning(["id"])
       .execute();
 
@@ -93,10 +102,11 @@ export abstract class BaseService {
   }
 
   async updateById(id: number, data: any) {
-    await this.runFkValidators(data);
+    const safeData = this.pickEntityColumns(data);
+    await this.runFkValidators(safeData);
     const query = await AppDataSource.getRepository(this.entity)
       .createQueryBuilder(this.getTableName())
-      .update(data)
+      .update(safeData)
       .where(`"${this.getTableName()}".id = :id`, { id })
       .returning(["id"])
       .execute();

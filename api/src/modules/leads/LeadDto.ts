@@ -1,8 +1,6 @@
 import { IsNumber, IsString } from "class-validator";
 import { PartialType } from "@nestjs/swagger";
 
-// ===== Request DTO =====
-
 export class LeadCreateDto {
   @IsNumber()
   sellerId!: number;
@@ -15,5 +13,3 @@ export class LeadCreateDto {
 }
 
 export class LeadUpdateDto extends PartialType(LeadCreateDto) {}
-
-// ===== Response DTO =====

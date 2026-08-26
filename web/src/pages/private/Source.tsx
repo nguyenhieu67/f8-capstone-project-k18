@@ -1,7 +1,6 @@
 import Button from "@/components/Button";
 import { CardBase, SourceCard } from "@/components/Card";
 import { SourceDialog } from "@/components/Dialogs";
-import type { SourceI } from "@/components/Dialogs/SourceDialog";
 import {
   FacebookIcon,
   GoogleIcon,
@@ -12,6 +11,7 @@ import {
 } from "@/components/Icons";
 import { useClickOutside } from "@/hooks";
 import { getSources } from "@/services/source";
+import type { SourceI } from "@/types/database";
 import { useCallback, useEffect, useState } from "react";
 
 const ICON_OPTIONS = {

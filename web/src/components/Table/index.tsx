@@ -1,22 +1,22 @@
-import type { ColumnI, RowI } from "@/types";
+import type { ColumnI, RowI } from "@/types/table";
 import TableBody from "./TableBody";
 import TableHeader from "./TableHeader";
 
-interface TableProps {
-  columns: ColumnI[];
-  rows: RowI[];
+interface TableProps<T extends RowI = RowI> {
+  columns: ColumnI<T>[];
+  rows: T[];
   height?: string;
-  onEdit?: (row: RowI) => void;
-  onDelete?: (row: RowI) => void;
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
-export default function Table({
+export default function Table<T extends RowI = RowI>({
   columns = [],
   rows = [],
   height = "h-125",
   onEdit,
   onDelete,
-}: TableProps) {
+}: TableProps<T>) {
   return (
     <div className={`scrollbar-thin overflow-x-auto overflow-y-auto ${height}`}>
       <table className="w-full border-collapse text-left text-sm">

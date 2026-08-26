@@ -20,21 +20,22 @@ import { ROUTE_PATHS } from "@/constants/routePaths";
 import { register } from "@/services/auth";
 import Button from "@/components/Button";
 import { Logo } from "@/components/ui";
-import { type RegisterFormI } from "@/types/auth.types";
+import { type RegisterFormI } from "@/types/auth";
+import { useForm } from "@/hooks";
+
+const DEFAULT_FORM: RegisterFormI = {
+  firstName: "",
+  lastName: "",
+  phone: "",
+  email: "",
+  password: "",
+  role: "",
+  confirmPassword: "",
+};
 
 export default function Register() {
-  const form: RegisterFormI = {
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
-    role: "",
-    confirmPassword: "",
-  };
-
   const { t } = useTranslation();
-  const [formData, setFormData] = useState(form);
+  const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
 
@@ -45,20 +46,6 @@ export default function Register() {
     ],
     [t],
   );
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +58,7 @@ export default function Register() {
 
       await register(payload);
 
-      setFormData(form);
+      setFormData(DEFAULT_FORM);
       navigate(ROUTE_PATHS.DASHBOARD);
     } catch (error) {
       console.error(error);
@@ -108,7 +95,7 @@ export default function Register() {
                 id="firstName"
                 name="firstName"
                 label={t("authPage.register.firstName")}
-                placeholder={t("authPage.register.firstName")}
+                placeholder={t("authPage.register.firstNamePlaceholder")}
                 icon={<UserIcon />}
                 value={formData.firstName}
                 error={errors.firstName ? t(errors.firstName) : ""}
@@ -119,7 +106,7 @@ export default function Register() {
                 id="lastName"
                 name="lastName"
                 label={t("authPage.register.lastName")}
-                placeholder={t("authPage.register.lastName")}
+                placeholder={t("authPage.register.lastNamePlaceholder")}
                 icon={<UserIcon />}
                 value={formData.lastName}
                 error={errors.lastName ? t(errors.lastName) : ""}

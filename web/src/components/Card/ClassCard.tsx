@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { CalenDarDaysIcon, ChalkboardUserIcon, TagIcon } from "../Icons";
 import { CardBase } from "./CardBase";
-import { formatCurrency } from "@/utils/format";
-import type { ClassStatus } from "../Dialogs/ClassDialog";
+import { formatCurrency, formatScheduleLanguage } from "@/utils/format";
 import { useTranslation } from "react-i18next";
+import type { ClassStatus } from "@/types/database";
 
 interface ClassCardProps {
   code: string;
@@ -54,13 +54,18 @@ export function ClassCard({
 }: ClassCardProps) {
   const { t } = useTranslation();
 
+  const localizedSchedule = useMemo(
+    () => formatScheduleLanguage(schedule, t),
+    [schedule, t],
+  );
+
   const classDetails = useMemo(
     () => [
       {
         id: "schedule",
         icon: <CalenDarDaysIcon />,
         label: "classPage.details.schedule",
-        value: schedule,
+        value: localizedSchedule,
       },
       {
         id: "trainer",
@@ -75,7 +80,7 @@ export function ClassCard({
         value: formatCurrency(tuition),
       },
     ],
-    [schedule, trainer, tuition],
+    [localizedSchedule, trainer, tuition],
   );
 
   const currentStatus = STATUS_MAP[status] || STATUS_MAP.opening;
@@ -85,7 +90,7 @@ export function ClassCard({
       className="hover:border-crm-primary flex cursor-pointer flex-col justify-between gap-4"
       onClick={onClick}
     >
-      <div className="mb-4">
+      <div className="mb-2">
         <div className="flex items-start justify-between gap-2 text-xs">
           <div>
             <span className="rounded-md bg-indigo-100 px-2 py-0.5 font-mono font-bold text-indigo-700 uppercase">
@@ -118,7 +123,7 @@ export function ClassCard({
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+      <div className="flex items-center justify-between border-t border-slate-100 pt-2">
         <span className="text-xs text-slate-500">
           {t("classPage.students.currentSize")}
         </span>

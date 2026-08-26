@@ -211,8 +211,10 @@
       "title": "Create a new employee account",
       "or": "Or",
       "hasAccount": "log in if you already have an account",
-      "firstName": "First name",
-      "lastName": "Last name",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "e.g., John",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "e.g., Doe",
       "phone": "Phone Number",
       "email": "Email",
       "role": "Department / Role",
@@ -373,6 +375,50 @@
         "Sat": "Sat",
         "Sun": "Sun"
       }
+    }
+  },
+  "leadPage": {
+    "filter": {
+      "searchPlaceholder": "Search customer name, phone...",
+      "allSources": "All Ad Sources",
+      "allSellers": "All Sellers",
+      "allStatuses": "All Statuses"
+    },
+    "form": {
+      "selectSales": "-- Select Assigned Sales --",
+      "selectSource": "-- Select Lead Source --",
+      "demandPlaceholder": "e.g., Learn for job / Career change",
+      "jobPlaceholder": "e.g., Student / Employee",
+      "reasonPlaceholder": "e.g., High tuition fee / Schedule conflict"
+    },
+    "status": {
+      "new": "New",
+      "contacted": "Contacted",
+      "qualified": "Qualified",
+      "converted": "Converted",
+      "lost": "Lost / Rejected"
+    }
+  },
+  "empPage": {
+    "roles": {
+      "sale": "Sales Consultant",
+      "trainer": "Trainer",
+      "assistant": "Teaching Assistant",
+      "manager": "Manager",
+      "admin": "Administrator"
+    }
+  },
+  "sourcePage": {
+    "form": {
+      "sourceName": "Source Name",
+      "sourceNamePlaceholder": "e.g., Zalo OA, Facebook Ads..."
+    },
+    "stats": {
+      "leadsCount": "Leads Generated",
+      "leadsUnit": "lead(s)",
+      "convertedCount": "Converted",
+      "convertedUnit": "student(s)",
+      "revenue": "Revenue Generated"
     }
   }
 }

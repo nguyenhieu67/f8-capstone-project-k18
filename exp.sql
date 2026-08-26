@@ -1,6 +1,10 @@
-CREATE TYPE user_role AS ENUM ('admin', 'guest', 'authorized');
+CREATE TYPE user_role AS ENUM ('admin', 'authorized');
 
-CREATE TYPE lead_status AS ENUM ('new', 'converted', 'rejected');
+CREATE TYPE source_status AS ENUM ('active', 'inactive');
+
+CREATE TYPE user_lang_code AS ENUM ('vi', 'en', 'ja');
+
+CREATE TYPE lead_status AS ENUM ('new', 'contacted', 'qualified', 'converted', 'lost');
 
 CREATE TYPE attendance_status AS ENUM ('present', 'absent');
 
@@ -8,16 +12,24 @@ CREATE TYPE staff_status AS ENUM ('present', 'excused_absence', 'unexcused_absen
 
 CREATE TYPE payroll_status AS ENUM ('draft', 'confirmed', 'paid');
 
-CREATE TYPE employee_role AS ENUM ('trainer', 'sale', 'accountant', 'manager', 'admin');
+CREATE TYPE classe_status AS ENUM ('opening', 'ongoing', 'completed', 'closed');
+
+CREATE TYPE employee_role AS ENUM ('trainer', 'sale', 'assistant', 'manager', 'admin');
+
+DROP      TYPE lead_status CASCADE;
+
+ALTER     TABLE employee
+DROP      COLUMN POSITION;
 
 CREATE    TABLE "user" (
           id BIGSERIAL PRIMARY KEY,
-          first_name TEXT NOT NULL,
-          last_name TEXT NOT NULL,
+          first_name TEXT,
+          last_name TEXT,
           email TEXT NOT NULL UNIQUE,
           password TEXT NOT NULL,
-          role user_role NOT NULL DEFAULT 'guest',
+          role user_role DEFAULT 'admin',
           phone TEXT,
+          lang_code user_lang_code,
           avatar_url TEXT,
           last_login_at TIMESTAMPTZ,
           created_at TIMESTAMPTZ DEFAULT NOW (),
@@ -34,6 +46,7 @@ CREATE    TABLE "source" (
           name TEXT NOT NULL,
           color TEXT,
           icon TEXT,
+          status source_status DEFAULT 'active',
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
           updated_at TIMESTAMPTZ,
@@ -47,7 +60,6 @@ CREATE    TABLE employee (
           id BIGSERIAL PRIMARY KEY,
           first_name TEXT NOT NULL,
           last_name TEXT NOT NULL,
-          POSITION TEXT,
           role employee_role NOT NULL,
           phone TEXT,
           salary INTEGER NOT NULL DEFAULT 0,
@@ -64,10 +76,11 @@ CREATE    TABLE employee (
 
 CREATE    TABLE classe (
           id BIGSERIAL PRIMARY KEY,
-          trainer_id BIGINT, -- employee_id
+          trainer_id BIGINT, -- employee_id & role trainer 
           code TEXT NOT NULL UNIQUE,
           name TEXT,
           schedule TEXT,
+          status classe_status DEFAULT 'opening',
           tuition INTEGER NOT NULL DEFAULT 0,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
@@ -98,14 +111,23 @@ CREATE    TABLE "lead" (
           is_active BOOLEAN DEFAULT TRUE
           );
 
-CREATE    TABLE student (
+CREATE    TABLE customer (
           id BIGSERIAL PRIMARY KEY,
           lead_id BIGINT UNIQUE,
-          first_name TEXT NOT NULL,
-          last_name TEXT NOT NULL,
-          phone TEXT,
           revenue INTEGER NOT NULL DEFAULT 0,
           enrolled_at TIMESTAMPTZ,
+          created_at TIMESTAMPTZ DEFAULT NOW (),
+          created_by BIGINT,
+          updated_at TIMESTAMPTZ,
+          updated_by BIGINT,
+          deleted_at TIMESTAMPTZ,
+          deleted_by BIGINT,
+          is_active BOOLEAN DEFAULT TRUE
+          );
+
+CREATE    TABLE student (
+          id BIGSERIAL PRIMARY KEY,
+          customer_id BIGINT UNIQUE,
           created_at TIMESTAMPTZ DEFAULT NOW (),
           created_by BIGINT,
           updated_at TIMESTAMPTZ,
