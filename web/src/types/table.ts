@@ -1,11 +1,12 @@
-interface ColumnI {
+interface ColumnI<T = RowI> {
   value: string;
   text: string;
+  className?: string;
+  render?: (row: T) => React.ReactNode;
 }
 
 interface RowI {
   id?: number | string;
-  [key: string]: string | number | undefined | object;
 }
 
 export type { ColumnI, RowI };

@@ -1,23 +1,24 @@
 import Button from "@/components/Button";
 import { CardBase, ClassCard } from "@/components/Card";
 import { ClassDialog, ConfirmDeleteDialog } from "@/components/Dialogs";
-import type { ClasseI } from "@/components/Dialogs/ClassDialog";
-import type { EmployeeI } from "@/components/Dialogs/EmployeeDialog";
 import { PlusIcon } from "@/components/Icons";
 import { useFetchData, useTableActions } from "@/hooks";
 import { deleteClasse, getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
+import type { ClasseI, EmployeeI } from "@/types/database";
 import { useMemo } from "react";
 
 export default function Classe() {
-  const { data: classes, refetch } = useFetchData(
-    () => getClasses() as Promise<ClasseI[]>,
+  const { data, refetch } = useFetchData(
+    {
+      classes: () => getClasses() as Promise<ClasseI[]>,
+      employees: () => getEmployees() as Promise<EmployeeI[]>,
+    },
     [],
   );
-  const { data: employees } = useFetchData(
-    () => getEmployees() as Promise<EmployeeI[]>,
-    [],
-  );
+  const classes = data?.classes || [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const employees = data?.employees || [];
 
   const actions = useTableActions<ClasseI>(
     refetch,
@@ -44,14 +45,12 @@ export default function Classe() {
           />
         </CardBase>
       </div>
-      <div className="h-192 scrollbar-thin overflow-y-auto">
+      <div className="max-h-188 scrollbar-thin overflow-y-auto">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {classes?.map((classe) => {
             const trainer = trainers?.find(
               (t) => t.id === Number(classe.trainerId),
             );
-
-            const fullname = `${trainer?.firstName} ${trainer?.lastName}`;
             return (
               <ClassCard
                 key={classe.id}
@@ -59,7 +58,7 @@ export default function Classe() {
                 name={classe.name}
                 status={classe.status}
                 schedule={classe.schedule}
-                trainer={fullname}
+                trainer={trainer?.fullName || ""}
                 tuition={classe.tuition}
                 onClick={() => actions.handleOpenEdit(classes, classe)}
               />

@@ -4,18 +4,7 @@ import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createEmployee, updateEmployee } from "@/services/employee";
 import { useForm } from "@/hooks";
-
-export interface EmployeeI {
-  id?: number;
-  firstName: string;
-  lastName: string;
-  position: string;
-  role: "trainer" | "sale" | "assistant" | "manager" | "admin";
-  phone: string;
-  salary: number;
-  commissionRate: number;
-  dependents: number;
-}
+import type { EmployeeI } from "@/types/database";
 
 interface EmployeeDialogProps {
   isOpen: boolean;
@@ -25,11 +14,11 @@ interface EmployeeDialogProps {
 }
 
 const ROLE_OPTIONS = [
-  { label: "Sales (Tư vấn viên)", value: "sale" },
-  { label: "Giảng viên (Trainer)", value: "trainer" },
-  { label: "Trợ giảng (Assistant)", value: "assistant" },
-  { label: "Quản lý (Manager)", value: "manager" },
-  { label: "Quản trị viên (Admin)", value: "admin" },
+  { label: "empPage.roles.sale", value: "sale" },
+  { label: "empPage.roles.trainer", value: "trainer" },
+  { label: "empPage.roles.assistant", value: "assistant" },
+  { label: "empPage.roles.manager", value: "manager" },
+  { label: "empPage.roles.admin", value: "admin" },
 ];
 
 const DEFAULT_FORM: EmployeeI = {
@@ -99,7 +88,7 @@ export default function EmployeeDialog({
             required
             value={formData.firstName}
             onChange={handleChange}
-            placeholder="authPage.register.firstName"
+            placeholder="authPage.register.firstNamePlaceholder"
           />
           <InputField
             id="lastName"
@@ -108,20 +97,12 @@ export default function EmployeeDialog({
             required
             value={formData.lastName}
             onChange={handleChange}
-            placeholder="authPage.register.lastName"
+            placeholder="authPage.register.lastNamePlaceholder"
           />
         </div>
 
-        {/* Position & Role */}
+        {/*  Role & Phone */}
         <div className="grid grid-cols-2 gap-4">
-          <InputField
-            id="position"
-            name="position"
-            label="common.tableHeader.position"
-            value={formData.position}
-            onChange={handleChange}
-            placeholder="common.tableHeader.position"
-          />
           <SelectField
             id="role"
             name="role"
@@ -131,18 +112,16 @@ export default function EmployeeDialog({
             value={formData.role}
             onChange={handleChange}
           />
+          <InputField
+            id="phone"
+            name="phone"
+            type="tel"
+            label="common.tableHeader.phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="0912345678"
+          />
         </div>
-
-        {/* Phone */}
-        <InputField
-          id="phone"
-          name="phone"
-          type="tel"
-          label="common.tableHeader.phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="0912345678"
-        />
 
         {/* Salary & Commission Rate */}
         <div className="grid grid-cols-3 gap-3">

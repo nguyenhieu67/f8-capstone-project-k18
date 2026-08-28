@@ -3,6 +3,7 @@ import { ChevronUpIcon } from "../Icons";
 import { FormGroup } from "./FormGroup";
 import { useClickOutside } from "@/hooks";
 import { useTranslation } from "react-i18next";
+import { SCHEDULE_DAYS } from "@/constants/schedule";
 
 interface ScheduleSelectorProps {
   value: string;
@@ -11,16 +12,6 @@ interface ScheduleSelectorProps {
   error?: string;
   onChange: (value: string) => void;
 }
-
-const DAYS = [
-  { id: "Mon", label: "classPage.scheduleModal.days.Mon" },
-  { id: "Tue", label: "classPage.scheduleModal.days.Tue" },
-  { id: "Wed", label: "classPage.scheduleModal.days.Wed" },
-  { id: "Thu", label: "classPage.scheduleModal.days.Thu" },
-  { id: "Fri", label: "classPage.scheduleModal.days.Fri" },
-  { id: "Sat", label: "classPage.scheduleModal.days.Sat" },
-  { id: "Sun", label: "classPage.scheduleModal.days.Sun" },
-];
 
 export function ScheduleSelector({
   value,
@@ -56,7 +47,9 @@ export function ScheduleSelector({
       ? selectedDays.filter((d) => d !== dayId)
       : [...selectedDays, dayId];
 
-    const sorted = DAYS.map((d) => d.id).filter((d) => updated.includes(d));
+    const sorted = SCHEDULE_DAYS.map((d) => d.id).filter((d) =>
+      updated.includes(d),
+    );
     setSelectedDays(sorted);
     updateScheduleString(sorted, startTime, endTime);
   };
@@ -108,7 +101,7 @@ export function ScheduleSelector({
                 {t("classPage.scheduleModal.selectDaysHeader")}
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {DAYS.map((day) => {
+                {SCHEDULE_DAYS.map((day) => {
                   const isSelected = selectedDays.includes(day.id);
                   return (
                     <button

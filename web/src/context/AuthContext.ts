@@ -12,7 +12,7 @@ import { LoadingSpinner } from "@/components/ui";
 import { ROUTE_PATHS } from "@/constants/routePaths";
 import { getMe, logout as logoutService } from "@/services/auth";
 import { getUserById } from "@/services/user";
-import type { MeI, UserI } from "@/types/auth.types";
+import type { MeI, UserI } from "@/types/auth";
 
 const AuthContext = createContext<{
   isLoading: boolean;

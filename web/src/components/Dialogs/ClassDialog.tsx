@@ -3,20 +3,8 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, ScheduleSelector, SelectField } from "../Form";
 import { createClasse, updateClasse } from "@/services/classe";
-import type { EmployeeI } from "./EmployeeDialog";
 import { useForm } from "@/hooks";
-
-export type ClassStatus = "opening" | "ongoing" | "completed" | "closed";
-
-export interface ClasseI {
-  id?: number;
-  code: string;
-  name: string;
-  trainerId?: number | string;
-  schedule: string;
-  tuition: number;
-  status: ClassStatus;
-}
+import type { ClasseI, EmployeeI } from "@/types/database";
 
 interface ClassDialogProps {
   isOpen: boolean;
@@ -64,12 +52,8 @@ export default function ClassDialog({
   const trainerOptions = [
     { label: "classPage.filter.selectTrainer", value: "" },
     ...trainers.map((t) => {
-      const lastName = t.lastName || t.lastName || "";
-      const firstName = t.firstName || t.firstName || "";
-      const fullName = `${firstName} ${lastName}`.trim();
-
       return {
-        label: fullName || `classPage.details.trainer #${t.id}`,
+        label: t.fullName || `classPage.details.trainer #${t.id}`,
         value: String(t.id),
       };
     }),

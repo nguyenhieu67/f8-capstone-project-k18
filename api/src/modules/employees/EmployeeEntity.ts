@@ -1,6 +1,7 @@
 import { Entity, Column } from "typeorm";
 
 import { BaseEntity } from "@/common";
+import { Expose } from "class-transformer";
 
 export enum EmployeeRole {
   TRAINER = "trainer",
@@ -26,9 +27,6 @@ export class EmployeeEntity extends BaseEntity {
   role!: EmployeeRole;
 
   @Column({ type: "text" })
-  position?: string;
-
-  @Column({ type: "text" })
   phone?: string;
 
   @Column({ type: "integer" })
@@ -39,4 +37,9 @@ export class EmployeeEntity extends BaseEntity {
 
   @Column({ type: "bigint" })
   dependents?: number;
+
+  @Expose()
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

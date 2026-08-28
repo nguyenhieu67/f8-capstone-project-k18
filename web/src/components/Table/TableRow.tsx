@@ -1,21 +1,21 @@
-import type { ColumnI, RowI } from "@/types";
+import type { ColumnI, RowI } from "@/types/table";
 import { EditIcon, TrashIcon } from "../Icons";
 
-interface TableRowProps {
-  columns: ColumnI[];
-  row: RowI;
-  onEdit?: (row: RowI) => void;
-  onDelete?: (row: RowI) => void;
+interface TableRowProps<T extends RowI = RowI> {
+  columns: ColumnI<T>[];
+  row: T;
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 }
 
-export default function TableRow({
+export default function TableRow<T extends RowI = RowI>({
   columns,
   row,
   onEdit,
   onDelete,
-}: TableRowProps) {
+}: TableRowProps<T>) {
   return (
-    <tr className="transition hover:bg-slate-50">
+    <tr className="text-crm-table-row-text transition hover:bg-slate-50">
       {columns.map((column) => {
         if (column.value === "actions") {
           return (
@@ -42,8 +42,12 @@ export default function TableRow({
           );
         }
         return (
-          <td key={column.value} className="p-4">
-            {row[column.value] as React.ReactNode}
+          <td key={column.value} className={`p-4 ${column.className ?? ""}`}>
+            {column.render
+              ? ((column.render(row) as React.ReactNode) ?? "")
+              : ((row as Record<string, unknown>)[
+                  column.value
+                ] as React.ReactNode)}
           </td>
         );
       })}

@@ -1,6 +1,7 @@
 import { Entity, Column } from "typeorm";
 
 import { BaseEntity } from "@/common";
+import { Expose } from "class-transformer";
 
 @Entity("student")
 export class StudentEntity extends BaseEntity {
@@ -21,4 +22,9 @@ export class StudentEntity extends BaseEntity {
 
   @Column({ type: "timestamptz" })
   enrolledAt?: Date;
+
+  @Expose()
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

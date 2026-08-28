@@ -1,5 +1,5 @@
 import { fetchApi } from "@/lib/api";
-import type { RequestBody } from "@/types/api.types";
+import type { RequestBody } from "@/types/api";
 
 export async function getClasses() {
   return await fetchApi.get("/classes");

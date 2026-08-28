@@ -1,5 +1,5 @@
 import { fetchApi } from "@/lib/api";
-import type { RequestBody } from "@/types/api.types";
+import type { RequestBody } from "@/types/api";
 
 export async function register(payload: RequestBody) {
   return await fetchApi.post("/auth/register", payload);

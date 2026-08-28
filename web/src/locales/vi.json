@@ -212,7 +212,9 @@
       "or": "Hoặc",
       "hasAccount": "đăng nhập nếu đã có tài khoản",
       "firstName": "Họ & Tên đệm",
+      "firstNamePlaceholder": "VD: Nguyễn Văn",
       "lastName": "Tên",
+      "lastNamePlaceholder": "VD: An",
       "phone": "Số điện thoại",
       "email": "Email",
       "role": "Bộ phận / Chức vụ",
@@ -373,6 +375,50 @@
         "Sat": "Thứ 7",
         "Sun": "Chủ nhật"
       }
+    }
+  },
+  "leadPage": {
+    "filter": {
+      "searchPlaceholder": "Tìm tên, SĐT khách hàng...",
+      "allSources": "Tất cả Nguồn QC",
+      "allSellers": "Tất cả Seller",
+      "allStatuses": "Tất cả Trạng Thái"
+    },
+    "form": {
+      "selectSales": "-- Chọn Sales phụ trách --",
+      "selectSource": "-- Chọn nguồn Lead --",
+      "demandPlaceholder": "VD: Học để đi làm / Đổi ngành",
+      "jobPlaceholder": "VD: Học sinh / Người đi làm",
+      "reasonPlaceholder": "VD: Học phí cao / Không thu xếp được thời gian"
+    },
+    "status": {
+      "new": "Mới",
+      "contacted": "Đang tư vấn",
+      "qualified": "Chờ chốt",
+      "converted": "Đã đăng ký",
+      "lost": "Thất bại / Từ chối"
+    }
+  },
+  "empPage": {
+    "roles": {
+      "sale": "Sales (Tư vấn viên)",
+      "trainer": "Giảng viên (Trainer)",
+      "assistant": "Trợ giảng (Assistant)",
+      "manager": "Quản lý (Manager)",
+      "admin": "Quản trị viên (Admin)"
+    }
+  },
+  "sourcePage": {
+    "form": {
+      "sourceName": "Tên nguồn",
+      "sourceNamePlaceholder": "Ví dụ: Zalo OA, Facebook Ads..."
+    },
+    "stats": {
+      "leadsCount": "Số Leads mang về",
+      "leadsUnit": "khách",
+      "convertedCount": "Đã chốt đơn",
+      "convertedUnit": "học viên",
+      "revenue": "Doanh thu tạo ra"
     }
   }
 }

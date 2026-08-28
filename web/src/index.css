@@ -50,6 +50,7 @@ body {
   --color-crm-list-bg: var(--crm-list-bg);
   --color-crm-card-bg: var(--crm-card-bg);
   --color-crm-listCard-text: var(--crm-listCard-text);
+  --color-crm-table-row-text: var(--crm-table-row-text);
 
   --color-crm-menu-item-bg-hover: var(--crm-menu-item-bg-hover);
   --color-crm-icon-bg-hover: var(--crm-icon-bg-hover);
@@ -88,6 +89,7 @@ body {
   --crm-list-bg: #f1f5f9;
   --crm-card-bg: #ffffff;
   --crm-listCard-text: #1e293b;
+  --crm-table-row-text: #475569;
 
   --crm-menu-item-bg-hover: #0515240f;
   --crm-icon-bg-hover: #0b120e14;

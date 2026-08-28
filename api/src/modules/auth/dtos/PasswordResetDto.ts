@@ -1,7 +1,5 @@
 import { IsEmail, IsString, MinLength } from "class-validator";
 
-// ===== Request DTO (input, có validate) =====
-
 export class ForgotPasswordDto {
   @IsEmail()
   email!: string;

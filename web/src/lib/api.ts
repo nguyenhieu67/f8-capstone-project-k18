@@ -1,7 +1,7 @@
 import type { AxiosRequestConfig } from "axios";
 
 import api from "@/lib/axios";
-import type { ApiI, HttpMethod, RequestBody } from "@/types/api.types";
+import type { ApiI, HttpMethod, RequestBody } from "@/types/api";
 
 class Api implements ApiI {
   private async request<T>(
