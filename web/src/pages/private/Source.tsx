@@ -9,10 +9,9 @@ import {
   WebsiteIcon,
   ZaloIcon,
 } from "@/components/Icons";
-import { useClickOutside } from "@/hooks";
-import { getSources } from "@/services/source";
+import { useFetchData, useTableActions } from "@/hooks";
+import { deleteSource, getSources } from "@/services/source";
 import type { SourceI } from "@/types/database";
-import { useCallback, useEffect, useState } from "react";
 
 const ICON_OPTIONS = {
   facebook: <FacebookIcon />,
@@ -23,26 +22,15 @@ const ICON_OPTIONS = {
 };
 
 export default function Source() {
-  const { isOpen, setIsOpen } = useClickOutside();
-  const [sources, setSources] = useState<SourceI[]>([]);
+  const { data: sources, refetch } = useFetchData(
+    () => getSources() as Promise<SourceI[]>,
+    [],
+  );
 
-  const fetchSources = useCallback(async () => {
-    try {
-      const res = await getSources();
-      setSources(res as SourceI[]);
-    } catch (error) {
-      console.error("Failed to fetch sources:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchSources();
-  }, [fetchSources]);
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  const actions = useTableActions<SourceI>(
+    refetch,
+    deleteSource as (id: string | number) => Promise<void>,
+  );
 
   return (
     <>
@@ -56,24 +44,26 @@ export default function Source() {
             buttonTitle="common.button.addSource"
             gradient
             leftIcon={<PlusIcon size="sm" />}
-            onClick={() => setIsOpen(true)}
+            onClick={actions.handleOpenCreate}
           />
           <SourceDialog
-            isOpen={isOpen}
-            onClose={handleClose}
-            onSuccess={fetchSources}
+            isOpen={actions.isFormOpen}
+            onClose={actions.handleCloseForm}
+            onSuccess={refetch}
           />
         </CardBase>
       </div>
-      <div className="h-[calc(100vh-250px)] scrollbar-thin overflow-y-auto pr-1">
+      <div className="max-h-[calc(100vh-262px)] scrollbar-thin overflow-y-auto pr-1">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {sources.map((s) => (
+          {sources?.map((s) => (
             <SourceCard
               key={s.id}
+              id={s.id}
               icon={ICON_OPTIONS[s.icon as keyof typeof ICON_OPTIONS]}
               title={s.name}
               status={s.status}
               iconBgClass={s.color}
+              onStatusChange={refetch}
             />
           ))}
         </div>

@@ -413,6 +413,7 @@
       "sourceName": "Source Name",
       "sourceNamePlaceholder": "e.g., Zalo OA, Facebook Ads..."
     },
+    "changeStatusTooltip": "Toggle Status (Active/Inactive)",
     "stats": {
       "leadsCount": "Leads Generated",
       "leadsUnit": "lead(s)",

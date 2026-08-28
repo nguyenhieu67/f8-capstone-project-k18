@@ -413,6 +413,7 @@
       "sourceName": "チャネル名",
       "sourceNamePlaceholder": "例: Zalo OA, Facebook Ads..."
     },
+    "changeStatusTooltip": "ステータス切り替え（有効/無効）",
     "stats": {
       "leadsCount": "獲得リード数",
       "leadsUnit": "件",

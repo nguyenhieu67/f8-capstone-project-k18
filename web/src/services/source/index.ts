@@ -16,3 +16,7 @@ export async function createSource(payload: RequestBody) {
 export async function updateSource(id: number, payload: RequestBody) {
   return await fetchApi.put(`/sources/${id}`, payload);
 }
+
+export async function deleteSource(id: number) {
+  return await fetchApi.delete(`/sources/${id}`);
+}

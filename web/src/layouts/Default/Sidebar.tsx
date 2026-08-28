@@ -39,7 +39,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   };
 
   return (
-    <aside className="no-print z-20 flex h-screen w-64 shrink-0 flex-col bg-slate-900 text-slate-300 shadow-xl transition-all duration-300">
+    <aside className="no-print z-20 flex h-screen w-70 shrink-0 flex-col bg-slate-900 text-slate-300 shadow-xl transition-all duration-300">
       {/* Header Logo */}
       <div className="flex items-center justify-between border-b border-slate-800 p-5">
         <Logo subTitle />

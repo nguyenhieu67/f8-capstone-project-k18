@@ -2,18 +2,23 @@ import { useMemo } from "react";
 import { CardBase } from "./CardBase";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@/utils/format";
+import type { SourceStatus } from "@/types/database";
+import { updateSource } from "@/services/source";
 
 interface SourceCardProps {
+  id?: number;
   icon?: React.ReactNode;
   title: string;
-  status: string;
+  status: SourceStatus;
   leadsCount?: number;
   convertedCount?: number;
   revenue?: string | number;
   iconBgClass?: string;
+  onStatusChange?: (id: number, newStatus: SourceStatus) => void;
 }
 
 export function SourceCard({
+  id,
   icon,
   title,
   status,
@@ -21,6 +26,7 @@ export function SourceCard({
   convertedCount = 0,
   revenue = 0,
   iconBgClass = "bg-blue-500",
+  onStatusChange,
 }: SourceCardProps) {
   const { t } = useTranslation();
 
@@ -48,6 +54,17 @@ export function SourceCard({
     [convertedCount, leadsCount, revenue, t],
   );
 
+  const nextStatus: SourceStatus = status === "active" ? "inactive" : "active";
+
+  const handleChangeStatus = async () => {
+    try {
+      await updateSource(id as number, { status: nextStatus });
+      onStatusChange?.(id as number, nextStatus);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <CardBase className="flex flex-col gap-4">
       {/* Header Card */}
@@ -61,11 +78,25 @@ export function SourceCard({
           </div>
           <h4 className="text-crm-heading-text text-base font-bold">{title}</h4>
         </div>
-        <span
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${status === "active" ? "text-crm-success bg-emerald-100" : "text-crm-danger bg-red-100"}`}
-        >
-          {t(`common.status.${status}`)}
-        </span>
+        <div className="group relative">
+          <span
+            className={`cursor-pointer rounded-full px-2.5 py-1 text-xs font-medium ${
+              status === "active"
+                ? "text-crm-success bg-emerald-100 hover:bg-emerald-200"
+                : "text-crm-danger bg-red-100 hover:bg-red-200"
+            }`}
+            onClick={handleChangeStatus}
+          >
+            {t(`common.status.${status}`)}
+          </span>
+
+          {/* Tooltip */}
+          <span className="pointer-events-none absolute top-full -right-6 z-10 mt-1.5 rounded-md bg-slate-800 px-2 py-1 text-[11px] whitespace-nowrap text-white opacity-0 shadow-md transition-opacity duration-100 group-hover:opacity-100">
+            {t("sourcePage.changeStatusTooltip", {
+              status: t(`common.status.${nextStatus}`),
+            })}
+          </span>
+        </div>
       </div>
 
       {/* Body Metrics */}

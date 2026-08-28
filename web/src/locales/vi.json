@@ -413,6 +413,7 @@
       "sourceName": "Tên nguồn",
       "sourceNamePlaceholder": "Ví dụ: Zalo OA, Facebook Ads..."
     },
+    "changeStatusTooltip": "Chuyển trạng thái (Bật/Tắt hoạt động)",
     "stats": {
       "leadsCount": "Số Leads mang về",
       "leadsUnit": "khách",

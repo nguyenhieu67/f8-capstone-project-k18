@@ -24,7 +24,6 @@ const ROLE_OPTIONS = [
 const DEFAULT_FORM: EmployeeI = {
   firstName: "",
   lastName: "",
-  position: "",
   role: "sale",
   phone: "",
   salary: 0,

@@ -18,7 +18,6 @@ export interface EmployeeI {
   firstName: string;
   lastName: string;
   fullName?: string;
-  position: string;
   role: EmployeeRole;
   phone: string;
   salary: number;

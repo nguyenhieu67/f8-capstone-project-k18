@@ -6,7 +6,7 @@ import Table from "@/components/Table";
 const COLUMNS = [
   { value: "employeeCode", text: "common.tableHeader.employeeCode" },
   { value: "fullName", text: "common.tableHeader.fullName" },
-  { value: "position", text: "common.tableHeader.position" },
+  { value: "role", text: "common.tableHeader.role" },
   { value: "workStatus", text: "common.tableHeader.workStatus" },
   { value: "checkInTime", text: "common.tableHeader.checkInTime" },
   { value: "notes", text: "common.tableHeader.notes" },

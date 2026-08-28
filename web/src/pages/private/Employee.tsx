@@ -102,7 +102,7 @@ export default function Employee() {
           <Table<EmployeeI>
             columns={columns}
             rows={employees || []}
-            height="max-h-173"
+            height="max-h-[calc(100vh-260px)]"
             onEdit={(row) => actions.handleOpenEdit(employees || [], row)}
             onDelete={actions.handleOpenDelete}
           />

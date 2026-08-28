@@ -45,7 +45,7 @@ export default function Classe() {
           />
         </CardBase>
       </div>
-      <div className="max-h-188 scrollbar-thin overflow-y-auto">
+      <div className="max-h-[calc(100vh-240px)] scrollbar-thin overflow-y-auto">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {classes?.map((classe) => {
             const trainer = trainers?.find(
