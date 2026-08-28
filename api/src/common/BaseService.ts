@@ -14,6 +14,12 @@ export abstract class BaseService {
 
   protected fkValidators: FkValidator[] = [];
   protected useSoftDelete: boolean = true;
+  protected pickEntityColumns<T extends Record<string, any>>(data: T): Partial<T> {
+    const validColumns = new Set(
+      AppDataSource.getRepository(this.entity).metadata.columns.map((col) => col.propertyName),
+    );
+    return Object.fromEntries(Object.entries(data).filter(([key]) => validColumns.has(key))) as Partial<T>;
+  }
 
   constructor(entity: new () => BaseEntity | SimpleEntity, useSoftDelete = true) {
     this.entity = entity;
@@ -35,13 +41,6 @@ export abstract class BaseService {
 
   private applyActiveCondition(condition: any) {
     return this.useSoftDelete ? { ...condition, isActive: true } : condition;
-  }
-
-  private pickEntityColumns<T extends Record<string, any>>(data: T): Partial<T> {
-    const validColumns = new Set(
-      AppDataSource.getRepository(this.entity).metadata.columns.map((col) => col.propertyName),
-    );
-    return Object.fromEntries(Object.entries(data).filter(([key]) => validColumns.has(key))) as Partial<T>;
   }
 
   handleSelect() {
@@ -114,11 +113,11 @@ export abstract class BaseService {
     return query;
   }
 
-  async deleteById(id: number) {
+  async deleteById(id: number, deletedBy?: number) {
     if (this.useSoftDelete) {
       const query = await AppDataSource.getRepository(this.entity)
         .createQueryBuilder(this.getTableName())
-        .update({ deletedAt: new Date(), isActive: false })
+        .update({ deletedAt: new Date(), deletedBy, isActive: false })
         .where(`"${this.getTableName()}".id = :id`, { id })
         .returning(["id"])
         .execute();

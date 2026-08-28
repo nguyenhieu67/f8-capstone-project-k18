@@ -19,6 +19,10 @@ export abstract class BaseController {
     this.serializeList = serializeList ?? ((items) => items.map(this.serialize));
   }
 
+  private getUserId(req: Request): number | undefined {
+    return (req as any).user?.id;
+  }
+
   getList = async (req: Request, res: Response) => {
     const sortBy = (req.query.sortBy as string) || "id";
     const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
@@ -33,7 +37,8 @@ export abstract class BaseController {
   };
 
   create = async (req: Request, res: Response) => {
-    res.success(await this.service.create(req.body));
+    const data = { ...req.body, createdBy: this.getUserId(req) };
+    res.success(await this.service.create(data));
   };
 
   update = async (req: Request, res: Response) => {
@@ -42,11 +47,12 @@ export abstract class BaseController {
     if (!existing) {
       return res.status(constants.httpCodes.notFound).send(`Not found with id ${id}`);
     }
-    res.success(await this.service.updateById(id, req.body));
+    const data = { ...req.body, updatedBy: this.getUserId(req) };
+    res.success(await this.service.updateById(id, data));
   };
 
   delete = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    res.success(await this.service.deleteById(id));
+    res.success(await this.service.deleteById(id, this.getUserId(req)));
   };
 }

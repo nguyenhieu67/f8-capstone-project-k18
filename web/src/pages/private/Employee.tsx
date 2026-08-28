@@ -13,9 +13,9 @@ import type { ColumnI } from "@/types/table";
 import { StatusBadge } from "@/components/ui";
 
 const EMPLOYEE_ROLE = {
-  trainer: { label: "empPage.roles.sale", color: "var(--crm-primary)" },
+  trainer: { label: "empPage.roles.trainer", color: "var(--crm-primary)" },
   sale: {
-    label: "empPage.roles.trainer",
+    label: "empPage.roles.sale",
     color: "var(--crm-primary)",
   },
   assistant: {
@@ -63,8 +63,11 @@ const getColumns = (): ColumnI<EmployeeI>[] => [
   {
     value: "commissionRate",
     text: "common.tableHeader.commissionRate",
-    className: "text-crm-accent font-bold",
+    render: (e) => (
+      <span className="text-crm-accent font-bold">{e.commissionRate}%</span>
+    ),
   },
+  { value: "dependents", text: "common.tableHeader.dependents" },
   { value: "actions", text: "common.tableHeader.actions" },
 ];
 

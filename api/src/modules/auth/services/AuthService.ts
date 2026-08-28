@@ -52,8 +52,6 @@ class AuthService extends BaseService {
     const user = await this.findOneBy({ email: data.email }, ["password"]);
     if (!user) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
 
-    console.log(data.password);
-
     const isValid = await bcrypt.compare(data.password, (user as UserEntity).password);
     if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest), null];
 

@@ -19,6 +19,9 @@ export class LeadEntity extends BaseEntity {
   @Column({ type: "bigint" })
   sourceId!: number;
 
+  @Column({ type: "bigint" })
+  classeId?: number;
+
   @Column({ type: "text" })
   firstName!: string;
 

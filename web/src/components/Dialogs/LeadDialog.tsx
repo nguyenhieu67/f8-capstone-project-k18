@@ -4,7 +4,7 @@ import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createLead, updateLead } from "@/services/lead";
 import { useForm } from "@/hooks";
-import type { LeadI, EmployeeI, SourceI } from "@/types/database";
+import type { LeadI, EmployeeI, SourceI, ClasseI } from "@/types/database";
 
 interface LeadDialogProps {
   isOpen: boolean;
@@ -13,6 +13,7 @@ interface LeadDialogProps {
   initialData?: LeadI | null;
   sellers?: EmployeeI[];
   sources?: SourceI[];
+  classes?: ClasseI[];
 }
 
 const STATUS_OPTIONS = [
@@ -29,6 +30,7 @@ const DEFAULT_FORM: LeadI = {
   phone: "",
   sellerId: "",
   sourceId: "",
+  classeId: "",
   purpose: "",
   who: "",
   status: "new",
@@ -42,6 +44,7 @@ export default function LeadDialog({
   initialData,
   sellers = [],
   sources = [],
+  classes = [],
 }: LeadDialogProps) {
   const [loading, setLoading] = useState(false);
   const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
@@ -68,6 +71,15 @@ export default function LeadDialog({
     })),
   ];
 
+  // Parse danh sách Source cho SelectField
+  const classeOptions = [
+    { label: "leadPage.form.selectClasse", value: "" },
+    ...classes.map((c) => ({
+      label: c.name,
+      value: String(c.id),
+    })),
+  ];
+
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData || DEFAULT_FORM);
@@ -81,6 +93,7 @@ export default function LeadDialog({
         ...formData,
         sellerId: formData.sellerId ? Number(formData.sellerId) : undefined,
         sourceId: formData.sourceId ? Number(formData.sourceId) : undefined,
+        classeId: formData.classeId ? Number(formData.classeId) : undefined,
       };
 
       if (isEdit && formData.id) {
@@ -193,16 +206,30 @@ export default function LeadDialog({
           />
         </div>
 
-        {formData.status === "lost" && (
-          <InputField
-            id="rejectionReason"
-            name="rejectionReason"
-            label="common.tableHeader.rejectionReason"
-            value={formData.rejectionReason}
-            onChange={handleChange}
-            placeholder="leadPage.form.reasonPlaceholder"
-          />
-        )}
+        {/*  Class & Rejection reason */}
+        <div>
+          {formData.status === "converted" && (
+            <SelectField
+              id="classeId"
+              name="classeId"
+              label="common.tableHeader.class"
+              options={classeOptions}
+              value={String(formData.classeId || "")}
+              onChange={handleChange}
+            />
+          )}
+
+          {formData.status === "lost" && (
+            <InputField
+              id="rejectionReason"
+              name="rejectionReason"
+              label="common.tableHeader.rejectionReason"
+              value={formData.rejectionReason}
+              onChange={handleChange}
+              placeholder="leadPage.form.reasonPlaceholder"
+            />
+          )}
+        </div>
       </form>
     </Dialog>
   );

@@ -6,10 +6,17 @@ import { PlusIcon } from "@/components/Icons";
 import Table from "@/components/Table";
 import { StatusBadge } from "@/components/ui";
 import { useFetchData, useTableActions } from "@/hooks";
+import { getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
 import { deleteLead, getLeads } from "@/services/lead";
 import { getSources } from "@/services/source";
-import type { EmployeeI, LeadI, LeadStatus, SourceI } from "@/types/database";
+import type {
+  ClasseI,
+  EmployeeI,
+  LeadI,
+  LeadStatus,
+  SourceI,
+} from "@/types/database";
 import type { ColumnI } from "@/types/table";
 import { useMemo } from "react";
 
@@ -33,6 +40,7 @@ const LEAD_STATUS = {
 const getColumns = (
   sources: SourceI[],
   employees: EmployeeI[],
+  classes: ClasseI[],
 ): ColumnI<LeadI>[] => [
   {
     value: "customerPhone",
@@ -75,6 +83,17 @@ const getColumns = (
     ),
   },
   {
+    value: "class",
+    text: "common.tableHeader.class",
+    render: (l) => (
+      <span className="text-crm-accent font-medium">
+        {classes.find((c) => c.id === Number(l.classeId))?.name ?? (
+          <span className="text-crm-danger">-----</span>
+        )}
+      </span>
+    ),
+  },
+  {
     value: "status",
     text: "common.tableHeader.status",
     render: (lead: LeadI) => {
@@ -100,6 +119,7 @@ export default function PreSale() {
       leads: () => getLeads() as Promise<LeadI[]>,
       sources: () => getSources() as Promise<SourceI[]>,
       employees: () => getEmployees() as Promise<EmployeeI[]>,
+      classes: () => getClasses() as Promise<ClasseI[]>,
     },
     [],
   );
@@ -107,6 +127,7 @@ export default function PreSale() {
   const leads: LeadI[] = data?.leads || [];
   const sources: SourceI[] = data?.sources || [];
   const employees: EmployeeI[] = data?.employees || [];
+  const classes: ClasseI[] = data?.classes || [];
 
   const actions = useTableActions<LeadI>(
     refetch,
@@ -114,8 +135,8 @@ export default function PreSale() {
   );
 
   const columns = useMemo(
-    () => getColumns(sources, employees),
-    [sources, employees],
+    () => getColumns(sources, employees, classes),
+    [sources, employees, classes],
   );
 
   const sellers = useMemo(
@@ -151,6 +172,7 @@ export default function PreSale() {
             initialData={actions.selectedItem}
             sources={sources}
             sellers={sellers}
+            classes={classes}
           />
           <ConfirmDeleteDialog
             isOpen={actions.isDeleteOpen}

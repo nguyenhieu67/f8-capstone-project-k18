@@ -45,6 +45,7 @@ export interface LeadI {
   fullName?: string;
   phone: string;
   sellerId: string;
+  classeId: string;
   sourceId: string;
   purpose: string;
   who: string;

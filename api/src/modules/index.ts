@@ -5,6 +5,7 @@ export * from "./employees/EmployeeEntity";
 export * from "./leads/LeadEntity";
 export * from "./sources/SourceEntity";
 export * from "./students/StudentEntity";
+export * from "./students/studentClasse/StudentClasseEntity";
 export * from "./users/UserEntity";
 
 // Routes
