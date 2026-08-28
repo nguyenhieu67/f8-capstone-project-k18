@@ -18,7 +18,9 @@ export default function Table<T extends RowI = RowI>({
   onDelete,
 }: TableProps<T>) {
   return (
-    <div className={`scrollbar-thin overflow-x-auto overflow-y-auto ${height}`}>
+    <div
+      className={`max-w-[calc(100vw-362px)] scrollbar-thin overflow-x-auto overflow-y-auto ${height}`}
+    >
       <table className="w-full border-collapse text-left text-sm">
         <TableHeader columns={columns} />
         <TableBody

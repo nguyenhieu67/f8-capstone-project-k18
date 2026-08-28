@@ -19,7 +19,7 @@ class LeadService extends BaseService {
 
   private async ensureStudentEnrollment(
     leadId: number,
-    payload: { classeId: number; revenue: number; createdBy?: number },
+    payload: { classe: ClasseEntity; createdBy?: number },
     manager = AppDataSource.manager,
   ) {
     const studentRepo = manager.getRepository(StudentEntity);
@@ -37,7 +37,6 @@ class LeadService extends BaseService {
             leadId,
             enrolledAt: new Date(),
             createdBy: payload.createdBy,
-            isActive: true,
           },
         ])
         .execute();
@@ -50,7 +49,7 @@ class LeadService extends BaseService {
     }
 
     const existingEnrollment = await studentClassRepo.findOne({
-      where: { studentId: student.id, classId: payload.classeId },
+      where: { studentId: student.id, classId: payload.classe.id },
     });
 
     if (!existingEnrollment) {
@@ -61,11 +60,10 @@ class LeadService extends BaseService {
         .values([
           {
             studentId: student.id,
-            classId: payload.classeId,
-            tuitionAmount: payload.revenue,
+            classId: payload.classe.id,
+            tuitionAmount: payload.classe.tuition,
             status: StudentClasseStatus.ACTIVE,
             createdBy: payload.createdBy,
-            isActive: true,
           },
         ])
         .execute();
@@ -74,7 +72,7 @@ class LeadService extends BaseService {
     return student;
   }
 
-  private async validateConvertPayload(data: any) {
+  private async validateConvertPayload(data: any): Promise<ClasseEntity> {
     if (!data.classeId) {
       throw new AppError("Cần chọn lớp học khi chuyển lead sang trạng thái converted", constants.httpCodes.badRequest);
     }
@@ -85,6 +83,8 @@ class LeadService extends BaseService {
     if (!classe) {
       throw new AppError("Lớp học không tồn tại", constants.httpCodes.badRequest);
     }
+
+    return classe;
   }
 
   async create(data: any) {
@@ -94,18 +94,11 @@ class LeadService extends BaseService {
       return super.create(data);
     }
 
-    await this.validateConvertPayload(data);
+    const classe = await this.validateConvertPayload(data);
 
     return AppDataSource.transaction(async (manager) => {
       const leadRepo = manager.getRepository(LeadEntity);
-
       const safeLeadData = this.pickEntityColumns(data);
-      this.fkValidators = [
-        {
-          field: "sellerId",
-          validate: (id: number) => validateEmployeeRole(id, EmployeeRole.SALE, "sellerId"),
-        },
-      ];
 
       const insertResult = await leadRepo
         .createQueryBuilder()
@@ -117,11 +110,7 @@ class LeadService extends BaseService {
 
       const leadId = insertResult.identifiers[0].id;
 
-      await this.ensureStudentEnrollment(
-        leadId,
-        { classeId: data.classeId, revenue: data.revenue, createdBy: data.createdBy },
-        manager,
-      );
+      await this.ensureStudentEnrollment(leadId, { classe, createdBy: data.createdBy }, manager);
 
       return this.getById(leadId);
     });
@@ -134,7 +123,7 @@ class LeadService extends BaseService {
       return super.updateById(id, data);
     }
 
-    await this.validateConvertPayload(data);
+    const classe = await this.validateConvertPayload(data);
 
     return AppDataSource.transaction(async (manager) => {
       const leadRepo = manager.getRepository(LeadEntity);
@@ -150,7 +139,6 @@ class LeadService extends BaseService {
       }
 
       const wasAlreadyConverted = lead.status === LeadStatus.CONVERTED;
-
       const safeLeadData = this.pickEntityColumns(data);
 
       const updateResult = await leadRepo
@@ -162,11 +150,7 @@ class LeadService extends BaseService {
         .execute();
 
       if (!wasAlreadyConverted) {
-        await this.ensureStudentEnrollment(
-          id,
-          { classeId: data.classeId, revenue: data.revenue, createdBy: data.updatedBy },
-          manager,
-        );
+        await this.ensureStudentEnrollment(id, { classe, createdBy: data.updatedBy }, manager);
       }
 
       return updateResult;

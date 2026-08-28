@@ -1,12 +1,14 @@
 import express from "express";
 
 import studentController from "./StudentController";
+import studentClasseController from "./studentClasse/StudentClasseController.ts";
 import { StudentCreateDto, StudentUpdateDto } from "./StudentDto";
 import { ValidationPipe } from "@/validations";
 
 const router = express.Router();
 
 router.get("/", studentController.getList);
+router.get("/student-classes", studentClasseController.getList);
 router.get("/:id", studentController.getOne);
 router.post("/", ValidationPipe(StudentCreateDto), studentController.create);
 router.put("/:id", ValidationPipe(StudentUpdateDto), studentController.update);

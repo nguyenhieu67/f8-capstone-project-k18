@@ -161,7 +161,7 @@ export default function PreSale() {
           <Table<LeadI>
             columns={columns}
             rows={leads}
-            height="max-h-173"
+            height="max-h-[calc(100vh-280px)]"
             onEdit={(row) => actions.handleOpenEdit(leads || [], row)}
             onDelete={actions.handleOpenDelete}
           />
