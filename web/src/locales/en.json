@@ -421,5 +421,15 @@
       "convertedUnit": "student(s)",
       "revenue": "Revenue Generated"
     }
+  },
+  "studentClassePage": {
+    "selectClass": "Select Class",
+    "attendanceDate": "Attendance Date",
+    "emptyStudents": "No students assigned to this class yet.",
+    "status": {
+      "present": "Present",
+      "absent": "Absent"
+    },
+    "notePlaceholder": "Notes (late, excused absence)..."
   }
 }

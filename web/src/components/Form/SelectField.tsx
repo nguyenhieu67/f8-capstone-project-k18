@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FormGroup } from "./FormGroup";
 import { ChevronUpIcon } from "../Icons";
@@ -32,10 +33,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 }) => {
   const { t } = useTranslation();
   const { isOpen, setIsOpen, ref } = useClickOutside();
+  const selectedItemRef = useRef<HTMLDivElement>(null);
 
   // Tìm option hiện tại đang được chọn
   const selectedOption =
     options.find((opt) => opt.value === value) || options[0];
+
+  useEffect(() => {
+    if (isOpen && selectedItemRef.current) {
+      selectedItemRef.current.scrollIntoView({ block: "nearest" });
+    }
+  }, [isOpen]);
 
   const handleSelect = (optionValue: string) => {
     if (onChange) {
@@ -80,6 +88,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               return (
                 <div
                   key={opt.value}
+                  ref={isSelected ? selectedItemRef : null}
                   onClick={() => handleSelect(opt.value)}
                   className={`cursor-pointer px-3 py-2 text-sm transition-colors ${
                     isSelected

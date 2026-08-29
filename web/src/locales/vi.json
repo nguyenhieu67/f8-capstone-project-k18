@@ -421,5 +421,15 @@
       "convertedUnit": "học viên",
       "revenue": "Doanh thu tạo ra"
     }
+  },
+  "studentClassePage": {
+    "selectClass": "Chọn Lớp Học",
+    "attendanceDate": "Ngày điểm danh",
+    "emptyStudents": "Chưa có học viên nào xếp vào lớp này.",
+    "status": {
+      "present": "Có Mặt",
+      "absent": "Vắng"
+    },
+    "notePlaceholder": "Ghi chú (đi trễ, nghỉ có phép)..."
   }
 }

@@ -421,5 +421,15 @@
       "convertedUnit": "名",
       "revenue": "創出売上"
     }
+  },
+  "studentClassePage": {
+    "selectClass": "クラスを選択",
+    "attendanceDate": "出席日",
+    "emptyStudents": "このクラスに登録されている受講生はいません。",
+    "status": {
+      "present": "出席",
+      "absent": "欠席"
+    },
+    "notePlaceholder": "備考（遅刻、公休など）..."
   }
 }

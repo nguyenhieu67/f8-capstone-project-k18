@@ -1,4 +1,4 @@
-import { SelectQueryBuilder } from "typeorm";
+import { In, SelectQueryBuilder } from "typeorm";
 
 import { AppDataSource } from "@/config";
 import { BaseEntity } from "./BaseEntity";
@@ -89,15 +89,24 @@ export abstract class BaseService {
 
   async createMany(data: any[]) {
     const safeData = data.map((item) => this.pickEntityColumns(item));
-    const query = await AppDataSource.getRepository(this.entity)
-      .createQueryBuilder(this.getTableName())
-      .insert()
-      .into(this.entity)
-      .values(safeData)
-      .returning(["id"])
-      .execute();
 
-    return query;
+    return AppDataSource.transaction(async (manager) => {
+      await Promise.all(safeData.map((item) => this.runFkValidators(item)));
+
+      const repo = manager.getRepository(this.entity);
+
+      const query = await repo
+        .createQueryBuilder(this.getTableName())
+        .insert()
+        .into(this.entity)
+        .values(safeData)
+        .returning(["id"])
+        .execute();
+
+      const insertedIds = query.identifiers.map((identifier) => identifier.id);
+
+      return repo.findBy({ id: In(insertedIds) } as any);
+    });
   }
 
   async updateById(id: number, data: any) {
@@ -111,6 +120,40 @@ export abstract class BaseService {
       .execute();
 
     return query;
+  }
+
+  async upsertMany(data: any[], conflictProps: string[], overwriteProps: string[]) {
+    if (!data.length) {
+      return [];
+    }
+
+    const safeData = data.map((item) => ({
+      ...this.pickEntityColumns(item),
+      updatedAt: new Date(),
+    }));
+
+    return AppDataSource.transaction(async (manager) => {
+      await Promise.all(safeData.map((item) => this.runFkValidators(item)));
+
+      const repo = manager.getRepository(this.entity);
+      const toColumnName = (propertyName: string) =>
+        repo.metadata.findColumnWithPropertyName(propertyName)!.databaseName;
+
+      const conflictColumns = conflictProps.map(toColumnName);
+      const overwriteColumns = [...overwriteProps, "updatedAt"].map(toColumnName);
+
+      const query = await repo
+        .createQueryBuilder()
+        .insert()
+        .into(this.entity)
+        .values(safeData)
+        .orUpdate(overwriteColumns, conflictColumns)
+        .returning(["id"])
+        .execute();
+
+      const ids = query.identifiers.map((identifier) => identifier.id);
+      return repo.findBy({ id: In(ids) } as any);
+    });
   }
 
   async deleteById(id: number, deletedBy?: number) {

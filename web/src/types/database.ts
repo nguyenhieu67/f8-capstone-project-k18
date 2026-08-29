@@ -52,3 +52,19 @@ export interface LeadI {
   status: LeadStatus;
   rejectionReason: string;
 }
+
+// Student
+export interface StudentI {
+  id?: number;
+  leadId: string;
+  enrolledAt: Date;
+}
+export type StudentClasseStatusI = "active" | "completed" | "dropped";
+export interface StudentClasseI {
+  id?: number;
+  studentId: string;
+  classId: string;
+  enrolledAt: Date;
+  status: Date;
+  tuitionAmount: number;
+}

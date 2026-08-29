@@ -19,7 +19,7 @@ class LeadService extends BaseService {
 
   private async ensureStudentEnrollment(
     leadId: number,
-    payload: { classeId: number; revenue: number; createdBy?: number },
+    payload: { classe: ClasseEntity; createdBy?: number; updatedBy?: number },
     manager = AppDataSource.manager,
   ) {
     const studentRepo = manager.getRepository(StudentEntity);
@@ -37,7 +37,6 @@ class LeadService extends BaseService {
             leadId,
             enrolledAt: new Date(),
             createdBy: payload.createdBy,
-            isActive: true,
           },
         ])
         .execute();
@@ -49,11 +48,11 @@ class LeadService extends BaseService {
       throw new AppError("Không thể tạo student cho lead", constants.httpCodes.badRequest);
     }
 
-    const existingEnrollment = await studentClassRepo.findOne({
-      where: { studentId: student.id, classId: payload.classeId },
+    const activeEnrollment = await studentClassRepo.findOne({
+      where: { studentId: student.id, status: StudentClasseStatus.ACTIVE },
     });
 
-    if (!existingEnrollment) {
+    if (!activeEnrollment) {
       await studentClassRepo
         .createQueryBuilder()
         .insert()
@@ -61,20 +60,30 @@ class LeadService extends BaseService {
         .values([
           {
             studentId: student.id,
-            classId: payload.classeId,
-            tuitionAmount: payload.revenue,
+            classId: payload.classe.id,
+            tuitionAmount: payload.classe.tuition,
             status: StudentClasseStatus.ACTIVE,
             createdBy: payload.createdBy,
-            isActive: true,
           },
         ])
+        .execute();
+    } else if (activeEnrollment.classId !== payload.classe.id) {
+      await studentClassRepo
+        .createQueryBuilder()
+        .update(StudentClasseEntity)
+        .set({
+          classId: payload.classe.id,
+          tuitionAmount: payload.classe.tuition,
+          updatedBy: payload.updatedBy,
+        })
+        .where("id = :id", { id: activeEnrollment.id })
         .execute();
     }
 
     return student;
   }
 
-  private async validateConvertPayload(data: any) {
+  private async validateConvertPayload(data: any): Promise<ClasseEntity> {
     if (!data.classeId) {
       throw new AppError("Cần chọn lớp học khi chuyển lead sang trạng thái converted", constants.httpCodes.badRequest);
     }
@@ -85,6 +94,8 @@ class LeadService extends BaseService {
     if (!classe) {
       throw new AppError("Lớp học không tồn tại", constants.httpCodes.badRequest);
     }
+
+    return classe;
   }
 
   async create(data: any) {
@@ -94,18 +105,11 @@ class LeadService extends BaseService {
       return super.create(data);
     }
 
-    await this.validateConvertPayload(data);
+    const classe = await this.validateConvertPayload(data);
 
     return AppDataSource.transaction(async (manager) => {
       const leadRepo = manager.getRepository(LeadEntity);
-
       const safeLeadData = this.pickEntityColumns(data);
-      this.fkValidators = [
-        {
-          field: "sellerId",
-          validate: (id: number) => validateEmployeeRole(id, EmployeeRole.SALE, "sellerId"),
-        },
-      ];
 
       const insertResult = await leadRepo
         .createQueryBuilder()
@@ -117,11 +121,7 @@ class LeadService extends BaseService {
 
       const leadId = insertResult.identifiers[0].id;
 
-      await this.ensureStudentEnrollment(
-        leadId,
-        { classeId: data.classeId, revenue: data.revenue, createdBy: data.createdBy },
-        manager,
-      );
+      await this.ensureStudentEnrollment(leadId, { classe, createdBy: data.createdBy }, manager);
 
       return this.getById(leadId);
     });
@@ -129,12 +129,6 @@ class LeadService extends BaseService {
 
   async updateById(id: number, data: any): Promise<UpdateResult> {
     const isConvertingStatus = data.status === LeadStatus.CONVERTED;
-
-    if (!isConvertingStatus) {
-      return super.updateById(id, data);
-    }
-
-    await this.validateConvertPayload(data);
 
     return AppDataSource.transaction(async (manager) => {
       const leadRepo = manager.getRepository(LeadEntity);
@@ -150,6 +144,13 @@ class LeadService extends BaseService {
       }
 
       const wasAlreadyConverted = lead.status === LeadStatus.CONVERTED;
+      const isChangingClasse = wasAlreadyConverted && data.classeId !== undefined && data.classeId !== lead.classeId;
+
+      let classe: ClasseEntity | undefined;
+
+      if (isConvertingStatus || isChangingClasse) {
+        classe = await this.validateConvertPayload(data);
+      }
 
       const safeLeadData = this.pickEntityColumns(data);
 
@@ -161,10 +162,10 @@ class LeadService extends BaseService {
         .returning(["id"])
         .execute();
 
-      if (!wasAlreadyConverted) {
+      if ((isConvertingStatus && !wasAlreadyConverted) || isChangingClasse) {
         await this.ensureStudentEnrollment(
           id,
-          { classeId: data.classeId, revenue: data.revenue, createdBy: data.updatedBy },
+          { classe: classe!, createdBy: data.updatedBy, updatedBy: data.updatedBy },
           manager,
         );
       }
