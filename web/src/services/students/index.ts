@@ -1,10 +1,10 @@
 import { fetchApi } from "@/lib/api";
 import type { RequestBody } from "@/types/api";
 
+// Student API
 export async function getStudents() {
   return await fetchApi.get("/students");
 }
-
 export async function getStudentById(id: number) {
   return await fetchApi.get(`/students/${id}`);
 }
@@ -19,4 +19,17 @@ export async function updateStudent(id: number, payload: RequestBody) {
 
 export async function deleteStudent(id: number) {
   return await fetchApi.delete(`/students/${id}`);
+}
+
+// Student classe API
+export async function getStudentClasses() {
+  return await fetchApi.get("/students/student-classes");
+}
+
+// Student Attendance API
+export async function saveStudentAttendance(payload: RequestBody[]) {
+  return await fetchApi.post(
+    "/students/student-attendance",
+    payload as unknown as RequestBody,
+  );
 }

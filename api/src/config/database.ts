@@ -11,6 +11,7 @@ import {
   RefreshTokenEntity,
   PasswordResetEntity,
   StudentClasseEntity,
+  StudentAttendanceEntity,
 } from "@/modules";
 import { SnakeNamingStrategy } from "./SnakeNamingStrategy";
 
@@ -33,6 +34,7 @@ const AppDataSource = new DataSource({
     LeadEntity,
     StudentEntity,
     StudentClasseEntity,
+    StudentAttendanceEntity,
   ],
   subscribers: [],
   migrations: [],

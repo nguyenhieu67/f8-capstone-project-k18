@@ -13,7 +13,7 @@ import type {
   StudentClasseI,
   EmployeeI,
 } from "@/types/database";
-import { getStudentClasses } from "@/services/students/studentClasse";
+import { getStudentClasses } from "@/services/students";
 import { getStudents } from "@/services/students";
 import { getEmployees } from "@/services/employee";
 import { formatCurrency } from "@/utils/format";
@@ -49,7 +49,7 @@ const getColumns = (
       text: "common.tableHeader.phone",
       render: (sc: StudentClasseI) => (
         <span className="text-crm-info font-mono">
-          {getLeadOf(sc)?.phone ?? ""}{" "}
+          {getLeadOf(sc)?.phone ?? ""}
         </span>
       ),
     },

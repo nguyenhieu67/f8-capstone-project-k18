@@ -8,7 +8,9 @@ export abstract class BaseController {
   protected service: BaseService;
   protected serialize: (item: any) => any;
   protected serializeList: (items: any[]) => any[];
-
+  protected getUserId(req: Request): number | undefined {
+    return (req as any).user?.id;
+  }
   constructor(
     service: BaseService,
     serialize: (item: any) => any = (item) => instanceToPlain(item),
@@ -17,10 +19,6 @@ export abstract class BaseController {
     this.service = service;
     this.serialize = serialize;
     this.serializeList = serializeList ?? ((items) => items.map(this.serialize));
-  }
-
-  private getUserId(req: Request): number | undefined {
-    return (req as any).user?.id;
   }
 
   getList = async (req: Request, res: Response) => {
@@ -39,6 +37,12 @@ export abstract class BaseController {
   create = async (req: Request, res: Response) => {
     const data = { ...req.body, createdBy: this.getUserId(req) };
     res.success(await this.service.create(data));
+  };
+
+  createMany = async (req: Request, res: Response) => {
+    const createdBy = this.getUserId(req);
+    const data = (req.body as any[]).map((item) => ({ ...item, createdBy }));
+    res.success(await this.service.createMany(data));
   };
 
   update = async (req: Request, res: Response) => {

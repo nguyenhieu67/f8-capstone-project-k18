@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 interface CardBaseProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   title?: string;
+  dblTitle?: string;
   desc?: string;
   icon?: React.ReactNode;
   className?: string;
@@ -12,6 +13,7 @@ export function CardBase({
   children,
   className = "",
   title,
+  dblTitle,
   desc,
   icon,
   ...props
@@ -26,7 +28,9 @@ export function CardBase({
         <div className="w-10/12">
           <div className="text-crm-heading-text flex items-center gap-2 text-2xl font-bold">
             {icon && <span>{icon}</span>}
-            <h4>{t(title)}</h4>
+            <h4>
+              {t(title)} {dblTitle}
+            </h4>
           </div>
           {desc && (
             <p className="text-crm-label-text mt-1 text-sm">{t(desc)}</p>

@@ -6,6 +6,7 @@ interface TableProps<T extends RowI = RowI> {
   columns: ColumnI<T>[];
   rows: T[];
   height?: string;
+  emptyMessage?: string;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
 }
@@ -14,6 +15,7 @@ export default function Table<T extends RowI = RowI>({
   columns = [],
   rows = [],
   height = "h-125",
+  emptyMessage,
   onEdit,
   onDelete,
 }: TableProps<T>) {
@@ -26,6 +28,7 @@ export default function Table<T extends RowI = RowI>({
         <TableBody
           columns={columns}
           rows={rows}
+          emptyMessage={emptyMessage}
           onEdit={onEdit}
           onDelete={onDelete}
         />
