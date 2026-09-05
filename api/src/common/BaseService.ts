@@ -104,7 +104,6 @@ export abstract class BaseService {
         .execute();
 
       const insertedIds = query.identifiers.map((identifier) => identifier.id);
-
       return repo.findBy({ id: In(insertedIds) } as any);
     });
   }

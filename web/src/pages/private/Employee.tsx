@@ -11,23 +11,7 @@ import { formatCurrency } from "@/utils/format";
 import type { EmployeeI, EmployeeRole } from "@/types/database";
 import type { ColumnI } from "@/types/table";
 import { StatusBadge } from "@/components/ui";
-
-const EMPLOYEE_ROLE = {
-  trainer: { label: "empPage.roles.trainer", color: "var(--crm-primary)" },
-  sale: {
-    label: "empPage.roles.sale",
-    color: "var(--crm-primary)",
-  },
-  assistant: {
-    label: "empPage.roles.assistant",
-    color: "var(--crm-primary)",
-  },
-  manager: {
-    label: "empPage.roles.manager",
-    color: "var(--crm-primary)",
-  },
-  admin: { label: "empPage.roles.admin", color: "var(--crm-primary)" },
-};
+import { EMPLOYEE_ROLE } from "@/constants/employeeRole";
 
 const getColumns = (): ColumnI<EmployeeI>[] => [
   {
@@ -45,9 +29,9 @@ const getColumns = (): ColumnI<EmployeeI>[] => [
   {
     value: "role",
     text: "common.tableHeader.role",
-    render: (l: EmployeeI) => {
-      const status = EMPLOYEE_ROLE[l.role as EmployeeRole];
-      return <StatusBadge label={status.label} color={status.color} />;
+    render: (e: EmployeeI) => {
+      const role = EMPLOYEE_ROLE[e.role as EmployeeRole];
+      return <StatusBadge label={role.label} colors="var(--crm-primary)" />;
     },
   },
   { value: "phone", text: "common.tableHeader.phone", className: "font-mono" },

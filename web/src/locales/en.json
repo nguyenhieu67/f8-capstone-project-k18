@@ -431,5 +431,14 @@
       "absent": "Absent"
     },
     "notePlaceholder": "Notes (late, excused absence)..."
+  },
+  "staffTimeKeepingPage": {
+    "status": {
+      "present": "Present",
+      "late": "Late",
+      "absent": "Absent",
+      "leave": "On Leave"
+    },
+    "notePlaceholder": "Enter note..."
   }
 }

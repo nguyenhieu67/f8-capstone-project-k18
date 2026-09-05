@@ -20,3 +20,17 @@ export async function updateEmployee(id: number, payload: RequestBody) {
 export async function deleteEmployee(id: number) {
   return await fetchApi.delete(`/employees/${id}`);
 }
+
+// Staff Attendance
+export async function getStaffAttendanceByDate(date: string) {
+  return await fetchApi.get("/employees/staff-attendance", {
+    params: { date },
+  });
+}
+
+export async function saveStaffAttendance(payload: RequestBody[]) {
+  return await fetchApi.post(
+    "/employees/staff-attendance",
+    payload as unknown as RequestBody,
+  );
+}

@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { BaseController } from "@/common";
-import StudentAttendanceService from "./StudentAttendanceService";
 
-class StudentAttendanceController extends BaseController {
+import StaffAttendanceService from "./StaffAttendanceService";
+
+class StaffAttendanceController extends BaseController {
   saveSessionAttendance = async (req: Request, res: Response) => {
     const updatedBy = this.getUserId(req);
 
@@ -12,9 +13,9 @@ class StudentAttendanceController extends BaseController {
       updatedBy,
     }));
 
-    const result = await StudentAttendanceService.saveSessionAttendance(data);
+    const result = await StaffAttendanceService.saveSessionAttendance(data);
     res.success(this.serializeList(result));
   };
 }
 
-export default new StudentAttendanceController(StudentAttendanceService);
+export default new StaffAttendanceController(StaffAttendanceService);

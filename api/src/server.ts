@@ -19,6 +19,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(customResponse);
+app.use(express.json());
 
 // Swagger setup
 const swaggerOptions = {
@@ -39,12 +42,9 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Middleware
-app.use(cookieParser());
-app.use(customResponse);
+// Routes
 app.use(rootRouter);
 
 // Error

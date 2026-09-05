@@ -8,7 +8,11 @@ function handleError(err: any, req: Request, res: Response, next: NextFunction) 
   const status = err.status || err.statusCode || constants.httpCodes.internalServerError;
   const message = err.message || "Internal Server Error";
 
-  return res.error(message, status);
+  if (typeof res.error === "function") {
+    return res.error(message, status);
+  }
+
+  return res.status(status).json({ message });
 }
 
 export default handleError;

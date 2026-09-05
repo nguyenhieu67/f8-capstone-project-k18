@@ -9,7 +9,7 @@ export abstract class BaseController {
   protected serialize: (item: any) => any;
   protected serializeList: (items: any[]) => any[];
   protected getUserId(req: Request): number | undefined {
-    return (req as any).user?.id;
+    return (req as any).auth.user?.id;
   }
   constructor(
     service: BaseService,
@@ -26,6 +26,18 @@ export abstract class BaseController {
     const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
     res.success(this.serializeList(await this.service.getList({}, sortBy, sortOrder)));
   };
+
+  getListByField =
+    (field: string = "id") =>
+    async (req: Request, res: Response) => {
+      const rawValue = req.query[field];
+      const condition = rawValue !== undefined ? { [field]: rawValue } : {};
+
+      const sortBy = (req.query.sortBy as string) || "id";
+      const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
+
+      res.success(this.serializeList(await this.service.getList(condition, sortBy, sortOrder)));
+    };
 
   getOne = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
