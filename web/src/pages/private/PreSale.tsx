@@ -66,12 +66,14 @@ const getColumns = (
   {
     value: "learningPurpose",
     text: "common.tableHeader.learningPurpose",
-    render: (l) => l.purpose,
+    render: (l) =>
+      l.purpose ?? <span className="text-crm-danger font-medium">-----</span>,
   },
   {
     value: "targetAudience",
     text: "common.tableHeader.targetAudience",
-    render: (l) => l.who,
+    render: (l) =>
+      l.who ?? <span className="text-crm-danger font-medium">-----</span>,
   },
   {
     value: "assignedSeller",
@@ -106,7 +108,7 @@ const getColumns = (
     text: "common.tableHeader.rejectionReason",
     render: (l) => (
       <span className="text-crm-danger font-medium">
-        {l.rejectionReason === "" ? "-----" : l.rejectionReason}
+        {l.rejectionReason ?? "-----"}
       </span>
     ),
   },

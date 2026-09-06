@@ -4,6 +4,11 @@ import { validate, ValidationError } from "class-validator";
 
 import { constants } from "@/config";
 
+type FieldError = {
+  field: string;
+  messages: string[];
+};
+
 async function valid<T>(dtoClass: new () => T, body: any) {
   const dto = plainToInstance(dtoClass, body);
 
@@ -11,33 +16,45 @@ async function valid<T>(dtoClass: new () => T, body: any) {
   return await validate(dto);
 }
 
+function toFieldErrors(errors: ValidationError[]): FieldError[] {
+  return errors.map((e) => ({
+    field: e.property,
+    messages: e.constraints ? Object.values(e.constraints) : [],
+  }));
+}
+
 export function ValidationPipe<T>(dtoClass: new () => T) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    let allEroors: ValidationError[] = [];
+    let allErrors: ValidationError[] = [];
 
     const body: any = req.body;
     if (Array.isArray(body)) {
       for (const item of body) {
         const errors = await valid(dtoClass, item);
         if (errors.length > 0) {
-          allEroors.push(...errors);
+          allErrors.push(...errors);
         }
       }
     } else {
       const errors = await valid(dtoClass, body);
       if (errors.length > 0) {
-        allEroors.push(...errors);
+        allErrors.push(...errors);
       }
     }
 
-    if (allEroors.length > 0) {
-      const msges = allEroors.map((e) => (e.constraints ? Object.values(e.constraints) : [])).flat();
+    if (allErrors.length > 0) {
+      const fieldErrors = toFieldErrors(allErrors);
+      const message = fieldErrors
+        .map((f) => f.messages.join(", "))
+        .filter(Boolean)
+        .join(", ");
 
-      return res.status(constants.httpCodes.unprocessableContent).json({
-        statusCode: constants.httpCodes.unprocessableContent,
-        message: msges.join(", "),
-        error: "Unprocessable Entity",
-      });
+      return res.error(
+        message || "Dữ liệu gửi lên không hợp lệ.",
+        constants.httpCodes.unprocessableContent,
+        "VALIDATION_ERROR",
+        fieldErrors,
+      );
     }
 
     next();

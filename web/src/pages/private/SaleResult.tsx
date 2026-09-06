@@ -73,12 +73,18 @@ const getColumns = (
         const lead = getLeadOf(sc);
 
         return (
-          <div>
-            <span>{lead?.purpose ?? ""}</span>
-            <span className="block text-xs text-slate-500">
-              {lead?.who ?? ""}
-            </span>
-          </div>
+          <>
+            {lead?.purpose && lead.who ? (
+              <>
+                <span>{lead?.purpose ?? ""}</span>
+                <span className="block text-xs text-slate-500">
+                  {lead?.who ?? ""}
+                </span>
+              </>
+            ) : (
+              <span className="text-crm-danger font-medium">-----</span>
+            )}
+          </>
         );
       },
     },

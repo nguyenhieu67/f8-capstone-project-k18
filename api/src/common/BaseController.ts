@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { instanceToPlain } from "class-transformer";
 
 import { BaseService } from "./BaseService";
-import { constants } from "@/config";
+import { AppError } from "@/utils";
 
 export abstract class BaseController {
   protected service: BaseService;
@@ -42,7 +42,7 @@ export abstract class BaseController {
   getOne = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const item = await this.service.findOneBy({ id });
-    if (!item) return res.status(constants.httpCodes.notFound).send(`Not found with id ${id}`);
+    if (!item) throw AppError.notFound(`Không tìm thấy dữ liệu với id ${id}.`);
     res.success(this.serialize(item));
   };
 
@@ -61,7 +61,7 @@ export abstract class BaseController {
     const id = Number(req.params.id);
     const existing = await this.service.findOneBy({ id });
     if (!existing) {
-      return res.status(constants.httpCodes.notFound).send(`Not found with id ${id}`);
+      throw AppError.notFound(`Không tìm thấy dữ liệu với id ${id}.`);
     }
     const data = { ...req.body, updatedBy: this.getUserId(req) };
     res.success(await this.service.updateById(id, data));

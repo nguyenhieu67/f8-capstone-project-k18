@@ -14,7 +14,7 @@ export class StaffAttendanceEntity extends BaseEntity {
   @Column({ type: "bigint" })
   employeeId!: number;
 
-  @Column({ type: "timestamptz" })
+  @Column({ type: "date" })
   date!: Date;
 
   @Column({

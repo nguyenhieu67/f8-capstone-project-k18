@@ -1,6 +1,6 @@
 import { UpdateResult } from "typeorm";
 import { BaseService } from "@/common";
-import { AppDataSource, constants } from "@/config";
+import { AppDataSource } from "@/config";
 import { validateEmployeeRole } from "@/modules/employees/helpers/validateEmployeeRole";
 import { EmployeeRole } from "@/modules/employees/EmployeeEntity";
 import { LeadEntity, LeadStatus } from "./LeadEntity";
@@ -45,7 +45,7 @@ class LeadService extends BaseService {
     }
 
     if (!student) {
-      throw new AppError("Không thể tạo student cho lead", constants.httpCodes.badRequest);
+      throw AppError.badRequest("Không thể tạo student cho lead");
     }
 
     const activeEnrollment = await studentClassRepo.findOne({
@@ -85,14 +85,14 @@ class LeadService extends BaseService {
 
   private async validateConvertPayload(data: any): Promise<ClasseEntity> {
     if (!data.classeId) {
-      throw new AppError("Cần chọn lớp học khi chuyển lead sang trạng thái converted", constants.httpCodes.badRequest);
+      throw AppError.badRequest("Cần chọn lớp học khi chuyển lead sang trạng thái converted");
     }
 
     const classe = await AppDataSource.getRepository(ClasseEntity).findOne({
       where: { id: data.classeId, isActive: true },
     });
     if (!classe) {
-      throw new AppError("Lớp học không tồn tại", constants.httpCodes.badRequest);
+      throw AppError.notFound("Lớp học không tồn tại");
     }
 
     return classe;
@@ -140,7 +140,7 @@ class LeadService extends BaseService {
         .getOne();
 
       if (!lead) {
-        throw new AppError("Lead không tồn tại", constants.httpCodes.badRequest);
+        throw AppError.notFound("Lead không tồn tại");
       }
 
       const wasAlreadyConverted = lead.status === LeadStatus.CONVERTED;

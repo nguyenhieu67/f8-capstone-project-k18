@@ -1,4 +1,4 @@
-import { AppDataSource, constants } from "@/config";
+import { AppDataSource } from "@/config";
 import { AppError } from "@/utils";
 import { LeadEntity, LeadStatus } from "@/modules/leads/LeadEntity";
 import { BaseService } from "@/common";
@@ -14,10 +14,7 @@ class StudentService extends BaseService {
       .getOne();
 
     if (!lead) {
-      throw new AppError(
-        `leadId ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`,
-        constants.httpCodes.badRequest,
-      );
+      throw AppError.badRequest(`leadId ${leadId} không hợp lệ: lead không tồn tại hoặc không có status converted`);
     }
   }
 

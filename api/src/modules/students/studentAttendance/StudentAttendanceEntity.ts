@@ -15,7 +15,7 @@ export class StudentAttendanceEntity extends BaseEntity {
   @Column({ type: "bigint" })
   classId!: number;
 
-  @Column({ type: "timestamptz" })
+  @Column({ type: "date" })
   date!: Date;
 
   @Column({

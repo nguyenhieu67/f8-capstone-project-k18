@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { constants } from "@/config";
+import { ErrorCode } from "@/utils/AppError";
 
 declare global {
   namespace Express {
@@ -9,9 +10,9 @@ declare global {
     }
     interface Response {
       success: (data: any, status?: number) => Response;
-      error: (error: any, status?: number) => Response;
-      notFount: () => void;
-      unauthorized: () => void;
+      error: (message: string, status?: number, code?: ErrorCode, details?: unknown) => Response;
+      notFound: () => Response;
+      unauthorized: (message?: string, code?: ErrorCode) => Response;
     }
   }
 }
@@ -21,19 +22,24 @@ function customResponse(req: Request, res: Response, next: NextFunction) {
     return res.status(status).json({ data });
   };
 
-  // Error
-  res.error = (error: any, status = constants.httpCodes.internalServerError) => {
-    return res.status(status).json({ error });
+  // Error - message luôn là string thân thiện với người dùng; code là mã máy đọc để FE rẽ nhánh xử lý
+  res.error = (
+    message: string,
+    status = constants.httpCodes.internalServerError,
+    code: ErrorCode = "INTERNAL_ERROR",
+    details?: unknown,
+  ) => {
+    return res.status(status).json({ error: message, code, ...(details !== undefined ? { details } : {}) });
   };
 
   // Not Found
-  res.notFount = () => {
-    res.error("Resource not found.", constants.httpCodes.notFound);
+  res.notFound = () => {
+    return res.error("Không tìm thấy dữ liệu.", constants.httpCodes.notFound, "NOT_FOUND");
   };
 
   // Unauthorized
-  res.unauthorized = () => {
-    res.error("Unauthorized.", constants.httpCodes.unauthorized);
+  res.unauthorized = (message = "Vui lòng đăng nhập để tiếp tục.", code: ErrorCode = "UNAUTHORIZED") => {
+    return res.error(message, constants.httpCodes.unauthorized, code);
   };
 
   next();

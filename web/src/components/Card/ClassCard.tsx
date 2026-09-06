@@ -12,7 +12,7 @@ interface ClassCardProps {
   schedule: string;
   trainer: string;
   tuition: number;
-  totalStudents?: string;
+  totalStudents?: string | number;
   className?: string;
   onClick?: () => void;
 }

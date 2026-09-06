@@ -5,15 +5,10 @@ import StaffAttendanceService from "./StaffAttendanceService";
 
 class StaffAttendanceController extends BaseController {
   saveSessionAttendance = async (req: Request, res: Response) => {
-    const updatedBy = this.getUserId(req);
+    const userId = this.getUserId(req);
+    if (!userId) return;
 
-    const data = (req.body as any[]).map((item) => ({
-      ...item,
-      createdBy: updatedBy,
-      updatedBy,
-    }));
-
-    const result = await StaffAttendanceService.saveSessionAttendance(data);
+    const result = await StaffAttendanceService.saveSessionAttendance(req.body, userId);
     res.success(this.serializeList(result));
   };
 }

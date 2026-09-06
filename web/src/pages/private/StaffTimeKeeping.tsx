@@ -5,7 +5,7 @@ import { CardBase } from "@/components/Card";
 import Table from "@/components/Table";
 import { InputField, SelectField } from "@/components/Form";
 import { CheckDoubleIcon } from "@/components/Icons";
-import { useFetchData } from "@/hooks";
+import { useAppToast, useAttendanceSave, useFetchData } from "@/hooks";
 import { getEmployees } from "@/services/employee";
 import {
   getStaffAttendanceByDate,
@@ -37,10 +37,12 @@ const isOffStatus = (status: AttendanceStatus) =>
   status === "absent" || status === "leave";
 
 export default function StaffAttendance() {
+  const toastMsg = useAppToast();
+
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
   const [selectedDate, setSelectedDate] = useState<string>(today);
 
-  const { data: employees } = useFetchData(
+  const { data: employees, refetch } = useFetchData(
     () => getEmployees() as Promise<EmployeeI[]>,
     [],
   );
@@ -49,9 +51,47 @@ export default function StaffAttendance() {
     Record<number, AttendanceRecordI>
   >({});
 
-  const [hasExistingRecords, setHasExistingRecords] = useState<boolean>(false);
+  const validEmployees = useMemo(
+    () =>
+      (employees || []).filter((emp): emp is EmployeeI & { id: number } =>
+        Boolean(emp.id),
+      ),
+    [employees],
+  );
 
-  const [dirtyIds, setDirtyIds] = useState<Set<number>>(new Set());
+  // Build payload cho 1 nhân viên — bỏ checkInTime nếu status là absent/leave
+  const buildRecord = useCallback(
+    (employeeId: number): AttendanceRecordI => {
+      const currentData = attendanceMap[employeeId];
+      const status: AttendanceStatus = currentData?.status || "present";
+
+      const record: AttendanceRecordI = {
+        employeeId,
+        date: selectedDate,
+        status,
+        note: currentData?.note || "",
+      };
+
+      if (!isOffStatus(status)) {
+        record.checkInTime = currentData?.checkInTime || "08:00";
+      } else {
+        record.checkInTime = null;
+      }
+
+      return record;
+    },
+    [attendanceMap, selectedDate],
+  );
+
+  const { handleSave, markDirty, setHasExistingRecords, setDirtyIds } =
+    useAttendanceSave({
+      items: validEmployees,
+      getItemId: (emp) => emp.id,
+      buildRecord: (emp) => buildRecord(emp.id),
+      saveFn: saveStaffAttendance,
+      toastMsg,
+      onSuccess: refetch,
+    });
 
   useEffect(() => {
     if (!employees || employees.length === 0) return;
@@ -87,7 +127,7 @@ export default function StaffAttendance() {
     }
 
     fetchAttendance();
-  }, [selectedDate, employees]);
+  }, [selectedDate, employees, setHasExistingRecords, setDirtyIds]);
 
   const handleRecordChange = useCallback(
     (
@@ -105,66 +145,10 @@ export default function StaffAttendance() {
         },
       }));
 
-      setDirtyIds((prev) => {
-        const next = new Set(prev);
-        next.add(employeeId);
-        return next;
-      });
+      markDirty(employeeId);
     },
-    [selectedDate],
+    [selectedDate, markDirty],
   );
-
-  // Build payload cho 1 nhân viên — bỏ checkInTime nếu status là absent/leave
-  const buildRecord = useCallback(
-    (employeeId: number): AttendanceRecordI => {
-      const currentData = attendanceMap[employeeId];
-      const status: AttendanceStatus = currentData?.status || "present";
-
-      const record: AttendanceRecordI = {
-        employeeId,
-        date: selectedDate,
-        status,
-        note: currentData.note || "",
-      };
-
-      if (!isOffStatus(status)) {
-        record.checkInTime = currentData?.checkInTime || "08:00";
-      } else {
-        record.checkInTime = null;
-      }
-
-      return record;
-    },
-    [attendanceMap, selectedDate],
-  );
-
-  const handleSave = async () => {
-    if (!employees || employees.length === 0) return;
-
-    try {
-      const employeeIds = employees
-        .filter((emp): emp is EmployeeI & { id: number } => Boolean(emp.id))
-        .map((emp) => emp.id);
-
-      if (!hasExistingRecords) {
-        const recordsToCreate = employeeIds.map((id) => buildRecord(id));
-        await saveStaffAttendance(
-          recordsToCreate.map((record) => ({ ...record })),
-        );
-        setHasExistingRecords(true);
-        setDirtyIds(new Set());
-        return;
-      }
-
-      const recordsToUpdate = Array.from(dirtyIds).map((id) => buildRecord(id));
-      await saveStaffAttendance(
-        recordsToUpdate.map((record) => ({ ...record })),
-      );
-      setDirtyIds(new Set());
-    } catch (error) {
-      console.error("Failed to save attendance:", error);
-    }
-  };
 
   const columns: ColumnI<EmployeeI>[] = useMemo(
     () => [
@@ -259,8 +243,7 @@ export default function StaffAttendance() {
         },
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [attendanceMap],
+    [attendanceMap, handleRecordChange],
   );
 
   return (

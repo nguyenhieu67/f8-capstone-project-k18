@@ -5,7 +5,8 @@ import { PlusIcon } from "@/components/Icons";
 import { useFetchData, useTableActions } from "@/hooks";
 import { deleteClasse, getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
-import type { ClasseI, EmployeeI } from "@/types/database";
+import { getStudentClasses } from "@/services/students";
+import type { ClasseI, EmployeeI, StudentClasseI } from "@/types/database";
 import { useMemo } from "react";
 
 export default function Classe() {
@@ -13,16 +14,20 @@ export default function Classe() {
     {
       classes: () => getClasses() as Promise<ClasseI[]>,
       employees: () => getEmployees() as Promise<EmployeeI[]>,
+      studentClasses: () => getStudentClasses() as Promise<StudentClasseI[]>,
     },
     [],
   );
-  const classes = data?.classes || [];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const employees = data?.employees || [];
-
   const actions = useTableActions<ClasseI>(
     refetch,
     deleteClasse as (id: string | number) => Promise<void>,
+  );
+
+  const classes = useMemo(() => data?.classes || [], [data?.classes]);
+  const employees = useMemo(() => data?.employees || [], [data?.employees]);
+  const studentClasses = useMemo(
+    () => data?.studentClasses || [],
+    [data?.studentClasses],
   );
   const trainers = useMemo(
     () => employees?.filter((e) => e.role === "trainer"),
@@ -51,6 +56,9 @@ export default function Classe() {
             const trainer = trainers?.find(
               (t) => t.id === Number(classe.trainerId),
             );
+            const totalStudent = studentClasses.filter(
+              (sc) => Number(sc.classId) === Number(classe.id),
+            ).length;
             return (
               <ClassCard
                 key={classe.id}
@@ -60,6 +68,7 @@ export default function Classe() {
                 schedule={classe.schedule}
                 trainer={trainer?.fullName || ""}
                 tuition={classe.tuition}
+                totalStudents={totalStudent}
                 onClick={() => actions.handleOpenEdit(classes, classe)}
               />
             );

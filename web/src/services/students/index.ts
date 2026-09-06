@@ -27,6 +27,10 @@ export async function getStudentClasses() {
 }
 
 // Student Attendance API
+export async function getStudentAttendances() {
+  return await fetchApi.get("/students/student-attendance");
+}
+
 export async function saveStudentAttendance(payload: RequestBody[]) {
   return await fetchApi.post(
     "/students/student-attendance",

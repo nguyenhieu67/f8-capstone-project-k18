@@ -47,6 +47,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Routes
 app.use(rootRouter);
 
+// Không khớp route nào -> trả JSON 404 nhất quán thay vì trang mặc định của Express
+app.use((req, res) => {
+  res.notFound();
+});
+
 // Error
 app.use(handleError);
 

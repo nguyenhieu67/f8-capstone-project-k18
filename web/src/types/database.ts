@@ -44,9 +44,9 @@ export interface LeadI {
   lastName: string;
   fullName?: string;
   phone: string;
-  sellerId: string;
-  classeId: string;
-  sourceId: string;
+  sellerId: number | string;
+  classeId: number | string;
+  sourceId: number | string;
   purpose: string;
   who: string;
   status: LeadStatus;
@@ -56,15 +56,25 @@ export interface LeadI {
 // Student
 export interface StudentI {
   id?: number;
-  leadId: string;
+  leadId: number | string;
   enrolledAt: Date;
 }
-export type StudentClasseStatusI = "active" | "completed" | "dropped";
+export type StudentClasseStatus = "active" | "completed" | "dropped";
 export interface StudentClasseI {
   id?: number;
-  studentId: string;
-  classId: string;
+  studentId: number | string;
+  classId: number | string;
   enrolledAt: Date;
-  status: Date;
+  status: StudentClasseStatus;
   tuitionAmount: number;
+}
+
+export type StudentAttendanceStatus = "present" | "absent";
+export interface StudentAttendanceI {
+  id?: number;
+  studentId: number | string;
+  classId: number | string;
+  date: Date | string;
+  status: StudentAttendanceStatus;
+  note: string;
 }

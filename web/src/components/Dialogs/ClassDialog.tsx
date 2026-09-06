@@ -3,7 +3,7 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, ScheduleSelector, SelectField } from "../Form";
 import { createClasse, updateClasse } from "@/services/classe";
-import { useForm } from "@/hooks";
+import { useAppToast, useForm } from "@/hooks";
 import type { ClasseI, EmployeeI } from "@/types/database";
 
 interface ClassDialogProps {
@@ -46,6 +46,7 @@ export default function ClassDialog({
     },
   );
   const [loading, setLoading] = useState(false);
+  const toastMsg = useAppToast();
 
   const isEdit = Boolean(initialData?.id);
 
@@ -75,13 +76,18 @@ export default function ClassDialog({
 
       if (isEdit && formData.id) {
         await updateClasse(formData.id, payload);
+        toastMsg.success(
+          `Cập nhật thành công Classe với tên là: ${formData.name}.`,
+        );
       } else {
         await createClasse(payload);
+        toastMsg.success("Tạo thành công Classe mới.");
       }
       onSuccess?.();
       onClose();
     } catch (error) {
       console.error("Failed to save class:", error);
+      toastMsg.error((error as Error).message);
     } finally {
       setLoading(false);
     }
