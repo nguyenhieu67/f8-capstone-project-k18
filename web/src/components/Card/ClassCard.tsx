@@ -90,7 +90,7 @@ export function ClassCard({
       className="hover:border-crm-primary flex cursor-pointer flex-col justify-between gap-4"
       onClick={onClick}
     >
-      <div className="mb-2">
+      <div className="mb-1">
         <div className="flex items-start justify-between gap-2 text-xs">
           <div>
             <span className="rounded-md bg-indigo-100 px-2 py-0.5 font-mono font-bold text-indigo-700 uppercase">

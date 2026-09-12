@@ -6,15 +6,15 @@ import { useFetchData, useTableActions } from "@/hooks";
 import { deleteClasse, getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
 import { getStudentClasses } from "@/services/students";
-import type { ClasseI, EmployeeI, StudentClasseI } from "@/types/database";
+import type { ClasseI } from "@/types/database";
 import { useMemo } from "react";
 
 export default function Classe() {
   const { data, refetch } = useFetchData(
     {
-      classes: () => getClasses() as Promise<ClasseI[]>,
-      employees: () => getEmployees() as Promise<EmployeeI[]>,
-      studentClasses: () => getStudentClasses() as Promise<StudentClasseI[]>,
+      classes: () => getClasses(),
+      employees: () => getEmployees(),
+      studentClasses: () => getStudentClasses(),
     },
     [],
   );
@@ -23,11 +23,17 @@ export default function Classe() {
     deleteClasse as (id: string | number) => Promise<void>,
   );
 
-  const classes = useMemo(() => data?.classes || [], [data?.classes]);
-  const employees = useMemo(() => data?.employees || [], [data?.employees]);
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
+  const employees = useMemo(
+    () => data?.employees.items || [],
+    [data?.employees.items],
+  );
   const studentClasses = useMemo(
-    () => data?.studentClasses || [],
-    [data?.studentClasses],
+    () => data?.studentClasses.items || [],
+    [data?.studentClasses.items],
   );
   const trainers = useMemo(
     () => employees?.filter((e) => e.role === "trainer"),
@@ -50,7 +56,7 @@ export default function Classe() {
           />
         </CardBase>
       </div>
-      <div className="max-h-[calc(100vh-240px)] scrollbar-thin overflow-y-auto">
+      <div className="max-h-[calc(100vh-230px)] scrollbar-thin overflow-y-auto">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {classes?.map((classe) => {
             const trainer = trainers?.find(

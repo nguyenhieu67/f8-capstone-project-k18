@@ -1,8 +1,10 @@
 import { fetchApi } from "@/lib/api";
 import type { RequestBody } from "@/types/api";
+import type { ClasseI } from "@/types/database";
+import type { PaginatedResultI } from "@/types/table";
 
 export async function getClasses() {
-  return await fetchApi.get("/classes");
+  return (await fetchApi.get("/classes")) as PaginatedResultI<ClasseI>;
 }
 
 export async function getClasseById(id: number) {

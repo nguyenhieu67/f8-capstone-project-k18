@@ -15,7 +15,6 @@ import {
 import type {
   ClasseI,
   LeadI,
-  StudentAttendanceI,
   StudentClasseI,
   StudentI,
 } from "@/types/database";
@@ -172,30 +171,6 @@ const getColumns = ({
 export default function StudentAttendance() {
   const { t } = useTranslation();
   const toastMsg = useAppToast();
-  const { data, refetch } = useFetchData(
-    {
-      studentClasses: () => getStudentClasses() as Promise<StudentClasseI[]>,
-      students: () => getStudents() as Promise<StudentI[]>,
-      studentAtts: () =>
-        getStudentAttendances() as Promise<StudentAttendanceI[]>,
-      leads: () => getLeads() as Promise<LeadI[]>,
-      classes: () => getClasses() as Promise<ClasseI[]>,
-    },
-    [],
-  );
-
-  const studentClasses = useMemo(
-    () => data?.studentClasses || [],
-    [data?.studentClasses],
-  );
-  const students = useMemo(() => data?.students || [], [data?.students]);
-  const studentAtts = useMemo(
-    () => data?.studentAtts || [],
-    [data?.studentAtts],
-  );
-  const leads = useMemo(() => data?.leads || [], [data?.leads]);
-  const classes = useMemo(() => data?.classes || [], [data?.classes]);
-
   const [selectedClassId, setSelectedClassId] = useState<number | undefined>(
     undefined,
   );
@@ -203,6 +178,35 @@ export default function StudentAttendance() {
     new Date().toISOString().slice(0, 10),
   );
   const [attendance, setAttendance] = useState<AttendanceMap>({});
+
+  const { data, refetch } = useFetchData(
+    {
+      studentClasses: () => getStudentClasses(selectedClassId),
+      students: () => getStudents(),
+      studentAtts: () => getStudentAttendances(),
+      leads: () => getLeads(),
+      classes: () => getClasses(),
+    },
+    [selectedClassId],
+  );
+
+  const studentClasses = useMemo(
+    () => data?.studentClasses.items || [],
+    [data?.studentClasses.items],
+  );
+  const students = useMemo(
+    () => data?.students.items || [],
+    [data?.students.items],
+  );
+  const leads = useMemo(() => data?.leads.items || [], [data?.leads.items]);
+  const studentAtts = useMemo(
+    () => data?.studentAtts.items || [],
+    [data?.studentAtts.items],
+  );
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
 
   useEffect(() => {
     if (selectedClassId === undefined && classes.length > 0) {
@@ -216,17 +220,9 @@ export default function StudentAttendance() {
     [classes, selectedClassId],
   );
 
-  const filteredStudentClasses = useMemo(
-    () =>
-      studentClasses.filter(
-        (sc) => Number(sc.classId) === Number(selectedClassId),
-      ),
-    [studentClasses, selectedClassId],
-  );
-
   const { handleSave, markDirty, setHasExistingRecords, setDirtyIds } =
     useAttendanceSave({
-      items: filteredStudentClasses,
+      items: studentClasses,
       getItemId: (sc) => Number(sc.id),
       buildRecord: (sc) => ({
         studentId: Number(sc.studentId),
@@ -241,12 +237,12 @@ export default function StudentAttendance() {
     });
 
   useEffect(() => {
-    if (!selectedClassId || filteredStudentClasses.length === 0) return;
+    if (!selectedClassId || studentClasses.length === 0) return;
 
     const newMap: AttendanceMap = {};
     let hasRecords = false;
 
-    filteredStudentClasses.forEach((sc) => {
+    studentClasses.forEach((sc) => {
       const studentClasseId = Number(sc.id);
 
       const existingRecord = studentAtts.find(
@@ -274,7 +270,7 @@ export default function StudentAttendance() {
   }, [
     selectedClassId,
     attendanceDate,
-    filteredStudentClasses,
+    studentClasses,
     studentAtts,
     setHasExistingRecords,
     setDirtyIds,
@@ -304,7 +300,7 @@ export default function StudentAttendance() {
         students,
         leads,
         classes,
-        rows: filteredStudentClasses,
+        rows: studentClasses,
         attendance,
         t,
         onAttendanceChange: handleAttendanceChange,
@@ -313,7 +309,7 @@ export default function StudentAttendance() {
       students,
       leads,
       classes,
-      filteredStudentClasses,
+      studentClasses,
       attendance,
       t,
       handleAttendanceChange,
@@ -377,9 +373,9 @@ export default function StudentAttendance() {
         <div className="mt-4">
           <Table
             columns={columns}
-            rows={filteredStudentClasses}
+            rows={studentClasses}
             emptyMessage="studentClassePage.emptyStudents"
-            height="max-h-[calc(100vh-340px)]"
+            height="max-h-[calc(100vh-310px)]"
           />
         </div>
       </CardBase>

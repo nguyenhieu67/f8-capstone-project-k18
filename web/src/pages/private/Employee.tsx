@@ -5,7 +5,7 @@ import { CardBase } from "@/components/Card";
 import { ConfirmDeleteDialog, EmployeeDialog } from "@/components/Dialogs";
 import { UserPlusIcon } from "@/components/Icons";
 import Table from "@/components/Table";
-import { useFetchData, useTableActions } from "@/hooks";
+import { useFetchData, usePagination, useTableActions } from "@/hooks";
 import { deleteEmployee, getEmployees } from "@/services/employee";
 import { formatCurrency } from "@/utils/format";
 import type { EmployeeI, EmployeeRole } from "@/types/database";
@@ -56,10 +56,15 @@ const getColumns = (): ColumnI<EmployeeI>[] => [
 ];
 
 export default function Employee() {
-  const { data: employees, refetch } = useFetchData(
-    () => getEmployees() as Promise<EmployeeI[]>,
-    [],
+  const { page, limit, onPageChange, onLimitChange } = usePagination(10);
+
+  const { data, refetch } = useFetchData(
+    () => getEmployees(page, limit),
+    [page, limit],
   );
+
+  const employees = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const actions = useTableActions<EmployeeI>(
     refetch,
@@ -88,10 +93,15 @@ export default function Employee() {
         <CardBase>
           <Table<EmployeeI>
             columns={columns}
-            rows={employees || []}
-            height="max-h-[calc(100vh-260px)]"
-            onEdit={(row) => actions.handleOpenEdit(employees || [], row)}
+            rows={employees}
+            height="max-h-[calc(100vh-320px)]"
+            onEdit={(row) => actions.handleOpenEdit(employees, row)}
             onDelete={actions.handleOpenDelete}
+            page={page}
+            limit={limit}
+            total={total}
+            onPageChange={onPageChange}
+            onLimitChange={onLimitChange}
           />
         </CardBase>
         <EmployeeDialog

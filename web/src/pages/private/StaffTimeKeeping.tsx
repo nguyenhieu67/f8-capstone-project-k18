@@ -5,26 +5,26 @@ import { CardBase } from "@/components/Card";
 import Table from "@/components/Table";
 import { InputField, SelectField } from "@/components/Form";
 import { CheckDoubleIcon } from "@/components/Icons";
-import { useAppToast, useAttendanceSave, useFetchData } from "@/hooks";
+import {
+  useAppToast,
+  useAttendanceSave,
+  useFetchData,
+  usePagination,
+} from "@/hooks";
 import { getEmployees } from "@/services/employee";
 import {
   getStaffAttendanceByDate,
   saveStaffAttendance,
 } from "@/services/employee";
-import type { EmployeeI, EmployeeRole } from "@/types/database";
+import type {
+  EmployeeI,
+  EmployeeRole,
+  StaffAttendanceI,
+  StaffAttendanceStatus,
+} from "@/types/database";
 import type { ColumnI } from "@/types/table";
 import { EMPLOYEE_ROLE } from "@/constants/employeeRole";
 import { StatusBadge } from "@/components/ui";
-
-export type AttendanceStatus = "present" | "late" | "absent" | "leave";
-
-export interface AttendanceRecordI {
-  employeeId: number;
-  date: string;
-  status: AttendanceStatus;
-  checkInTime?: string | null;
-  note?: string | null;
-}
 
 const STATUS_OPTIONS = [
   { label: "staffTimeKeepingPage.status.present", value: "present" },
@@ -33,22 +33,24 @@ const STATUS_OPTIONS = [
   { label: "staffTimeKeepingPage.status.leave", value: "leave" },
 ];
 
-const isOffStatus = (status: AttendanceStatus) =>
+const isOffStatus = (status: StaffAttendanceStatus) =>
   status === "absent" || status === "leave";
 
 export default function StaffAttendance() {
   const toastMsg = useAppToast();
+  const { page, limit, onPageChange, onLimitChange } = usePagination(10);
 
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
   const [selectedDate, setSelectedDate] = useState<string>(today);
 
-  const { data: employees, refetch } = useFetchData(
-    () => getEmployees() as Promise<EmployeeI[]>,
-    [],
+  const { data, refetch } = useFetchData(
+    () => getEmployees(page, limit),
+    [page, limit],
   );
+  const employees = useMemo(() => data?.items || [], [data?.items]);
 
   const [attendanceMap, setAttendanceMap] = useState<
-    Record<number, AttendanceRecordI>
+    Record<number, StaffAttendanceI>
   >({});
 
   const validEmployees = useMemo(
@@ -58,14 +60,15 @@ export default function StaffAttendance() {
       ),
     [employees],
   );
+  const total = data?.total ?? 0;
 
   // Build payload cho 1 nhân viên — bỏ checkInTime nếu status là absent/leave
   const buildRecord = useCallback(
-    (employeeId: number): AttendanceRecordI => {
+    (employeeId: number): StaffAttendanceI => {
       const currentData = attendanceMap[employeeId];
-      const status: AttendanceStatus = currentData?.status || "present";
+      const status: StaffAttendanceStatus = currentData?.status || "present";
 
-      const record: AttendanceRecordI = {
+      const record: StaffAttendanceI = {
         employeeId,
         date: selectedDate,
         status,
@@ -98,15 +101,16 @@ export default function StaffAttendance() {
 
     async function fetchAttendance() {
       try {
-        const records = (await getStaffAttendanceByDate(selectedDate)) as
-          AttendanceRecordI[] | undefined;
+        const records = (await getStaffAttendanceByDate(
+          selectedDate,
+        )) as unknown as StaffAttendanceI[] | undefined;
 
-        const map: Record<number, AttendanceRecordI> = {};
+        const map: Record<number, StaffAttendanceI> = {};
 
         employees?.forEach((emp) => {
           if (!emp.id) return;
           const existing = records?.find(
-            (r: AttendanceRecordI) => Number(r.employeeId) === emp.id,
+            (r: StaffAttendanceI) => Number(r.employeeId) === emp.id,
           );
 
           map[emp.id] = existing ?? {
@@ -132,7 +136,7 @@ export default function StaffAttendance() {
   const handleRecordChange = useCallback(
     (
       employeeId: number,
-      field: keyof Omit<AttendanceRecordI, "employeeId" | "date">,
+      field: keyof Omit<StaffAttendanceI, "employeeId" | "date">,
       value: string,
     ) => {
       setAttendanceMap((prev) => ({
@@ -190,6 +194,7 @@ export default function StaffAttendance() {
                 label=""
                 options={STATUS_OPTIONS}
                 value={record?.status || "present"}
+                size="sm"
                 onChange={(evt) =>
                   handleRecordChange(e.id!, "status", evt.target.value)
                 }
@@ -213,6 +218,7 @@ export default function StaffAttendance() {
                 name="checkInTime"
                 type="time"
                 value={isOff ? "" : record?.checkInTime || "08:00"}
+                size="sm"
                 disabled={isOff}
                 onChange={(evt) =>
                   handleRecordChange(e.id!, "checkInTime", evt.target.value)
@@ -234,6 +240,7 @@ export default function StaffAttendance() {
               id={`note-${e.id}`}
               name="note"
               placeholder="staffTimeKeepingPage.notePlaceholder"
+              size="sm"
               value={record?.note || ""}
               onChange={(evt) =>
                 handleRecordChange(e.id!, "note", evt.target.value)
@@ -275,7 +282,12 @@ export default function StaffAttendance() {
         <Table<EmployeeI>
           columns={columns}
           rows={employees || []}
-          height="max-h-[calc(100vh-260px)]"
+          height="max-h-[calc(100vh-320px)]"
+          page={page}
+          limit={limit}
+          total={total}
+          onPageChange={onPageChange}
+          onLimitChange={onLimitChange}
         />
       </CardBase>
     </div>

@@ -25,6 +25,16 @@ export interface EmployeeI {
   dependents: number;
 }
 
+export type StaffAttendanceStatus = "present" | "late" | "absent" | "leave";
+
+export interface StaffAttendanceI {
+  id?: number;
+  employeeId: number | string;
+  date: Date | string;
+  status: StaffAttendanceStatus;
+  checkInTime?: string | null;
+  note?: string;
+}
 // Source
 export type SourceStatus = "active" | "inactive";
 export interface SourceI {

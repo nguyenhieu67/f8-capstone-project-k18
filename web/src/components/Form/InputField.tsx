@@ -1,10 +1,14 @@
 import { useTranslation } from "react-i18next";
-import { FormGroup } from "./FormGroup";
+import { FormGroup, SIZE_STYLES } from "./FormGroup";
 
-export interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputFieldProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   label: string;
   icon?: React.ReactNode;
   error?: string;
+  size?: "sm" | "md";
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -13,6 +17,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   id,
   placeholder,
   error,
+  size = "md",
   className = "",
   ...props
 }) => {
@@ -34,7 +39,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           placeholder={t(placeholder || "")}
           className={`block w-full ${
             icon ? "pl-10" : "px-3"
-          } bg-crm-surface text-crm-heading-text placeholder:text-crm-label-text/60 rounded-xl border py-2.5 pr-3 text-sm transition-colors focus:ring-1 focus:outline-none ${borderStyles} ${className}`}
+          } bg-crm-surface text-crm-heading-text placeholder:text-crm-label-text/60 rounded-xl border pr-3 transition-colors focus:ring-1 focus:outline-none ${SIZE_STYLES[size]} ${borderStyles} ${className}`}
           {...props}
         />
       </div>

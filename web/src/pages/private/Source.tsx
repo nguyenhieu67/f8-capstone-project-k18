@@ -22,10 +22,8 @@ const ICON_OPTIONS = {
 };
 
 export default function Source() {
-  const { data: sources, refetch } = useFetchData(
-    () => getSources() as Promise<SourceI[]>,
-    [],
-  );
+  const { data, refetch } = useFetchData(() => getSources(), []);
+  const sources = data?.items ?? [];
 
   const actions = useTableActions<SourceI>(
     refetch,

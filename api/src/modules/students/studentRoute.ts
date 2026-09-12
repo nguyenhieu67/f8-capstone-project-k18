@@ -9,7 +9,7 @@ import studentAttendanceController from "./studentAttendance/StudentAttendanceCo
 const router = express.Router();
 
 // Student Classe
-router.get("/student-classes", studentClasseController.getList);
+router.get("/student-classes", studentClasseController.getListByField("classId"));
 
 // Student Attendance
 router.get("/student-attendance", studentAttendanceController.getList);

@@ -24,7 +24,17 @@ export abstract class BaseController {
   getList = async (req: Request, res: Response) => {
     const sortBy = (req.query.sortBy as string) || "id";
     const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
-    res.success(this.serializeList(await this.service.getList({}, sortBy, sortOrder)));
+    const page = req.query.page ? Number(req.query.page) : undefined;
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+
+    const { data, total } = await this.service.getList({}, sortBy, sortOrder, page, limit);
+
+    res.success({
+      items: this.serializeList(data),
+      total,
+      page: page ?? 1,
+      limit: limit ?? total,
+    });
   };
 
   getListByField =
@@ -35,8 +45,16 @@ export abstract class BaseController {
 
       const sortBy = (req.query.sortBy as string) || "id";
       const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "ASC";
+      const page = req.query.page ? Number(req.query.page) : undefined;
+      const limit = req.query.limit ? Number(req.query.limit) : undefined;
+      const { data, total } = await this.service.getList(condition, sortBy, sortOrder, page, limit);
 
-      res.success(this.serializeList(await this.service.getList(condition, sortBy, sortOrder)));
+      res.success({
+        items: this.serializeList(data),
+        total,
+        page: page ?? 1,
+        limit: limit ?? total,
+      });
     };
 
   getOne = async (req: Request, res: Response) => {
