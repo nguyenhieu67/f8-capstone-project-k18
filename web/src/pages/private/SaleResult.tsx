@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { CardBase } from "@/components/Card";
 import Table from "@/components/Table";
-import { useFetchData } from "@/hooks";
+import { useFetchData, usePagination } from "@/hooks";
 import { getClasses } from "@/services/classe";
 import { getLeads } from "@/services/lead";
 import { getSources } from "@/services/source";
@@ -73,12 +73,18 @@ const getColumns = (
         const lead = getLeadOf(sc);
 
         return (
-          <div>
-            <span>{lead?.purpose ?? ""}</span>
-            <span className="block text-xs text-slate-500">
-              {lead?.who ?? ""}
-            </span>
-          </div>
+          <>
+            {lead?.purpose && lead.who ? (
+              <>
+                <span>{lead?.purpose ?? ""}</span>
+                <span className="block text-xs text-slate-500">
+                  {lead?.who ?? ""}
+                </span>
+              </>
+            ) : (
+              <span className="text-crm-danger font-medium">-----</span>
+            )}
+          </>
         );
       },
     },
@@ -113,27 +119,41 @@ const getColumns = (
 };
 
 export default function SaleResult() {
+  const { page, limit, onPageChange, onLimitChange } = usePagination(10);
   const { data } = useFetchData(
     {
-      studentClasses: () => getStudentClasses() as Promise<StudentClasseI[]>,
-      students: () => getStudents() as Promise<StudentI[]>,
-      employees: () => getEmployees() as Promise<EmployeeI[]>,
-      leads: () => getLeads() as Promise<LeadI[]>,
-      sources: () => getSources() as Promise<SourceI[]>,
-      classes: () => getClasses() as Promise<ClasseI[]>,
+      studentClasses: () => getStudentClasses(page, limit),
+      students: () => getStudents(),
+      employees: () => getEmployees(),
+      leads: () => getLeads(),
+      sources: () => getSources(),
+      classes: () => getClasses(),
     },
-    [],
+    [page, limit],
   );
 
   const studentClasses = useMemo(
-    () => data?.studentClasses || [],
-    [data?.studentClasses],
+    () => data?.studentClasses.items || [],
+    [data?.studentClasses.items],
   );
-  const students = useMemo(() => data?.students || [], [data?.students]);
-  const leads = useMemo(() => data?.leads || [], [data?.leads]);
-  const employees = useMemo(() => data?.employees || [], [data?.employees]);
-  const sources = useMemo(() => data?.sources || [], [data?.sources]);
-  const classes = useMemo(() => data?.classes || [], [data?.classes]);
+  const total = data?.studentClasses.total ?? 0;
+  const students = useMemo(
+    () => data?.students.items || [],
+    [data?.students.items],
+  );
+  const leads = useMemo(() => data?.leads.items || [], [data?.leads.items]);
+  const employees = useMemo(
+    () => data?.employees.items || [],
+    [data?.employees.items],
+  );
+  const sources = useMemo(
+    () => data?.sources.items || [],
+    [data?.sources.items],
+  );
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
 
   const columns = useMemo(
     () => getColumns(students, leads, sources, classes, employees),
@@ -152,7 +172,12 @@ export default function SaleResult() {
         <Table
           columns={columns}
           rows={studentClasses}
-          height="max-h-[calc(100vh-290px)]"
+          height="max-h-[calc(100vh-340px)]"
+          page={page}
+          limit={limit}
+          total={total}
+          onPageChange={onPageChange}
+          onLimitChange={onLimitChange}
         />
       </CardBase>
     </>

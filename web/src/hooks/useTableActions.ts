@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
+import useAppToast from "./useAppToast";
 
 export default function useTableActions<T extends { id?: number | string }>(
   fetchDataList: () => void | Promise<void>,
@@ -11,6 +12,8 @@ export default function useTableActions<T extends { id?: number | string }>(
   const [deleteId, setDeleteId] = useState<number | string | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const toastMsg = useAppToast();
 
   // --- Handlers (Create / Edit) ---
   const handleOpenCreate = () => {
@@ -51,6 +54,7 @@ export default function useTableActions<T extends { id?: number | string }>(
     setDeleteLoading(true);
     try {
       await deleteApi?.(deleteId);
+      toastMsg.error("Đã xoá thành công!!!");
       handleCloseDelete();
       await fetchDataList();
     } catch (error) {

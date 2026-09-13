@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Button from "@/components/Button";
 import { CardBase } from "@/components/Card";
 import { ConfirmDeleteDialog, LeadDialog } from "@/components/Dialogs";
 import { PlusIcon } from "@/components/Icons";
 import Table from "@/components/Table";
 import { StatusBadge } from "@/components/ui";
-import { useFetchData, useTableActions } from "@/hooks";
+import { useFetchData, usePagination, useTableActions } from "@/hooks";
 import { getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
 import { deleteLead, getLeads } from "@/services/lead";
@@ -66,12 +65,14 @@ const getColumns = (
   {
     value: "learningPurpose",
     text: "common.tableHeader.learningPurpose",
-    render: (l) => l.purpose,
+    render: (l) =>
+      l.purpose ?? <span className="text-crm-danger font-medium">-----</span>,
   },
   {
     value: "targetAudience",
     text: "common.tableHeader.targetAudience",
-    render: (l) => l.who,
+    render: (l) =>
+      l.who ?? <span className="text-crm-danger font-medium">-----</span>,
   },
   {
     value: "assignedSeller",
@@ -106,7 +107,7 @@ const getColumns = (
     text: "common.tableHeader.rejectionReason",
     render: (l) => (
       <span className="text-crm-danger font-medium">
-        {l.rejectionReason === "" ? "-----" : l.rejectionReason}
+        {l.rejectionReason ?? "-----"}
       </span>
     ),
   },
@@ -114,20 +115,31 @@ const getColumns = (
 ];
 
 export default function PreSale() {
+  const { page, limit, onPageChange, onLimitChange } = usePagination(10);
   const { data, refetch } = useFetchData(
     {
-      leads: () => getLeads() as Promise<LeadI[]>,
-      sources: () => getSources() as Promise<SourceI[]>,
-      employees: () => getEmployees() as Promise<EmployeeI[]>,
-      classes: () => getClasses() as Promise<ClasseI[]>,
+      leads: () => getLeads(page, limit),
+      sources: () => getSources(),
+      employees: () => getEmployees(),
+      classes: () => getClasses(),
     },
-    [],
+    [page, limit],
   );
 
-  const leads: LeadI[] = data?.leads || [];
-  const sources: SourceI[] = data?.sources || [];
-  const employees: EmployeeI[] = data?.employees || [];
-  const classes: ClasseI[] = data?.classes || [];
+  const leads = useMemo(() => data?.leads.items || [], [data?.leads.items]);
+  const total = data?.leads.total ?? 0;
+  const sources = useMemo(
+    () => data?.sources.items || [],
+    [data?.sources.items],
+  );
+  const employees = useMemo(
+    () => data?.employees.items || [],
+    [data?.employees.items],
+  );
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
 
   const actions = useTableActions<LeadI>(
     refetch,
@@ -161,9 +173,14 @@ export default function PreSale() {
           <Table<LeadI>
             columns={columns}
             rows={leads}
-            height="max-h-[calc(100vh-280px)]"
+            height="max-h-[calc(100vh-300px)]"
             onEdit={(row) => actions.handleOpenEdit(leads || [], row)}
             onDelete={actions.handleOpenDelete}
+            page={page}
+            limit={limit}
+            total={total}
+            onPageChange={onPageChange}
+            onLimitChange={onLimitChange}
           />
           <LeadDialog
             isOpen={actions.isFormOpen}

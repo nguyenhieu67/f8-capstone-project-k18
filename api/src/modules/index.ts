@@ -2,6 +2,7 @@
 export * from "./auth/entities";
 export * from "./classes/ClasseEntity";
 export * from "./employees/EmployeeEntity";
+export * from "./employees/staffAttendance/StaffAttendanceEntity";
 export * from "./leads/LeadEntity";
 export * from "./sources/SourceEntity";
 export * from "./students/StudentEntity";

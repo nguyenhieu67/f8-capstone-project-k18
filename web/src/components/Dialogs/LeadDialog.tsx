@@ -3,7 +3,7 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createLead, updateLead } from "@/services/lead";
-import { useForm } from "@/hooks";
+import { useAppToast, useForm } from "@/hooks";
 import type { LeadI, EmployeeI, SourceI, ClasseI } from "@/types/database";
 
 interface LeadDialogProps {
@@ -50,6 +50,7 @@ export default function LeadDialog({
   const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
     numberFields: ["sellerId", "sourceId"],
   });
+  const toastMsg = useAppToast();
 
   const isEdit = Boolean(initialData?.id);
 
@@ -94,17 +95,27 @@ export default function LeadDialog({
         sellerId: formData.sellerId ? Number(formData.sellerId) : undefined,
         sourceId: formData.sourceId ? Number(formData.sourceId) : undefined,
         classeId: formData.classeId ? Number(formData.classeId) : undefined,
+        purpose: formData.purpose ? formData.purpose : null,
+        who: formData.who ? formData.who : null,
+        rejectionReason: formData.rejectionReason
+          ? formData.rejectionReason
+          : null,
       };
 
       if (isEdit && formData.id) {
         await updateLead(formData.id, payload);
+        toastMsg.success(
+          `Cập nhật thành công PreSale với tên là: ${formData.fullName}.`,
+        );
       } else {
         await createLead(payload);
+        toastMsg.success("Tạo thành công PreSale mới.");
       }
       onSuccess?.();
       onClose();
     } catch (error) {
       console.error("Failed to save lead:", error);
+      toastMsg.error((error as Error).message);
     } finally {
       setLoading(false);
     }

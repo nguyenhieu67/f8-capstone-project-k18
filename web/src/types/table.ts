@@ -9,4 +9,11 @@ interface RowI {
   id?: number | string;
 }
 
-export type { ColumnI, RowI };
+interface PaginatedResultI<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export type { ColumnI, RowI, PaginatedResultI };

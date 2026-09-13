@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FormGroup } from "./FormGroup";
+import { FormGroup, SIZE_STYLES } from "./FormGroup";
 import { ChevronUpIcon } from "../Icons";
 import { useClickOutside } from "@/hooks";
 
@@ -18,6 +18,7 @@ export interface SelectFieldProps {
   onChange?: (e: { target: { name?: string; value: string } }) => void;
   error?: string;
   required?: boolean;
+  size?: "sm" | "md";
   className?: string;
 }
 
@@ -29,21 +30,30 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   value,
   onChange,
   error,
+  size = "md",
   className = "",
 }) => {
   const { t } = useTranslation();
   const { isOpen, setIsOpen, ref } = useClickOutside();
+  const [openUpward, setOpenUpward] = useState<boolean>(false);
   const selectedItemRef = useRef<HTMLDivElement>(null);
 
-  // Tìm option hiện tại đang được chọn
   const selectedOption =
     options.find((opt) => opt.value === value) || options[0];
 
   useEffect(() => {
-    if (isOpen && selectedItemRef.current) {
-      selectedItemRef.current.scrollIntoView({ block: "nearest" });
+    if (isOpen && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const dropdownHeight = 200;
+
+      if (spaceBelow < dropdownHeight) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, ref]);
 
   const handleSelect = (optionValue: string) => {
     if (onChange) {
@@ -63,12 +73,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         ref={ref as React.RefObject<HTMLDivElement>}
         className="relative w-full"
       >
-        {/* Dropdown Trigger Button */}
         <button
           type="button"
           id={id}
           onClick={() => setIsOpen(!isOpen)}
-          className={`bg-crm-surface text-crm-heading-text border-crm-border focus:border-crm-primary focus:ring-crm-primary flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-sm transition-all focus:ring-1 focus:outline-none ${className}`}
+          className={`bg-crm-surface text-crm-heading-text border-crm-border focus:border-crm-primary focus:ring-crm-primary flex w-full items-center justify-between rounded-xl border px-3 transition-all focus:ring-1 focus:outline-none ${SIZE_STYLES[size]} ${className}`}
         >
           <span className="truncate">
             {selectedOption ? t(selectedOption.label) : ""}
@@ -80,9 +89,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           />
         </button>
 
-        {/* Options Menu Popover */}
         {isOpen && (
-          <div className="bg-crm-surface border-crm-border absolute top-[calc(100%+4px)] left-0 z-50 max-h-60 w-full overflow-y-auto rounded-xl border py-1 shadow-lg">
+          <div
+            className={`bg-crm-surface border-crm-border absolute left-0 z-50 max-h-60 w-full overflow-y-auto rounded-xl border py-1 shadow-lg ${
+              openUpward ? "bottom-[calc(100%+4px)]" : "top-[calc(100%+4px)]"
+            }`}
+          >
             {options.map((opt) => {
               const isSelected = opt.value === value;
               return (

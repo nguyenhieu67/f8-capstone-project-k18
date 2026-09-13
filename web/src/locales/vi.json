@@ -431,5 +431,14 @@
       "absent": "Vắng"
     },
     "notePlaceholder": "Ghi chú (đi trễ, nghỉ có phép)..."
+  },
+  "staffTimeKeepingPage": {
+    "status": {
+      "present": "Đi làm",
+      "late": "Đi muộn",
+      "absent": "Vắng mặt",
+      "leave": "Nghỉ phép"
+    },
+    "notePlaceholder": "Nhập ghi chú..."
   }
 }

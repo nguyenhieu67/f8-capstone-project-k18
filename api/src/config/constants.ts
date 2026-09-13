@@ -10,6 +10,7 @@ const constants = {
     unauthorized: 401,
     forbidden: 403,
     notFound: 404,
+    gone: 410,
     conffict: 409,
     unprocessableContent: 422,
     tooManyRequsets: 429,

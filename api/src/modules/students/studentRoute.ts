@@ -8,11 +8,17 @@ import studentAttendanceController from "./studentAttendance/StudentAttendanceCo
 
 const router = express.Router();
 
+// Student Classe
+router.get("/student-classes", studentClasseController.getListByField("classId"));
+
+// Student Attendance
+router.get("/student-attendance", studentAttendanceController.getList);
+router.post("/student-attendance", studentAttendanceController.saveSessionAttendance);
+
+// Student
 router.get("/", studentController.getList);
-router.get("/student-classes", studentClasseController.getList);
 router.get("/:id", studentController.getOne);
 router.post("/", ValidationPipe(StudentCreateDto), studentController.create);
-router.post("/student-attendance", studentAttendanceController.saveSessionAttendance);
 router.put("/:id", ValidationPipe(StudentUpdateDto), studentController.update);
 router.delete("/:id", studentController.delete);
 

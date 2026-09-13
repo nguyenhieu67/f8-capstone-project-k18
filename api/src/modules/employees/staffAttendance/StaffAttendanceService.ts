@@ -1,35 +1,39 @@
+// StaffAttendanceService.ts
 import { BaseService } from "@/common";
-import { StudentAttendanceEntity } from "./StudentAttendanceEntity";
+import { StaffAttendanceEntity } from "./StaffAttendanceEntity";
 
-class StudentAttendanceService extends BaseService {
+class StaffAttendanceService extends BaseService {
   async saveSessionAttendance(data: any[], userId: number) {
     const results = [];
     let hasAnyChanges = false;
 
     for (const item of data) {
       const existing = (await this.findOneBy({
-        classId: item.classId,
-        studentId: item.studentId,
+        employeeId: item.employeeId,
         date: item.date,
-      })) as StudentAttendanceEntity | null;
+      })) as StaffAttendanceEntity | null;
 
       if (!existing) {
         const newRecord = await this.create({
-          classId: item.classId,
-          studentId: item.studentId,
+          employeeId: item.employeeId,
           date: item.date,
           status: item.status,
+          checkInTime: item.checkInTime,
           note: item.note,
           createdBy: userId,
         });
         results.push(newRecord);
         hasAnyChanges = true;
       } else {
-        const isChanged = existing.status !== item.status || (existing.note || "") !== (item.note || "");
+        const isChanged =
+          existing.status !== item.status ||
+          existing.checkInTime !== item.checkInTime ||
+          (existing.note || "") !== (item.note || "");
 
         if (isChanged) {
           await this.updateById(existing.id, {
             status: item.status,
+            checkInTime: item.checkInTime,
             note: item.note,
             updatedBy: userId,
             updatedAt: new Date(),
@@ -48,4 +52,4 @@ class StudentAttendanceService extends BaseService {
   }
 }
 
-export default new StudentAttendanceService(StudentAttendanceEntity);
+export default new StaffAttendanceService(StaffAttendanceEntity);

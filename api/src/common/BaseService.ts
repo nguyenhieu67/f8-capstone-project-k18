@@ -51,11 +51,17 @@ export abstract class BaseService {
     return query.where(this.applyActiveCondition(condition));
   }
 
-  async getList(condition = {}, sortBy = "id", sortOrder: "ASC" | "DESC" = "ASC") {
+  async getList(condition = {}, sortBy = "id", sortOrder: "ASC" | "DESC" = "ASC", page?: number, limit?: number) {
     let query = this.handleSelect();
     query = this.handleFind(query, condition);
     query = query.orderBy(`${this.getTableName()}.${sortBy}`, sortOrder);
-    return await query.getMany();
+
+    if (page && limit) {
+      query = query.skip((page - 1) * limit).take(limit);
+    }
+
+    const [data, total] = await query.getManyAndCount();
+    return { data, total, page: page ?? 1, limit: limit ?? total };
   }
 
   async getById(id: number) {
@@ -104,7 +110,6 @@ export abstract class BaseService {
         .execute();
 
       const insertedIds = query.identifiers.map((identifier) => identifier.id);
-
       return repo.findBy({ id: In(insertedIds) } as any);
     });
   }

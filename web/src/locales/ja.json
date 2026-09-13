@@ -431,5 +431,14 @@
       "absent": "欠席"
     },
     "notePlaceholder": "備考（遅刻、公休など）..."
+  },
+  "staffTimeKeepingPage": {
+    "status": {
+      "present": "出勤",
+      "late": "遅刻",
+      "absent": "欠勤",
+      "leave": "休暇"
+    },
+    "notePlaceholder": "備考を入力..."
   }
 }

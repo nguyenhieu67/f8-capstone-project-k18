@@ -3,10 +3,11 @@ import { CardBase } from "@/components/Card";
 import { SelectField } from "@/components/Form";
 import { SaveIcon } from "@/components/Icons";
 import Table from "@/components/Table";
-import { useFetchData } from "@/hooks";
+import { useAppToast, useAttendanceSave, useFetchData } from "@/hooks";
 import { getClasses } from "@/services/classe";
 import { getLeads } from "@/services/lead";
 import {
+  getStudentAttendances,
   getStudentClasses,
   getStudents,
   saveStudentAttendance,
@@ -39,8 +40,11 @@ interface GetColumnsParams {
   rows: StudentClasseI[];
   attendance: AttendanceMap;
   t: (text: string) => string;
-  onStatusChange: (studentClasseId: number, status: AttendanceStatus) => void;
-  onNoteChange: (studentClasseId: number, note: string) => void;
+  onAttendanceChange: <K extends keyof AttendanceEntry>(
+    studentClasseId: number,
+    field: K,
+    value: AttendanceEntry[K],
+  ) => void;
 }
 
 const getColumns = ({
@@ -50,8 +54,7 @@ const getColumns = ({
   rows,
   attendance,
   t,
-  onStatusChange,
-  onNoteChange,
+  onAttendanceChange,
 }: GetColumnsParams) => {
   const getLeadOf = (sc: StudentClasseI) => {
     const student = students.find((s) => s.id === Number(sc.studentId));
@@ -113,7 +116,9 @@ const getColumns = ({
                 name={`att-${sc.id}`}
                 value="present"
                 checked={entry.status === "present"}
-                onChange={() => onStatusChange(studentClasseId, "present")}
+                onChange={() =>
+                  onAttendanceChange(studentClasseId, "status", "present")
+                }
                 className="hidden"
               />
               {t("studentClassePage.status.present")}
@@ -130,7 +135,9 @@ const getColumns = ({
                 name={`att-${sc.id}`}
                 value="absent"
                 checked={entry.status === "absent"}
-                onChange={() => onStatusChange(studentClasseId, "absent")}
+                onChange={() =>
+                  onAttendanceChange(studentClasseId, "status", "absent")
+                }
                 className="hidden"
               />
               {t("studentClassePage.status.absent")}
@@ -149,7 +156,9 @@ const getColumns = ({
           <input
             type="text"
             value={entry.note}
-            onChange={(e) => onNoteChange(studentClasseId, e.target.value)}
+            onChange={(e) =>
+              onAttendanceChange(studentClasseId, "note", e.target.value)
+            }
             className="w-full rounded-lg border border-slate-200 p-2 text-xs focus:outline-none"
             placeholder={t("studentClassePage.notePlaceholder")}
           />
@@ -161,24 +170,7 @@ const getColumns = ({
 
 export default function StudentAttendance() {
   const { t } = useTranslation();
-  const { data } = useFetchData(
-    {
-      studentClasses: () => getStudentClasses() as Promise<StudentClasseI[]>,
-      students: () => getStudents() as Promise<StudentI[]>,
-      leads: () => getLeads() as Promise<LeadI[]>,
-      classes: () => getClasses() as Promise<ClasseI[]>,
-    },
-    [],
-  );
-
-  const studentClasses = useMemo(
-    () => data?.studentClasses || [],
-    [data?.studentClasses],
-  );
-  const students = useMemo(() => data?.students || [], [data?.students]);
-  const leads = useMemo(() => data?.leads || [], [data?.leads]);
-  const classes = useMemo(() => data?.classes || [], [data?.classes]);
-
+  const toastMsg = useAppToast();
   const [selectedClassId, setSelectedClassId] = useState<number | undefined>(
     undefined,
   );
@@ -186,6 +178,35 @@ export default function StudentAttendance() {
     new Date().toISOString().slice(0, 10),
   );
   const [attendance, setAttendance] = useState<AttendanceMap>({});
+
+  const { data, refetch } = useFetchData(
+    {
+      studentClasses: () => getStudentClasses(selectedClassId),
+      students: () => getStudents(),
+      studentAtts: () => getStudentAttendances(),
+      leads: () => getLeads(),
+      classes: () => getClasses(),
+    },
+    [selectedClassId],
+  );
+
+  const studentClasses = useMemo(
+    () => data?.studentClasses.items || [],
+    [data?.studentClasses.items],
+  );
+  const students = useMemo(
+    () => data?.students.items || [],
+    [data?.students.items],
+  );
+  const leads = useMemo(() => data?.leads.items || [], [data?.leads.items]);
+  const studentAtts = useMemo(
+    () => data?.studentAtts.items || [],
+    [data?.studentAtts.items],
+  );
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
 
   useEffect(() => {
     if (selectedClassId === undefined && classes.length > 0) {
@@ -199,55 +220,79 @@ export default function StudentAttendance() {
     [classes, selectedClassId],
   );
 
-  const filteredStudentClasses = useMemo(
-    () =>
-      studentClasses.filter(
-        (sc) => Number(sc.classId) === Number(selectedClassId),
-      ),
-    [studentClasses, selectedClassId],
-  );
+  const { handleSave, markDirty, setHasExistingRecords, setDirtyIds } =
+    useAttendanceSave({
+      items: studentClasses,
+      getItemId: (sc) => Number(sc.id),
+      buildRecord: (sc) => ({
+        studentId: Number(sc.studentId),
+        classId: Number(selectedClassId),
+        date: attendanceDate,
+        status: attendance[Number(sc.id)]?.status ?? "present",
+        note: attendance[Number(sc.id)]?.note ?? "",
+      }),
+      saveFn: saveStudentAttendance,
+      onSuccess: refetch,
+      toastMsg,
+    });
 
-  const handleStatusChange = useCallback(
-    (studentClasseId: number, status: AttendanceStatus) => {
+  useEffect(() => {
+    if (!selectedClassId || studentClasses.length === 0) return;
+
+    const newMap: AttendanceMap = {};
+    let hasRecords = false;
+
+    studentClasses.forEach((sc) => {
+      const studentClasseId = Number(sc.id);
+
+      const existingRecord = studentAtts.find(
+        (sa) =>
+          Number(sa.classId) === Number(selectedClassId) &&
+          Number(sa.studentId) === Number(sc.studentId) &&
+          sa.date === attendanceDate,
+      );
+
+      if (existingRecord) {
+        hasRecords = true;
+        newMap[studentClasseId] = {
+          status: existingRecord.status || "present",
+          note: existingRecord.note || "",
+        };
+      } else {
+        newMap[studentClasseId] = { ...DEFAULT_ENTRY };
+      }
+    });
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAttendance(newMap);
+    setHasExistingRecords(hasRecords);
+    setDirtyIds(new Set());
+  }, [
+    selectedClassId,
+    attendanceDate,
+    studentClasses,
+    studentAtts,
+    setHasExistingRecords,
+    setDirtyIds,
+  ]);
+
+  const handleAttendanceChange = useCallback(
+    <K extends keyof AttendanceEntry>(
+      studentClasseId: number,
+      field: K,
+      value: AttendanceEntry[K],
+    ) => {
       setAttendance((prev) => ({
         ...prev,
         [studentClasseId]: {
           ...(prev[studentClasseId] ?? DEFAULT_ENTRY),
-          status,
+          [field]: value,
         },
       }));
+      markDirty(studentClasseId);
     },
-    [],
+    [markDirty],
   );
-
-  const handleNoteChange = useCallback(
-    (studentClasseId: number, note: string) => {
-      setAttendance((prev) => ({
-        ...prev,
-        [studentClasseId]: {
-          ...(prev[studentClasseId] ?? DEFAULT_ENTRY),
-          note,
-        },
-      }));
-    },
-    [],
-  );
-
-  const handleSaveAttendance = useCallback(async () => {
-    const payload = filteredStudentClasses.map((sc) => ({
-      studentId: Number(sc.id),
-      classId: Number(selectedClassId),
-      date: attendanceDate,
-      status: attendance[Number(sc.id)]?.status ?? "present",
-      note: attendance[Number(sc.id)]?.note ?? "",
-    }));
-
-    try {
-      await saveStudentAttendance(payload);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [filteredStudentClasses, selectedClassId, attendanceDate, attendance]);
 
   const columns = useMemo(
     () =>
@@ -255,21 +300,19 @@ export default function StudentAttendance() {
         students,
         leads,
         classes,
-        rows: filteredStudentClasses,
+        rows: studentClasses,
         attendance,
         t,
-        onStatusChange: handleStatusChange,
-        onNoteChange: handleNoteChange,
+        onAttendanceChange: handleAttendanceChange,
       }),
     [
       students,
       leads,
       classes,
-      filteredStudentClasses,
+      studentClasses,
       attendance,
       t,
-      handleStatusChange,
-      handleNoteChange,
+      handleAttendanceChange,
     ],
   );
 
@@ -314,7 +357,7 @@ export default function StudentAttendance() {
             buttonTitle="common.button.saveAttendance"
             success
             leftIcon={<SaveIcon />}
-            onClick={handleSaveAttendance}
+            onClick={handleSave}
           />
         </div>
       </CardBase>
@@ -330,9 +373,9 @@ export default function StudentAttendance() {
         <div className="mt-4">
           <Table
             columns={columns}
-            rows={filteredStudentClasses}
+            rows={studentClasses}
             emptyMessage="studentClassePage.emptyStudents"
-            height="max-h-[calc(100vh-340px)]"
+            height="max-h-[calc(100vh-310px)]"
           />
         </div>
       </CardBase>

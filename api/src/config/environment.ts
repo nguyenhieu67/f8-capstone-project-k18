@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const env = {
+  NODE_ENV: process.env.NODE_ENV || "development",
+
   // Database
   DB_HOST: process.env.DB_HOST,
   DB_PORT: process.env.DB_PORT,

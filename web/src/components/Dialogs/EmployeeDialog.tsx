@@ -3,7 +3,7 @@ import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createEmployee, updateEmployee } from "@/services/employee";
-import { useForm } from "@/hooks";
+import { useAppToast, useForm } from "@/hooks";
 import type { EmployeeI } from "@/types/database";
 
 interface EmployeeDialogProps {
@@ -41,6 +41,7 @@ export default function EmployeeDialog({
   const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
     numberFields: ["salary", "commissionRate", "dependents"],
   });
+  const toastMsg = useAppToast();
 
   const isEdit = Boolean(initialData?.id);
 
@@ -55,13 +56,18 @@ export default function EmployeeDialog({
     try {
       if (isEdit && formData.id) {
         await updateEmployee(formData.id, { ...formData });
+        toastMsg.success(
+          `Cập nhật thành công Employee với tên là: ${formData.fullName}.`,
+        );
       } else {
         await createEmployee({ ...formData });
+        toastMsg.success("Tạo thành công Employee mới.");
       }
       onSuccess?.();
       onClose();
     } catch (error) {
       console.error("Failed to save employee:", error);
+      toastMsg.error((error as Error).message);
     } finally {
       setLoading(false);
     }

@@ -5,24 +5,35 @@ import { PlusIcon } from "@/components/Icons";
 import { useFetchData, useTableActions } from "@/hooks";
 import { deleteClasse, getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
-import type { ClasseI, EmployeeI } from "@/types/database";
+import { getStudentClasses } from "@/services/students";
+import type { ClasseI } from "@/types/database";
 import { useMemo } from "react";
 
 export default function Classe() {
   const { data, refetch } = useFetchData(
     {
-      classes: () => getClasses() as Promise<ClasseI[]>,
-      employees: () => getEmployees() as Promise<EmployeeI[]>,
+      classes: () => getClasses(),
+      employees: () => getEmployees(),
+      studentClasses: () => getStudentClasses(),
     },
     [],
   );
-  const classes = data?.classes || [];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const employees = data?.employees || [];
-
   const actions = useTableActions<ClasseI>(
     refetch,
     deleteClasse as (id: string | number) => Promise<void>,
+  );
+
+  const classes = useMemo(
+    () => data?.classes.items || [],
+    [data?.classes.items],
+  );
+  const employees = useMemo(
+    () => data?.employees.items || [],
+    [data?.employees.items],
+  );
+  const studentClasses = useMemo(
+    () => data?.studentClasses.items || [],
+    [data?.studentClasses.items],
   );
   const trainers = useMemo(
     () => employees?.filter((e) => e.role === "trainer"),
@@ -45,12 +56,15 @@ export default function Classe() {
           />
         </CardBase>
       </div>
-      <div className="max-h-[calc(100vh-240px)] scrollbar-thin overflow-y-auto">
+      <div className="max-h-[calc(100vh-230px)] scrollbar-thin overflow-y-auto">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {classes?.map((classe) => {
             const trainer = trainers?.find(
               (t) => t.id === Number(classe.trainerId),
             );
+            const totalStudent = studentClasses.filter(
+              (sc) => Number(sc.classId) === Number(classe.id),
+            ).length;
             return (
               <ClassCard
                 key={classe.id}
@@ -60,6 +74,7 @@ export default function Classe() {
                 schedule={classe.schedule}
                 trainer={trainer?.fullName || ""}
                 tuition={classe.tuition}
+                totalStudents={totalStudent}
                 onClick={() => actions.handleOpenEdit(classes, classe)}
               />
             );

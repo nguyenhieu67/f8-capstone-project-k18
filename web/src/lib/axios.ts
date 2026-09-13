@@ -88,7 +88,13 @@ api.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    const serverMessage =
+      error.response?.data?.error ||
+      error.response?.data?.message ||
+      error.message ||
+      "Đã xảy ra lỗi, vui lòng thử lại!";
+
+    return Promise.reject(new Error(serverMessage));
   },
 );
 

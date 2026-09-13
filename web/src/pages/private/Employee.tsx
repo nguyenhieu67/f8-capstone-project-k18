@@ -5,29 +5,13 @@ import { CardBase } from "@/components/Card";
 import { ConfirmDeleteDialog, EmployeeDialog } from "@/components/Dialogs";
 import { UserPlusIcon } from "@/components/Icons";
 import Table from "@/components/Table";
-import { useFetchData, useTableActions } from "@/hooks";
+import { useFetchData, usePagination, useTableActions } from "@/hooks";
 import { deleteEmployee, getEmployees } from "@/services/employee";
 import { formatCurrency } from "@/utils/format";
 import type { EmployeeI, EmployeeRole } from "@/types/database";
 import type { ColumnI } from "@/types/table";
 import { StatusBadge } from "@/components/ui";
-
-const EMPLOYEE_ROLE = {
-  trainer: { label: "empPage.roles.trainer", color: "var(--crm-primary)" },
-  sale: {
-    label: "empPage.roles.sale",
-    color: "var(--crm-primary)",
-  },
-  assistant: {
-    label: "empPage.roles.assistant",
-    color: "var(--crm-primary)",
-  },
-  manager: {
-    label: "empPage.roles.manager",
-    color: "var(--crm-primary)",
-  },
-  admin: { label: "empPage.roles.admin", color: "var(--crm-primary)" },
-};
+import { EMPLOYEE_ROLE } from "@/constants/employeeRole";
 
 const getColumns = (): ColumnI<EmployeeI>[] => [
   {
@@ -45,9 +29,9 @@ const getColumns = (): ColumnI<EmployeeI>[] => [
   {
     value: "role",
     text: "common.tableHeader.role",
-    render: (l: EmployeeI) => {
-      const status = EMPLOYEE_ROLE[l.role as EmployeeRole];
-      return <StatusBadge label={status.label} color={status.color} />;
+    render: (e: EmployeeI) => {
+      const role = EMPLOYEE_ROLE[e.role as EmployeeRole];
+      return <StatusBadge label={role.label} colors="var(--crm-primary)" />;
     },
   },
   { value: "phone", text: "common.tableHeader.phone", className: "font-mono" },
@@ -72,10 +56,15 @@ const getColumns = (): ColumnI<EmployeeI>[] => [
 ];
 
 export default function Employee() {
-  const { data: employees, refetch } = useFetchData(
-    () => getEmployees() as Promise<EmployeeI[]>,
-    [],
+  const { page, limit, onPageChange, onLimitChange } = usePagination(10);
+
+  const { data, refetch } = useFetchData(
+    () => getEmployees(page, limit),
+    [page, limit],
   );
+
+  const employees = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const actions = useTableActions<EmployeeI>(
     refetch,
@@ -104,10 +93,15 @@ export default function Employee() {
         <CardBase>
           <Table<EmployeeI>
             columns={columns}
-            rows={employees || []}
-            height="max-h-[calc(100vh-260px)]"
-            onEdit={(row) => actions.handleOpenEdit(employees || [], row)}
+            rows={employees}
+            height="max-h-[calc(100vh-320px)]"
+            onEdit={(row) => actions.handleOpenEdit(employees, row)}
             onDelete={actions.handleOpenDelete}
+            page={page}
+            limit={limit}
+            total={total}
+            onPageChange={onPageChange}
+            onLimitChange={onLimitChange}
           />
         </CardBase>
         <EmployeeDialog

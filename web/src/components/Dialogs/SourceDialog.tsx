@@ -4,7 +4,7 @@ import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createSource } from "@/services/source";
 import type { SourceI } from "@/types/database";
-import { useForm } from "@/hooks";
+import { useAppToast, useForm } from "@/hooks";
 
 interface SourceDialogProps {
   isOpen: boolean;
@@ -53,6 +53,7 @@ export default function SourceDialog({
     },
   });
   const [loading, setLoading] = useState(false);
+  const toastMsg = useAppToast();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -62,8 +63,10 @@ export default function SourceDialog({
       setFormData(DEFAULT_FORM);
       onSuccess?.();
       onClose();
+      toastMsg.success("Tạo thành công Nguồn quáng cáo.");
     } catch (error) {
       console.error("Failed to save source:", error);
+      toastMsg.error((error as Error).message);
     } finally {
       setLoading(false);
     }

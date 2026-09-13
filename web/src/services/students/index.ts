@@ -1,9 +1,15 @@
 import { fetchApi } from "@/lib/api";
 import type { RequestBody } from "@/types/api";
+import type {
+  StudentAttendanceI,
+  StudentClasseI,
+  StudentI,
+} from "@/types/database";
+import type { PaginatedResultI } from "@/types/table";
 
 // Student API
 export async function getStudents() {
-  return await fetchApi.get("/students");
+  return (await fetchApi.get("/students")) as PaginatedResultI<StudentI>;
 }
 export async function getStudentById(id: number) {
   return await fetchApi.get(`/students/${id}`);
@@ -22,11 +28,23 @@ export async function deleteStudent(id: number) {
 }
 
 // Student classe API
-export async function getStudentClasses() {
-  return await fetchApi.get("/students/student-classes");
+export async function getStudentClasses(
+  classId?: number,
+  page?: number,
+  limit?: number,
+) {
+  return (await fetchApi.get("/students/student-classes", {
+    params: { classId, page, limit },
+  })) as PaginatedResultI<StudentClasseI>;
 }
 
 // Student Attendance API
+export async function getStudentAttendances() {
+  return (await fetchApi.get(
+    "/students/student-attendance",
+  )) as PaginatedResultI<StudentAttendanceI>;
+}
+
 export async function saveStudentAttendance(payload: RequestBody[]) {
   return await fetchApi.post(
     "/students/student-attendance",

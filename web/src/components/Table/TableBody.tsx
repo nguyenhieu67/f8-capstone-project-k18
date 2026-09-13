@@ -8,6 +8,8 @@ interface TableBodyProps<T extends RowI = RowI> {
   emptyMessage?: string;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
+  limit?: number;
+  total?: number;
 }
 
 export default function TableBody<T extends RowI = RowI>({
@@ -16,6 +18,8 @@ export default function TableBody<T extends RowI = RowI>({
   emptyMessage = "Không có dữ liệu.",
   onEdit,
   onDelete,
+  limit,
+  total,
 }: TableBodyProps<T>) {
   const { t } = useTranslation();
 
@@ -34,6 +38,10 @@ export default function TableBody<T extends RowI = RowI>({
     );
   }
 
+  const hasMultiplePages = !!limit && !!total && total > limit;
+  const fillerCount =
+    hasMultiplePages && rows.length < limit! ? limit! - rows.length : 0;
+
   return (
     <tbody className="divide-y divide-slate-100">
       {rows.map((row) => (
@@ -44,6 +52,13 @@ export default function TableBody<T extends RowI = RowI>({
           onEdit={onEdit}
           onDelete={onDelete}
         />
+      ))}
+      {Array.from({ length: fillerCount }).map((_, index) => (
+        <tr key={`filler-${index}`} aria-hidden="true">
+          <td colSpan={columns.length} className="p-5">
+            &nbsp;
+          </td>
+        </tr>
       ))}
     </tbody>
   );

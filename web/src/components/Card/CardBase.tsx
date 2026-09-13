@@ -37,7 +37,7 @@ export function CardBase({
           )}
         </div>
       )}
-      <div>{children}</div>
+      <>{children}</>
     </div>
   );
 }

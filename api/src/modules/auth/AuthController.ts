@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 
 import authService from "./services/AuthService";
 import { BaseController } from "@/common";
-import { constants, env } from "@/config";
-import { AppError } from "@/utils";
+import { env } from "@/config";
 import { toUserMeDto } from "../users/UserDto";
 
 class AuthController extends BaseController {
@@ -47,11 +46,7 @@ class AuthController extends BaseController {
     const userAgent = req.headers["user-agent"];
     const [error, tokens] = await authService.login({ email, password, userAgent });
 
-    if (error)
-      return res.error(
-        new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest),
-        constants.httpCodes.badRequest,
-      );
+    if (error) return res.error(error.message, error.status, error.code);
     if (!tokens) return res.unauthorized();
 
     this.setAuthCookies(res, tokens.accessToken, tokens.accessTokenTtl, tokens.refreshToken);
@@ -75,7 +70,8 @@ class AuthController extends BaseController {
     if (!token) return res.unauthorized();
 
     const [error, tokens] = await authService.handleRefreshToken(token, userAgent);
-    if (error || !tokens) return res.unauthorized();
+    if (error) return res.error(error.message, error.status, error.code);
+    if (!tokens) return res.unauthorized();
 
     this.setAuthCookies(res, tokens.accessToken, tokens.accessTokenTtl, tokens.refreshToken);
     return res.success({});

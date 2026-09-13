@@ -8,6 +8,12 @@ export interface FormGroupProps {
   children: React.ReactNode;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const SIZE_STYLES = {
+  sm: "py-1.5 text-xs",
+  md: "py-2.5 text-sm",
+};
+
 export const FormGroup: React.FC<FormGroupProps> = ({
   label,
   htmlFor,

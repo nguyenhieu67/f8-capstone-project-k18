@@ -1,11 +1,22 @@
 import express from "express";
 
 import employeeController from "./EmployeeController";
+import staffAttendanceController from "./staffAttendance/StaffAttendanceController";
 import { ValidationPipe } from "@/validations";
 import { EmployeeCreateDto, EmployeeUpdateDto } from "./EmployeeDto";
+import { StaffAttendanceUpdateDto } from "./staffAttendance/StaffAttendanceDto";
 
 const router = express.Router();
 
+// Staff Attendance
+router.get("/staff-attendance", staffAttendanceController.getListByField("date"));
+router.post(
+  "/staff-attendance",
+  ValidationPipe(StaffAttendanceUpdateDto),
+  staffAttendanceController.saveSessionAttendance,
+);
+
+// Employee
 router.get("/", employeeController.getList);
 router.get("/:id", employeeController.getOne);
 router.post("/", ValidationPipe(EmployeeCreateDto), employeeController.create);

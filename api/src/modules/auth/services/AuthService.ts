@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { constants, env } from "@/config";
+import { env } from "@/config";
 import { AppError, randomString, sendEmail } from "@/utils";
 import { UserEntity, UserLangCode, UserRole } from "@/modules/users/UserEntity";
 import { BaseService } from "@/common";
@@ -36,7 +36,7 @@ class AuthService extends BaseService {
   async register(data: RegisterI) {
     const existing = await this.findOneBy({ email: data.email });
     if (existing) {
-      throw new AppError("Email đã được sử dụng", constants.httpCodes.conffict);
+      throw AppError.conflict("Email đã được sử dụng");
     }
 
     const hash = await bcrypt.hash(data.password, 10);
@@ -50,10 +50,10 @@ class AuthService extends BaseService {
 
   async login(data: LoginI): Promise<[AppError | null, UserTokens | null]> {
     const user = await this.findOneBy({ email: data.email }, ["password"]);
-    if (!user) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.unauthorized), null];
+    if (!user) return [AppError.unauthorized("Sai email hoặc mật khẩu"), null];
 
     const isValid = await bcrypt.compare(data.password, (user as UserEntity).password);
-    if (!isValid) return [new AppError("Sai email hoặc mật khẩu", constants.httpCodes.badRequest), null];
+    if (!isValid) return [AppError.unauthorized("Sai email hoặc mật khẩu"), null];
 
     await this.updateById(user.id, { lastLoginAt: new Date() });
     const userTokens = await this.generateUserTokens(user, data.userAgent);
@@ -84,7 +84,7 @@ class AuthService extends BaseService {
   async handleRefreshToken(token: string, userAgent?: string): Promise<[AppError | null, UserTokens | null]> {
     const refreshToken = await refreshTokenService.findValidToken(token);
     if (!refreshToken) {
-      return [new AppError("Refresh token không hợp lệ", constants.httpCodes.unauthorized), null];
+      return [AppError.unauthorized("Refresh token không hợp lệ"), null];
     }
 
     const user = { id: refreshToken.userId };
@@ -147,7 +147,7 @@ class AuthService extends BaseService {
   async resetPassword(token: string, newPassword: string) {
     const resetRecord = await passwordResetService.findValidToken(token);
     if (!resetRecord) {
-      throw new AppError("Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn", constants.httpCodes.badRequest);
+      throw AppError.gone("Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn");
     }
 
     const hash = await bcrypt.hash(newPassword, 10);

@@ -19,7 +19,7 @@ export default function TableRow<T extends RowI = RowI>({
       {columns.map((column) => {
         if (column.value === "actions") {
           return (
-            <td key={column.value} className="p-4 whitespace-nowrap">
+            <td key={column.value} className="p-3.5 whitespace-nowrap">
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -42,7 +42,7 @@ export default function TableRow<T extends RowI = RowI>({
           );
         }
         return (
-          <td key={column.value} className={`p-4 ${column.className ?? ""}`}>
+          <td key={column.value} className={`p-3.5 ${column.className ?? ""}`}>
             {column.render
               ? ((column.render(row) as React.ReactNode) ?? "")
               : ((row as Record<string, unknown>)[
