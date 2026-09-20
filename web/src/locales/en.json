@@ -67,7 +67,8 @@
       "netSalary": "Net Salary",
       "details": "Details",
       "dependents": "Dependents",
-      "actions": "Actions"
+      "actions": "Actions",
+      "total": "Total"
     },
     "button": {
       "addSource": "Add Source",
@@ -81,7 +82,8 @@
       "save": "Save",
       "saving": "Saving...",
       "delete": "Delete",
-      "update": "Update Information"
+      "update": "Update Information",
+      "printPayslip": "Print Payslip"
     },
     "dialog": {
       "confirmDelete": "Confirm Delete",
@@ -440,5 +442,38 @@
       "leave": "On Leave"
     },
     "notePlaceholder": "Enter note..."
+  },
+  "payrollPage": {
+    "period": "Pay period",
+    "absentNote": "Absent {{days}}d: -{{amount}}",
+    "ordersNote": "{{orders}} orders",
+    "summary": {
+      "gross": "Total Gross Income",
+      "insurance": "Total Insurance Withheld",
+      "pit": "Total Personal Income Tax",
+      "net": "Total Net Pay"
+    },
+    "detail": {
+      "title": "Payslip Details",
+      "income": "Income",
+      "baseSalary": "Base salary (contract)",
+      "absentDeduction": "Absence deduction ({{days}} days)",
+      "salesVolume": "Sales volume ({{orders}} orders)",
+      "commission": "Commission ({{rate}}%)",
+      "grossIncome": "Gross income",
+      "insurance": "Mandatory insurance (on base salary)",
+      "socialInsurance": "Social insurance (8%)",
+      "unemploymentInsurance": "Unemployment insurance (1%)",
+      "healthInsurance": "Health insurance (1.5%)",
+      "insuranceTotal": "Total insurance (10.5%)",
+      "tax": "Personal income tax",
+      "personalDeduction": "Personal deduction",
+      "dependentDeduction": "Dependent deduction ({{dependents}})",
+      "taxableIncome": "Taxable income",
+      "pitTax": "Personal income tax",
+      "netSalary": "Net salary",
+      "attendance": "Attendance this month",
+      "days": "{{days}} day(s)"
+    }
   }
 }

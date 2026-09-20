@@ -18,3 +18,4 @@ export { default as leadRoute } from "./leads/leadRoute";
 export { default as sourceRoute } from "./sources/sourceRoute";
 export { default as studentRoute } from "./students/studentRoute";
 export { default as userRoute } from "./users/userRoute";
+export { default as payrollRoute } from "./payroll/payrollRoute";

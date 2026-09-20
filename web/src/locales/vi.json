@@ -67,7 +67,8 @@
       "netSalary": "Lương Thực Nhận (NET)",
       "details": "Chi Tiết",
       "dependents": "Người phụ thuộc",
-      "actions": "Thao Tác"
+      "actions": "Thao Tác",
+      "total": "Tổng cộng"
     },
     "button": {
       "addSource": "Thêm Nguồn Mới",
@@ -81,7 +82,8 @@
       "save": "Lưu",
       "saving": "Đang lưu...",
       "delete": "Xóa",
-      "update": "Cập nhật thông tin"
+      "update": "Cập nhật thông tin",
+      "printPayslip": "In Phiếu Lương"
     },
     "dialog": {
       "confirmDelete": "Xác nhận xóa",
@@ -440,5 +442,38 @@
       "leave": "Nghỉ phép"
     },
     "notePlaceholder": "Nhập ghi chú..."
+  },
+  "payrollPage": {
+    "period": "Kỳ lương",
+    "absentNote": "Vắng {{days}} ngày: -{{amount}}",
+    "ordersNote": "{{orders}} đơn",
+    "summary": {
+      "gross": "Tổng Thu Nhập (Gross)",
+      "insurance": "Tổng Bảo Hiểm Khấu Trừ",
+      "pit": "Tổng Thuế TNCN",
+      "net": "Tổng Thực Nhận (NET)"
+    },
+    "detail": {
+      "title": "Chi Tiết Phiếu Lương",
+      "income": "Thu nhập",
+      "baseSalary": "Lương cơ bản (hợp đồng)",
+      "absentDeduction": "Trừ ngày vắng ({{days}} ngày)",
+      "salesVolume": "Doanh số ({{orders}} đơn)",
+      "commission": "Hoa hồng ({{rate}}%)",
+      "grossIncome": "Tổng thu nhập (Gross)",
+      "insurance": "Bảo hiểm bắt buộc (tính trên lương cơ bản)",
+      "socialInsurance": "BHXH (8%)",
+      "unemploymentInsurance": "BHTN (1%)",
+      "healthInsurance": "BHYT (1.5%)",
+      "insuranceTotal": "Tổng bảo hiểm (10.5%)",
+      "tax": "Thuế thu nhập cá nhân",
+      "personalDeduction": "Giảm trừ bản thân",
+      "dependentDeduction": "Giảm trừ người phụ thuộc ({{dependents}})",
+      "taxableIncome": "Thu nhập tính thuế",
+      "pitTax": "Thuế TNCN",
+      "netSalary": "Lương thực nhận (NET)",
+      "attendance": "Chấm công trong tháng",
+      "days": "{{days}} ngày"
+    }
   }
 }
