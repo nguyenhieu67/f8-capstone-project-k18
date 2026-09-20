@@ -28,13 +28,14 @@ export async function deleteStudent(id: number) {
 }
 
 // Student classe API
-export async function getStudentClasses(
-  classId?: number,
-  page?: number,
-  limit?: number,
-) {
+export async function getStudentClasseByClasseId(classId?: number) {
   return (await fetchApi.get("/students/student-classes", {
-    params: { classId, page, limit },
+    params: { classId },
+  })) as PaginatedResultI<StudentClasseI>;
+}
+export async function getStudentClasses(page?: number, limit?: number) {
+  return (await fetchApi.get("/students/student-classes", {
+    params: { page, limit },
   })) as PaginatedResultI<StudentClasseI>;
 }
 

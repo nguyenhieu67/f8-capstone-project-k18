@@ -8,7 +8,7 @@ import { getClasses } from "@/services/classe";
 import { getLeads } from "@/services/lead";
 import {
   getStudentAttendances,
-  getStudentClasses,
+  getStudentClasseByClasseId,
   getStudents,
   saveStudentAttendance,
 } from "@/services/students";
@@ -181,7 +181,7 @@ export default function StudentAttendance() {
 
   const { data, refetch } = useFetchData(
     {
-      studentClasses: () => getStudentClasses(selectedClassId),
+      studentClasses: () => getStudentClasseByClasseId(selectedClassId),
       students: () => getStudents(),
       studentAtts: () => getStudentAttendances(),
       leads: () => getLeads(),
@@ -190,10 +190,11 @@ export default function StudentAttendance() {
     [selectedClassId],
   );
 
-  const studentClasses = useMemo(
-    () => data?.studentClasses.items || [],
-    [data?.studentClasses.items],
-  );
+  const studentClasses = useMemo(() => {
+    const items: StudentClasseI[] = data?.studentClasses.items || [];
+    if (!selectedClassId) return [];
+    return items.filter((sc) => Number(sc.classId) === Number(selectedClassId));
+  }, [data?.studentClasses.items, selectedClassId]);
   const students = useMemo(
     () => data?.students.items || [],
     [data?.students.items],
@@ -204,7 +205,7 @@ export default function StudentAttendance() {
     [data?.studentAtts.items],
   );
   const classes = useMemo(
-    () => data?.classes.items || [],
+    () => data?.classes.items.filter((c) => c.status !== "closed") || [],
     [data?.classes.items],
   );
 
@@ -316,14 +317,10 @@ export default function StudentAttendance() {
     ],
   );
 
-  const classeOptions = [
-    ...classes.map((c) => {
-      return {
-        label: `(${c.code}) ${c.name} - ${formatCurrency(c.tuition, "VNĐ")}`,
-        value: String(c.id),
-      };
-    }),
-  ];
+  const classeOptions = classes.map((c) => ({
+    label: `(${c.code}) ${c.name} - ${formatCurrency(c.tuition, "VNĐ")}`,
+    value: String(c.id),
+  }));
 
   return (
     <>

@@ -1,12 +1,12 @@
 import { Exclude } from "class-transformer";
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Exclude()
-  @Column({ type: "timestamptz" })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date;
 
   @Exclude()
@@ -14,7 +14,7 @@ export abstract class BaseEntity {
   createdBy!: number;
 
   @Exclude()
-  @Column({ type: "timestamptz", nullable: true })
+  @UpdateDateColumn({ type: "timestamptz", nullable: true })
   updatedAt!: Date;
 
   @Exclude()
@@ -22,7 +22,7 @@ export abstract class BaseEntity {
   updatedBy!: number;
 
   @Exclude()
-  @Column({ type: "timestamptz", nullable: true })
+  @DeleteDateColumn({ type: "timestamptz", nullable: true })
   deletedAt?: Date;
 
   @Exclude()

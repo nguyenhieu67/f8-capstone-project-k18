@@ -26,11 +26,11 @@ export const registerSchema = loginSchema
     firstName: z
       .string()
       .min(1, "authPage.validation.firstName.required")
-      .min(2, "authPage.validation.firstName.min"),
+      .min(5, "authPage.validation.firstName.min"),
     lastName: z
       .string()
       .min(1, "authPage.validation.lastName.required")
-      .min(5, "authPage.validation.lastName.min"),
+      .min(1, "authPage.validation.lastName.min"),
     phone: z
       .string()
       .min(1, "authPage.validation.phone.required")

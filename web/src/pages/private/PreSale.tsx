@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { CardBase } from "@/components/Card";
 import { ConfirmDeleteDialog, LeadDialog } from "@/components/Dialogs";
-import { PlusIcon } from "@/components/Icons";
+import { EditIcon, PlusIcon, TrashIcon } from "@/components/Icons";
 import Table from "@/components/Table";
 import { StatusBadge } from "@/components/ui";
 import { useFetchData, usePagination, useTableActions } from "@/hooks";
@@ -40,6 +40,8 @@ const getColumns = (
   sources: SourceI[],
   employees: EmployeeI[],
   classes: ClasseI[],
+  onActionEdit: (row: LeadI) => void,
+  onActionDelete: (row: LeadI) => void,
 ): ColumnI<LeadI>[] => [
   {
     value: "customerPhone",
@@ -66,13 +68,13 @@ const getColumns = (
     value: "learningPurpose",
     text: "common.tableHeader.learningPurpose",
     render: (l) =>
-      l.purpose ?? <span className="text-crm-danger font-medium">-----</span>,
+      l.purpose ?? <span className="text-crm-danger font-medium">-</span>,
   },
   {
     value: "targetAudience",
     text: "common.tableHeader.targetAudience",
     render: (l) =>
-      l.who ?? <span className="text-crm-danger font-medium">-----</span>,
+      l.who ?? <span className="text-crm-danger font-medium">-</span>,
   },
   {
     value: "assignedSeller",
@@ -89,7 +91,7 @@ const getColumns = (
     render: (l) => (
       <span className="text-crm-accent font-medium">
         {classes.find((c) => c.id === Number(l.classeId))?.name ?? (
-          <span className="text-crm-danger">-----</span>
+          <span className="text-crm-danger">-</span>
         )}
       </span>
     ),
@@ -107,11 +109,49 @@ const getColumns = (
     text: "common.tableHeader.rejectionReason",
     render: (l) => (
       <span className="text-crm-danger font-medium">
-        {l.rejectionReason ?? "-----"}
+        {l.rejectionReason ?? "-"}
       </span>
     ),
   },
-  { value: "actions", text: "common.tableHeader.actions" },
+  {
+    value: "customAction",
+    text: "common.tableHeader.actions",
+    render: (l: LeadI) => {
+      if (l.status === "converted") {
+        return (
+          <div className="text-crm-success flex items-center gap-1.5 text-xs font-medium">
+            <span className="bg-crm-success h-2 w-2 rounded-full"></span>
+            <span>Đã vào lớp</span>
+          </div>
+        );
+      }
+
+      if (l.status === "lost") {
+        return <span className="text-crm-danger text-xs">-----</span>;
+      }
+
+      return (
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onActionEdit(l)}
+            className="text-crm-label-text hover:text-crm-info cursor-pointer rounded p-1 transition hover:bg-slate-100"
+            title="Chỉnh sửa"
+          >
+            <EditIcon />
+          </button>
+          <button
+            type="button"
+            onClick={() => onActionDelete(l)}
+            className="text-crm-label-text hover:text-crm-danger cursor-pointer rounded p-1 transition hover:bg-slate-100"
+            title="Xóa"
+          >
+            <TrashIcon />
+          </button>
+        </div>
+      );
+    },
+  },
 ];
 
 export default function PreSale() {
@@ -137,7 +177,7 @@ export default function PreSale() {
     [data?.employees.items],
   );
   const classes = useMemo(
-    () => data?.classes.items || [],
+    () => data?.classes.items.filter((c) => c.status !== "closed") || [],
     [data?.classes.items],
   );
 
@@ -147,8 +187,15 @@ export default function PreSale() {
   );
 
   const columns = useMemo(
-    () => getColumns(sources, employees, classes),
-    [sources, employees, classes],
+    () =>
+      getColumns(
+        sources,
+        employees,
+        classes,
+        (row) => actions.handleOpenEdit(leads, row),
+        (row) => actions.handleOpenDelete(row),
+      ),
+    [sources, employees, classes, actions, leads],
   );
 
   const sellers = useMemo(

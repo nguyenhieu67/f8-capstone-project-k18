@@ -2,7 +2,16 @@ import express from "express";
 
 import { authRequired } from "@/middlewares";
 
-import { authRoute, classeRoute, employeeRoute, leadRoute, sourceRoute, studentRoute, userRoute } from "@/modules";
+import {
+  authRoute,
+  classeRoute,
+  employeeRoute,
+  leadRoute,
+  payrollRoute,
+  sourceRoute,
+  studentRoute,
+  userRoute,
+} from "@/modules";
 
 const router = express.Router();
 
@@ -13,5 +22,6 @@ router.use("/employees", authRequired, employeeRoute);
 router.use("/classes", authRequired, classeRoute);
 router.use("/leads", authRequired, leadRoute);
 router.use("/students", authRequired, studentRoute);
+router.use("/payroll", authRequired, payrollRoute);
 
 export default router;

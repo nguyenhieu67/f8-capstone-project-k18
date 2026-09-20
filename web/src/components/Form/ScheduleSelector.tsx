@@ -83,7 +83,7 @@ export function ScheduleSelector({
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className={value ? "text-crm-heading-text" : "text-gray-400"}>
-            {t("classPage.scheduleModal.selectDayAndTime")}
+            {value ? value : t("classPage.scheduleModal.selectDayAndTime")}
           </span>
           <ChevronUpIcon
             className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${

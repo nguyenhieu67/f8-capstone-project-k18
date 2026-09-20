@@ -67,7 +67,8 @@
       "netSalary": "手取り額 (NET)",
       "details": "詳細",
       "dependents": "扶養家族数",
-      "actions": "操作"
+      "actions": "操作",
+      "total": "合計"
     },
     "button": {
       "addSource": "新規チャネル追加",
@@ -81,7 +82,8 @@
       "save": "保存",
       "saving": "保存中...",
       "delete": "削除",
-      "update": "情報の更新"
+      "update": "情報の更新",
+      "printPayslip": "この明細を印刷"
     },
     "dialog": {
       "confirmDelete": "削除の確認",
@@ -282,12 +284,12 @@
         "incorrect": "メールアドレスまたはパスワードが間違っています。"
       },
       "firstName": {
-        "required": "名を入力してください。",
-        "min": "名は2文字以上で入力してください。"
-      },
-      "lastName": {
         "required": "姓を入力してください。",
         "min": "姓は5文字以上で入力してください。"
+      },
+      "lastName": {
+        "required": "名を入力してください。",
+        "min": "名は2文字以上で入力してください。"
       },
       "phone": {
         "required": "電話番号を入力してください",
@@ -440,5 +442,38 @@
       "leave": "休暇"
     },
     "notePlaceholder": "備考を入力..."
+  },
+  "payrollPage": {
+    "period": "給与計算期間",
+    "absentNote": "欠勤{{days}}日: -{{amount}}",
+    "ordersNote": "{{orders}}件",
+    "summary": {
+      "gross": "総支給額合計",
+      "insurance": "社会保険料控除合計",
+      "pit": "所得税合計",
+      "net": "手取り額合計"
+    },
+    "detail": {
+      "title": "給与明細の詳細",
+      "income": "支給",
+      "baseSalary": "基本給（契約）",
+      "absentDeduction": "欠勤控除（{{days}}日）",
+      "salesVolume": "売上高（{{orders}}件）",
+      "commission": "歩合給（{{rate}}%）",
+      "grossIncome": "総支給額 (Gross)",
+      "insurance": "社会保険料（基本給ベース）",
+      "socialInsurance": "社会保険料 (8%)",
+      "unemploymentInsurance": "雇用保険料 (1%)",
+      "healthInsurance": "健康保険料 (1.5%)",
+      "insuranceTotal": "社会保険料合計 (10.5%)",
+      "tax": "所得税",
+      "personalDeduction": "本人控除",
+      "dependentDeduction": "扶養控除（{{dependents}}人）",
+      "taxableIncome": "課税所得",
+      "pitTax": "所得税",
+      "netSalary": "手取り額 (NET)",
+      "attendance": "当月の勤怠",
+      "days": "{{days}}日"
+    }
   }
 }

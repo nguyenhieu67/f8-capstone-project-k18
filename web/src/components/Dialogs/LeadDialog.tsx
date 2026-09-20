@@ -5,6 +5,7 @@ import { InputField, SelectField } from "../Form";
 import { createLead, updateLead } from "@/services/lead";
 import { useAppToast, useForm } from "@/hooks";
 import type { LeadI, EmployeeI, SourceI, ClasseI } from "@/types/database";
+import { formatCurrency } from "@/utils/format";
 
 interface LeadDialogProps {
   isOpen: boolean;
@@ -76,7 +77,7 @@ export default function LeadDialog({
   const classeOptions = [
     { label: "leadPage.form.selectClasse", value: "" },
     ...classes.map((c) => ({
-      label: c.name,
+      label: `${c.name} - ${formatCurrency(c.tuition)}`,
       value: String(c.id),
     })),
   ];
@@ -97,9 +98,12 @@ export default function LeadDialog({
         classeId: formData.classeId ? Number(formData.classeId) : undefined,
         purpose: formData.purpose ? formData.purpose : null,
         who: formData.who ? formData.who : null,
-        rejectionReason: formData.rejectionReason
-          ? formData.rejectionReason
-          : null,
+        rejectionReason:
+          formData.status === "lost"
+            ? formData.rejectionReason
+              ? formData.rejectionReason
+              : null
+            : null,
       };
 
       if (isEdit && formData.id) {

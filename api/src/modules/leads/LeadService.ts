@@ -173,6 +173,65 @@ class LeadService extends BaseService {
       return updateResult;
     });
   }
+
+  async deleteById(id: number, deletedBy?: number) {
+    return AppDataSource.transaction(async (manager) => {
+      const leadRepo = manager.getRepository(LeadEntity);
+      const studentRepo = manager.getRepository(StudentEntity);
+      const studentClassRepo = manager.getRepository(StudentClasseEntity);
+
+      const lead = await leadRepo.findOne({ where: { id, isActive: true } });
+      if (!lead) {
+        throw AppError.notFound("Lead không tồn tại hoặc đã bị xoá");
+      }
+
+      const student = await studentRepo.findOne({ where: { leadId: id, isActive: true } });
+
+      if (student) {
+        const now = new Date();
+
+        await studentClassRepo
+          .createQueryBuilder()
+          .update(StudentClasseEntity)
+          .set({
+            isActive: false,
+            deletedAt: now,
+            deletedBy: deletedBy,
+            updatedAt: now,
+            updatedBy: deletedBy,
+          })
+          .where("studentId = :studentId AND isActive = true", { studentId: student.id })
+          .execute();
+
+        await studentRepo
+          .createQueryBuilder()
+          .update(StudentEntity)
+          .set({
+            isActive: false,
+            deletedAt: now,
+            deletedBy: deletedBy,
+            updatedAt: now,
+            updatedBy: deletedBy,
+          })
+          .where("id = :id", { id: student.id })
+          .execute();
+      }
+
+      const now = new Date();
+      return leadRepo
+        .createQueryBuilder()
+        .update(LeadEntity)
+        .set({
+          isActive: false,
+          deletedAt: now,
+          deletedBy: deletedBy,
+          updatedAt: now,
+          updatedBy: deletedBy,
+        })
+        .where("id = :id", { id })
+        .execute();
+    });
+  }
 }
 
 export default new LeadService(LeadEntity);
