@@ -82,7 +82,7 @@ const getColumns = (
                 </span>
               </>
             ) : (
-              <span className="text-crm-danger font-medium">-----</span>
+              <span className="text-crm-danger font-medium">-</span>
             )}
           </>
         );
@@ -160,13 +160,28 @@ export default function SaleResult() {
     [students, leads, sources, classes, employees],
   );
 
+  const revenue = useMemo(
+    () =>
+      studentClasses.reduce(
+        (acc, sc) => acc + Number(sc.tuitionAmount || 0),
+        0,
+      ),
+    [studentClasses],
+  );
+
   return (
     <>
       <CardBase
         title="common.cardTitle.salesAndRevenueStats"
         desc="common.cardDesc.enrolledStudents"
+        className="flex items-center justify-between"
       >
-        Tổng Doanh Thu Đã Thu
+        <div className="flex flex-col justify-center">
+          <span className="text-crm-success font-mono text-2xl">
+            {formatCurrency(revenue)}
+          </span>
+          Tổng Doanh Thu Đã Thu
+        </div>
       </CardBase>
       <CardBase>
         <Table

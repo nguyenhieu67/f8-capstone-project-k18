@@ -282,12 +282,12 @@
         "incorrect": "Incorrect email or password."
       },
       "firstName": {
-        "required": "Please enter your first name.",
-        "min": "First name must be at least 2 characters."
-      },
-      "lastName": {
         "required": "Please enter your last name.",
         "min": "Last name must be at least 5 characters."
+      },
+      "lastName": {
+        "required": "Please enter your first name.",
+        "min": "First name must be at least 2 characters."
       },
       "phone": {
         "required": "Phone number is required",
