@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createSource } from "@/services/source";
 import type { SourceI } from "@/types/database";
+import {
+  DEFAULT_SOURCE_ICON,
+  SOURCE_ICON_OPTIONS,
+  getSourceColor,
+} from "@/constants/sourceIcon";
 import { useAppToast, useForm } from "@/hooks";
 
 interface SourceDialogProps {
@@ -12,22 +18,6 @@ interface SourceDialogProps {
   onSuccess?: () => void;
 }
 
-const ICON_OPTIONS = [
-  { label: "Facebook", value: "facebook" },
-  { label: "Zalo", value: "zalo" },
-  { label: "Instagram", value: "instagram" },
-  { label: "Google", value: "google" },
-  { label: "Website", value: "website" },
-];
-
-const ICON_COLOR_MAP: Record<string, string> = {
-  facebook: "#1877F2",
-  zalo: "#0068FF",
-  instagram: "#E95950",
-  google: "#FBBC05",
-  website: "#8B5CF6",
-};
-
 const STATUS_OPTIONS = [
   { label: "common.status.active", value: "active" },
   { label: "common.status.inactive", value: "inactive" },
@@ -35,8 +25,8 @@ const STATUS_OPTIONS = [
 
 const DEFAULT_FORM: SourceI = {
   name: "",
-  color: "#1877F2",
-  icon: "facebook",
+  color: getSourceColor(DEFAULT_SOURCE_ICON),
+  icon: DEFAULT_SOURCE_ICON,
   status: "active",
 };
 
@@ -48,14 +38,16 @@ export default function SourceDialog({
   const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
     customHandlers: {
       icon: (value) => ({
-        color: ICON_COLOR_MAP[value] || "#1877F2",
+        color: getSourceColor(value),
       }),
     },
   });
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const toastMsg = useAppToast();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
 
     try {
@@ -63,7 +55,7 @@ export default function SourceDialog({
       setFormData(DEFAULT_FORM);
       onSuccess?.();
       onClose();
-      toastMsg.success("Tạo thành công Nguồn quáng cáo.");
+      toastMsg.success(t("sourcePage.toast.created"));
     } catch (error) {
       console.error("Failed to save source:", error);
       toastMsg.error((error as Error).message);
@@ -98,8 +90,8 @@ export default function SourceDialog({
         <SelectField
           id="icon"
           name="icon"
-          label="Icon"
-          options={ICON_OPTIONS}
+          label="sourcePage.form.icon"
+          options={SOURCE_ICON_OPTIONS}
           value={formData.icon}
           onChange={handleChange}
         />

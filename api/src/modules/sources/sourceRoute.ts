@@ -7,6 +7,7 @@ import { ValidationPipe } from "@/validations";
 const router = express.Router();
 
 router.get("/", sourceController.getList);
+router.get("/stats", sourceController.getStats);
 router.get("/:id", sourceController.getOne);
 router.post("/", ValidationPipe(SourceCreateDto), sourceController.create);
 router.put("/:id", ValidationPipe(SourceUpdateDto), sourceController.update);
@@ -48,7 +49,7 @@ router.delete("/:id", sourceController.delete);
  *
  * /sources:
  *   get:
- *     summary: Lấy danh sách khoá học
+ *     summary: Lấy danh sách nguồn quảng cáo
  *     tags:
  *       - Sources
  *     responses:
@@ -61,7 +62,7 @@ router.delete("/:id", sourceController.delete);
  *               items:
  *                 $ref: '#/components/schemas/Source'
  *   post:
- *     summary: Tạo khoá học mới
+ *     summary: Tạo nguồn quảng cáo mới
  *     tags:
  *       - Sources
  *     requestBody:
@@ -80,9 +81,51 @@ router.delete("/:id", sourceController.delete);
  *       400:
  *         description: Dữ liệu không hợp lệ
  *
+ * /sources/stats:
+ *   get:
+ *     summary: Danh sách nguồn quảng cáo kèm số liệu (số lead, học viên đã chốt đơn, doanh thu)
+ *     description: |
+ *       - leadsCount: số lead mang về (mọi trạng thái)
+ *       - convertedCount: số học viên đã chốt đơn đến từ nguồn
+ *       - revenue: tổng học phí các đăng ký lớp của những học viên đó (1 học viên học nhiều lớp thì cộng đủ)
+ *     tags:
+ *       - Sources
+ *     responses:
+ *       200:
+ *         description: Lấy thống kê thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       name:
+ *                         type: string
+ *                       color:
+ *                         type: string
+ *                       icon:
+ *                         type: string
+ *                       status:
+ *                         type: string
+ *                         enum: [active, inactive]
+ *                       leadsCount:
+ *                         type: integer
+ *                       convertedCount:
+ *                         type: integer
+ *                       revenue:
+ *                         type: integer
+ *                 total:
+ *                   type: integer
+ *
  * /sources/{id}:
  *   get:
- *     summary: Lấy thông tin khoá học theo id
+ *     summary: Lấy thông tin nguồn quảng cáo theo id
  *     tags:
  *       - Sources
  *     parameters:
@@ -99,9 +142,9 @@ router.delete("/:id", sourceController.delete);
  *             schema:
  *               $ref: '#/components/schemas/Source'
  *       404:
- *         description: Không tìm thấy khoá học
+ *         description: Không tìm thấy nguồn quảng cáo
  *   put:
- *     summary: Sửa khoá học
+ *     summary: Sửa nguồn quảng cáo
  *     tags:
  *       - Sources
  *     parameters:
@@ -126,9 +169,9 @@ router.delete("/:id", sourceController.delete);
  *       400:
  *         description: Dữ liệu không hợp lệ
  *       404:
- *         description: Không tìm thấy khoá học
+ *         description: Không tìm thấy nguồn quảng cáo
  *   delete:
- *     summary: Xoá khoá học
+ *     summary: Xoá nguồn quảng cáo
  *     tags:
  *       - Sources
  *     parameters:
@@ -141,7 +184,7 @@ router.delete("/:id", sourceController.delete);
  *       204:
  *         description: Xoá thành công
  *       404:
- *         description: Không tìm thấy khoá học
+ *         description: Không tìm thấy nguồn quảng cáo
  */
 
 export default router;

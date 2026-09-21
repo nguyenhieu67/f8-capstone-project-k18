@@ -1,28 +1,15 @@
 import Button from "@/components/Button";
 import { CardBase, SourceCard } from "@/components/Card";
 import { SourceDialog } from "@/components/Dialogs";
-import {
-  FacebookIcon,
-  GoogleIcon,
-  InstagramIcon,
-  PlusIcon,
-  WebsiteIcon,
-  ZaloIcon,
-} from "@/components/Icons";
+import { PlusIcon } from "@/components/Icons";
+import { SOURCE_ICONS } from "@/constants/sourceIcon";
+import type { SourceIconKey } from "@/constants/sourceIcon";
 import { useFetchData, useTableActions } from "@/hooks";
-import { deleteSource, getSources } from "@/services/source";
+import { deleteSource, getSourceStats } from "@/services/source";
 import type { SourceI } from "@/types/database";
 
-const ICON_OPTIONS = {
-  facebook: <FacebookIcon />,
-  zalo: <ZaloIcon />,
-  instagram: <InstagramIcon />,
-  google: <GoogleIcon />,
-  website: <WebsiteIcon />,
-};
-
 export default function Source() {
-  const { data, refetch } = useFetchData(() => getSources(), []);
+  const { data, refetch } = useFetchData(() => getSourceStats(), []);
   const sources = data?.items ?? [];
 
   const actions = useTableActions<SourceI>(
@@ -53,17 +40,24 @@ export default function Source() {
       </div>
       <div className="max-h-[calc(100vh-262px)] scrollbar-thin overflow-y-auto pr-1">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {sources?.map((s) => (
-            <SourceCard
-              key={s.id}
-              id={s.id}
-              icon={ICON_OPTIONS[s.icon as keyof typeof ICON_OPTIONS]}
-              title={s.name}
-              status={s.status}
-              iconBgClass={s.color}
-              onStatusChange={refetch}
-            />
-          ))}
+          {sources.map((s) => {
+            const Icon = SOURCE_ICONS[s.icon as SourceIconKey]?.Icon;
+
+            return (
+              <SourceCard
+                key={s.id}
+                id={s.id}
+                icon={Icon && <Icon />}
+                title={s.name}
+                status={s.status}
+                iconBgClass={s.color}
+                leadsCount={s.leadsCount}
+                convertedCount={s.convertedCount}
+                revenue={s.revenue}
+                onStatusChange={refetch}
+              />
+            );
+          })}
         </div>
       </div>
     </>
