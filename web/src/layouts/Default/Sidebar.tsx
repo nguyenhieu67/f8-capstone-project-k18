@@ -12,10 +12,9 @@ import { ROUTE_PATHS } from "@/constants/routePaths";
 
 interface SidebarProps {
   activeTab: string;
-  onTabChange: (tabId: string) => void;
 }
 
-export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+export default function Sidebar({ activeTab }: SidebarProps) {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -64,7 +63,6 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
                 <button
                   key={item.id}
                   onClick={() => {
-                    onTabChange(item.id);
                     const routeKey =
                       item.id.toUpperCase() as keyof typeof ROUTE_PATHS;
                     navigate(ROUTE_PATHS[routeKey]);

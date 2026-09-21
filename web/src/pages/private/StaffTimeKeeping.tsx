@@ -25,6 +25,7 @@ import type {
 import type { ColumnI } from "@/types/table";
 import { EMPLOYEE_ROLE } from "@/constants/employeeRole";
 import { StatusBadge } from "@/components/ui";
+import { toLocalDateString } from "@/utils/format";
 
 const STATUS_OPTIONS = [
   { label: "staffTimeKeepingPage.status.present", value: "present" },
@@ -40,7 +41,7 @@ export default function StaffAttendance() {
   const toastMsg = useAppToast();
   const { page, limit, onPageChange, onLimitChange } = usePagination(10);
 
-  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
+  const today = toLocalDateString();
   const [selectedDate, setSelectedDate] = useState<string>(today);
 
   const { data, refetch } = useFetchData(

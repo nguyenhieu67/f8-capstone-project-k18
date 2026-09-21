@@ -68,7 +68,8 @@
       "details": "Chi Tiết",
       "dependents": "Người phụ thuộc",
       "actions": "Thao Tác",
-      "total": "Tổng cộng"
+      "total": "Tổng cộng",
+      "enrolledDate": "Ngày Đăng Ký"
     },
     "button": {
       "addSource": "Thêm Nguồn Mới",
@@ -83,7 +84,8 @@
       "saving": "Đang lưu...",
       "delete": "Xóa",
       "update": "Cập nhật thông tin",
-      "printPayslip": "In Phiếu Lương"
+      "printPayslip": "In Phiếu Lương",
+      "edit": "Chỉnh sửa"
     },
     "dialog": {
       "confirmDelete": "Xác nhận xóa",
@@ -327,7 +329,8 @@
     },
     "header": {
       "liveStatus": "System Live"
-    }
+    },
+    "noRejections": "Chưa có lead nào bị từ chối trong tháng này."
   },
   "classPage": {
     "createModal": {
@@ -389,6 +392,7 @@
     "form": {
       "selectSales": "-- Chọn Sales phụ trách --",
       "selectSource": "-- Chọn nguồn Lead --",
+      "selectClasse": "-- Chọn lớp học --",
       "demandPlaceholder": "VD: Học để đi làm / Đổi ngành",
       "jobPlaceholder": "VD: Học sinh / Người đi làm",
       "reasonPlaceholder": "VD: Học phí cao / Không thu xếp được thời gian"
@@ -399,7 +403,12 @@
       "qualified": "Chờ chốt",
       "converted": "Đã đăng ký",
       "lost": "Thất bại / Từ chối"
-    }
+    },
+    "toast": {
+      "created": "Tạo thành công PreSale mới.",
+      "updated": "Cập nhật thành công PreSale với tên là: {{name}}."
+    },
+    "enrolled": "Đã vào lớp"
   },
   "empPage": {
     "roles": {
@@ -475,5 +484,10 @@
       "attendance": "Chấm công trong tháng",
       "days": "{{days}} ngày"
     }
+  },
+  "saleResultPage": {
+    "period": "Lọc theo tháng đăng ký",
+    "allTime": "Tất cả",
+    "totalRevenue": "Tổng Doanh Thu Đã Thu"
   }
 }

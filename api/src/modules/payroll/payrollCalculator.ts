@@ -27,7 +27,6 @@ export interface PayslipResult {
   netSalary: number;
 }
 
-/** Thuế TNCN lũy tiến từng phần trên thu nhập tính thuế của 1 tháng */
 export function calculatePit(taxableIncome: number): number {
   let tax = 0;
   let lower = 0;
@@ -46,32 +45,25 @@ export function calculatePayslip(input: PayslipInput): PayslipResult {
 
   const baseSalary = Math.max(0, input.salary);
 
-  // Lương cơ bản thực nhận: vắng mặt (absent) bị trừ theo lương ngày.
-  //   "late" và "leave" (nghỉ phép) không bị trừ.
   const absentDays = Math.min(Math.max(input.absentDays, 0), STANDARD_WORKING_DAYS);
   const absentDeduction = Math.round((baseSalary / STANDARD_WORKING_DAYS) * absentDays);
 
-  // Hoa hồng: chỉ Sales mới có
   const commissionRate =
     input.role === EmployeeRole.SALE ? (input.commissionRate > 0 ? input.commissionRate : DEFAULT_COMMISSION_RATE) : 0;
   const commission = Math.round((input.salesVolume * commissionRate) / 100);
 
-  // Gross
   const grossIncome = baseSalary - absentDeduction + commission;
 
-  // Bảo hiểm bắt buộc — tính trên lương cơ bản hợp đồng (hoa hồng không đóng BH)
   const socialInsurance = Math.round(baseSalary * INSURANCE_RATES.social);
   const unemploymentInsurance = Math.round(baseSalary * INSURANCE_RATES.unemployment);
   const healthInsurance = Math.round(baseSalary * INSURANCE_RATES.health);
   const insuranceTotal = socialInsurance + unemploymentInsurance + healthInsurance;
 
-  // Thuế TNCN
   const personalDeduction = PAYROLL_CONFIG.PERSONAL_DEDUCTION;
   const dependentDeduction = Math.max(0, input.dependents) * PAYROLL_CONFIG.DEPENDENT_DEDUCTION;
   const taxableIncome = Math.max(0, grossIncome - insuranceTotal - personalDeduction - dependentDeduction);
   const pitTax = calculatePit(taxableIncome);
 
-  // NET
   const netSalary = grossIncome - insuranceTotal - pitTax;
 
   return {

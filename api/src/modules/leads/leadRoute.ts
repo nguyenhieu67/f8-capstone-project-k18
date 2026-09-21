@@ -42,7 +42,7 @@ router.delete("/:id", leadController.delete);
  *           example: "Phụ huynh"
  *         status:
  *           type: string
- *           enum: [new, converted, rejected]
+ *           enum: [new, contacted, qualified, converted, lost]
  *           example: new
  *         rejectionReason:
  *           type: string
@@ -74,7 +74,7 @@ router.delete("/:id", leadController.delete);
  *           example: "Phụ huynh"
  *         status:
  *           type: string
- *           enum: [new, converted, rejected]
+ *           enum: [new, contacted, qualified, converted, lost]
  *           example: new
  *         rejectionReason:
  *           type: string
@@ -85,6 +85,41 @@ router.delete("/:id", leadController.delete);
  *     summary: Lấy danh sách khách hàng tiềm năng
  *     tags:
  *       - Leads
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         description: Lọc theo trạng thái. Bỏ trống = tất cả.
+ *         schema:
+ *           type: string
+ *           enum: [new, contacted, qualified, converted, lost]
+ *       - in: query
+ *         name: sourceId
+ *         required: false
+ *         description: Lọc theo nguồn quảng cáo. Bỏ trống = tất cả.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sellerId
+ *         required: false
+ *         description: Lọc theo seller phụ trách. Bỏ trống = tất cả.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         description: Tìm theo tên hoặc SĐT khách hàng (không phân biệt hoa thường và dấu tiếng Việt). Tối đa 100 ký tự.
+ *         schema:
+ *           type: string
+ *           example: nguyen van
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: Lấy danh sách thành công

@@ -11,6 +11,14 @@ export const formatCurrency = (
   return `${num.toLocaleString("en-US")} ${unit}`;
 };
 
+// Date from user using
+export const toLocalDateString = (date: Date = new Date()) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+};
+
 // Format schedule
 const DAYS_KEY_MAP: Record<string, string> = SCHEDULE_DAYS.reduce(
   (acc, day) => ({ ...acc, [day.id]: day.label }),

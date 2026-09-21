@@ -5,3 +5,4 @@ export { default as useFetchData } from "./useFetchData";
 export { default as useForm } from "./useForm";
 export { default as useAppToast } from "./useAppToast";
 export { default as useAttendanceSave } from "./useAttendanceSave";
+export { default as useDebounce } from "./useDebounce";

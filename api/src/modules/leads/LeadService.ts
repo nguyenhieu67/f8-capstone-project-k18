@@ -1,5 +1,5 @@
-import { UpdateResult } from "typeorm";
-import { BaseService } from "@/common";
+import { Brackets, SelectQueryBuilder, UpdateResult } from "typeorm";
+import { BaseEntity, BaseService, SimpleEntity } from "@/common";
 import { AppDataSource } from "@/config";
 import { validateEmployeeRole } from "@/modules/employees/helpers/validateEmployeeRole";
 import { EmployeeRole } from "@/modules/employees/EmployeeEntity";
@@ -8,6 +8,7 @@ import { StudentEntity } from "@/modules/students/StudentEntity";
 import { ClasseEntity } from "@/modules/classes/ClasseEntity";
 import { StudentClasseEntity, StudentClasseStatus } from "../students/studentClasse/StudentClasseEntity";
 import { AppError } from "@/utils";
+import { escapeLike, isPhoneLike, normalizeSearchText, VN_FROM, VN_TO } from "./leadSearch";
 
 class LeadService extends BaseService {
   protected fkValidators = [
@@ -16,6 +17,36 @@ class LeadService extends BaseService {
       validate: (id: number) => validateEmployeeRole(id, EmployeeRole.SALE, "sellerId"),
     },
   ];
+
+  // Tên khách (họ + tên) đã bỏ dấu + chữ thường, để so khớp với từ khoá đã chuẩn hoá (xem leadSearch.ts)
+  private static readonly NORMALIZED_NAME_SQL = `lower(regexp_replace(translate(CONCAT_WS(' ', "lead"."first_name", "lead"."last_name"), :vnFrom, :vnTo), '[\\u0300-\\u036f]', '', 'g'))`;
+
+  // condition: các điều kiện bằng (status, sourceId, sellerId...) + `search` (tên / SĐT, tuỳ chọn)
+  handleFind(query: SelectQueryBuilder<BaseEntity | SimpleEntity>, condition: any) {
+    const { search, ...equalityConditions } = condition ?? {};
+    const filtered = super.handleFind(query, equalityConditions);
+
+    const keyword = normalizeSearchText(search);
+    if (!keyword) return filtered;
+
+    return filtered.andWhere(
+      new Brackets((qb) => {
+        qb.where(`${LeadService.NORMALIZED_NAME_SQL} LIKE :nameLike ESCAPE '\\'`, {
+          nameLike: `%${escapeLike(keyword)}%`,
+          vnFrom: VN_FROM,
+          vnTo: VN_TO,
+        });
+
+        const digits = keyword.replace(/\D/g, "");
+        if (isPhoneLike(keyword) && digits) {
+          // So khớp trên chữ số để "0912 345" vẫn tìm ra SĐT lưu dạng "0912345678" hoặc "0912.345.678"
+          qb.orWhere(`regexp_replace(COALESCE("lead"."phone", ''), '\\D', '', 'g') LIKE :phoneLike`, {
+            phoneLike: `%${digits}%`,
+          });
+        }
+      }),
+    );
+  }
 
   private async ensureStudentEnrollment(
     leadId: number,

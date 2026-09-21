@@ -4,7 +4,6 @@ import { StudentAttendanceEntity } from "./StudentAttendanceEntity";
 class StudentAttendanceService extends BaseService {
   async saveSessionAttendance(data: any[], userId: number) {
     const results = [];
-    let hasAnyChanges = false;
 
     for (const item of data) {
       const existing = (await this.findOneBy({
@@ -23,7 +22,6 @@ class StudentAttendanceService extends BaseService {
           createdBy: userId,
         });
         results.push(newRecord);
-        hasAnyChanges = true;
       } else {
         const isChanged = existing.status !== item.status || (existing.note || "") !== (item.note || "");
 
@@ -35,13 +33,8 @@ class StudentAttendanceService extends BaseService {
             updatedAt: new Date(),
           });
           results.push(await this.getById(existing.id));
-          hasAnyChanges = true;
         }
       }
-    }
-
-    if (!hasAnyChanges && data.length > 0) {
-      throw new Error("DUPLICATE_DATA_NO_CHANGES");
     }
 
     return results;

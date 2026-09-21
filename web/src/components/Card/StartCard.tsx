@@ -5,11 +5,11 @@ interface StatCardProps {
   title: string;
   value: string | number;
   subtext?: string;
+  subtextPrefix?: string;
   icon: React.ReactNode;
   status?: "success" | "info" | "warning" | "primary";
 }
 
-// Map cố định màu sắc cho Tailwind quét được class name đầy đủ
 const STATUS_STYLES = {
   success: {
     text: "text-emerald-600",
@@ -33,6 +33,7 @@ export function StatCard({
   title,
   value,
   subtext,
+  subtextPrefix = "",
   icon,
   status = "success",
 }: StatCardProps) {
@@ -56,6 +57,7 @@ export function StatCard({
           </h3>
           {subtext && (
             <p className={`text-xs font-medium ${currentStyle.text}`}>
+              {subtextPrefix}
               {t(subtext)}
             </p>
           )}

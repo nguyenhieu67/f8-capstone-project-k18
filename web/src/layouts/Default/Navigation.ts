@@ -9,6 +9,7 @@ import {
   FileInvoiceDollarIcon,
   UsersGroupIcon,
 } from "@/components/Icons";
+import { ROUTE_PATHS } from "@/constants/routePaths";
 
 export interface NavItemConfig {
   id: string;
@@ -95,4 +96,17 @@ export function findNavItemById(id: string): NavItemConfig | undefined {
     if (item) return item;
   }
   return undefined;
+}
+
+export function findNavIdByPath(pathname: string): string {
+  for (const section of navigationSections) {
+    for (const item of section.items) {
+      const path =
+        ROUTE_PATHS[item.id.toUpperCase() as keyof typeof ROUTE_PATHS];
+      if (path && (pathname === path || pathname.startsWith(`${path}/`))) {
+        return item.id;
+      }
+    }
+  }
+  return "";
 }

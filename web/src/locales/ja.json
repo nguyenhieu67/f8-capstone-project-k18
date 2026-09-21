@@ -68,7 +68,8 @@
       "details": "詳細",
       "dependents": "扶養家族数",
       "actions": "操作",
-      "total": "合計"
+      "total": "合計",
+      "enrolledDate": "登録日"
     },
     "button": {
       "addSource": "新規チャネル追加",
@@ -83,7 +84,8 @@
       "saving": "保存中...",
       "delete": "削除",
       "update": "情報の更新",
-      "printPayslip": "この明細を印刷"
+      "printPayslip": "この明細を印刷",
+      "edit": "編集"
     },
     "dialog": {
       "confirmDelete": "削除の確認",
@@ -327,7 +329,8 @@
     },
     "header": {
       "liveStatus": "システム稼働中"
-    }
+    },
+    "noRejections": "今月の却下リードはありません。"
   },
   "classPage": {
     "createModal": {
@@ -389,6 +392,7 @@
     "form": {
       "selectSales": "-- 担当営業を選択 --",
       "selectSource": "-- リード元を選択 --",
+      "selectClasse": "-- クラスを選択 --",
       "demandPlaceholder": "例: 就職のため / 転職したい",
       "jobPlaceholder": "例: 学生 / 社会人",
       "reasonPlaceholder": "例: 学費が高い / 時間が合わない"
@@ -399,7 +403,12 @@
       "qualified": "見込みあり",
       "converted": "成約済み",
       "lost": "失注 / 辞退"
-    }
+    },
+    "toast": {
+      "created": "プレセールスのリードを作成しました。",
+      "updated": "プレセールスのリードを更新しました: {{name}}"
+    },
+    "enrolled": "入学済み"
   },
   "empPage": {
     "roles": {
@@ -475,5 +484,10 @@
       "attendance": "当月の勤怠",
       "days": "{{days}}日"
     }
+  },
+  "saleResultPage": {
+    "period": "登録月で絞り込み",
+    "allTime": "すべて",
+    "totalRevenue": "入金済み売上合計"
   }
 }
