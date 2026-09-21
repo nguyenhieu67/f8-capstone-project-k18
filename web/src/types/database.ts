@@ -60,7 +60,13 @@ export interface LeadI {
   purpose: string;
   who: string;
   status: LeadStatus;
-  rejectionReason: string;
+  rejectionReason: string | null;
+  enrolledClasses?: LeadEnrolledClassI[];
+}
+
+export interface LeadEnrolledClassI {
+  classId: number;
+  status: StudentClasseStatus;
 }
 
 // Student

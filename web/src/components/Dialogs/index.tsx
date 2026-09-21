@@ -5,3 +5,6 @@ export { default as ClassDialog } from "./ClassDialog";
 export { default as LeadDialog } from "./LeadDialog";
 export { default as ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 export { default as PayslipDialog } from "./PayslipDialog";
+export { default as AddClassDialog } from "./AddClassDialog";
+export { default as EnrolledClassList } from "./EnrolledClassList";
+export { default as EnrolledClassesDialog } from "./EnrolledClassesDialog";

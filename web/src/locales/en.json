@@ -408,7 +408,31 @@
       "created": "Pre-sale lead created successfully.",
       "updated": "Pre-sale lead updated successfully: {{name}}."
     },
-    "enrolled": "Enrolled"
+    "enrolled": "Enrolled",
+    "classStatus": {
+      "enrolled": "Enrolled",
+      "learning": "In progress",
+      "completed": "Completed"
+    },
+    "classList": {
+      "title": "Student's Classes",
+      "heading": "Class list",
+      "count": "{{num}} classes",
+      "viewDetail": "View class details"
+    },
+    "addClass": {
+      "button": "Add class",
+      "title": "Add Class For Student",
+      "currentClasses": "Current classes",
+      "selectLabel": "Choose a new class",
+      "selectPlaceholder": "-- Select a class --",
+      "submit": "Add class",
+      "noAvailable": "This student is already in every open class.",
+      "selectRequired": "Please select a class.",
+      "toast": {
+        "added": "Added {{student}} to {{name}}."
+      }
+    }
   },
   "empPage": {
     "roles": {

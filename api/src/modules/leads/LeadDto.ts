@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNumber, IsOptional, IsString, Min } from "class-validator";
 import { PartialType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
@@ -19,3 +19,10 @@ export class LeadCreateDto {
 }
 
 export class LeadUpdateDto extends PartialType(LeadCreateDto) {}
+
+export class LeadEnrollmentDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  classId!: number;
+}

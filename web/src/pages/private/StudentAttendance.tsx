@@ -29,6 +29,7 @@ const DEFAULT_ENTRY: AttendanceEntry = { status: "present", note: "" };
 interface GetColumnsParams {
   rows: ClassAttendanceRowI[];
   attendance: AttendanceMap;
+  isEditable: boolean;
   t: (text: string) => string;
   onAttendanceChange: <K extends keyof AttendanceEntry>(
     studentClasseId: number,
@@ -40,6 +41,7 @@ interface GetColumnsParams {
 const getColumns = ({
   rows,
   attendance,
+  isEditable,
   t,
   onAttendanceChange,
 }: GetColumnsParams): ColumnI<ClassAttendanceRowI>[] => [
@@ -85,8 +87,9 @@ const getColumns = ({
               name={`att-${r.id}`}
               value="present"
               checked={entry.status === "present"}
-              onChange={() => onAttendanceChange(r.id, "status", "present")}
+              disabled={!isEditable}
               className="hidden"
+              onChange={() => onAttendanceChange(r.id, "status", "present")}
             />
             {t("studentClassePage.status.present")}
           </label>
@@ -102,8 +105,9 @@ const getColumns = ({
               name={`att-${r.id}`}
               value="absent"
               checked={entry.status === "absent"}
-              onChange={() => onAttendanceChange(r.id, "status", "absent")}
+              disabled={!isEditable}
               className="hidden"
+              onChange={() => onAttendanceChange(r.id, "status", "absent")}
             />
             {t("studentClassePage.status.absent")}
           </label>
@@ -149,6 +153,8 @@ export default function StudentAttendance() {
     () => classes.find((c) => c.id === selectedClassId),
     [classes, selectedClassId],
   );
+
+  const isEditable = selectedClasse?.status === "ongoing";
 
   const { data: roster, refetch } = useFetchData(
     () =>
@@ -220,16 +226,21 @@ export default function StudentAttendance() {
       getColumns({
         rows,
         attendance,
+        isEditable,
         t,
         onAttendanceChange: handleAttendanceChange,
       }),
-    [rows, attendance, t, handleAttendanceChange],
+    [rows, attendance, isEditable, t, handleAttendanceChange],
   );
 
-  const classeOptions = classes.map((c) => ({
-    label: `(${c.code}) ${c.name} - ${formatCurrency(c.tuition, "VNĐ")}`,
-    value: String(c.id),
-  }));
+  const classeOptions = useMemo(
+    () =>
+      classes.map((c) => ({
+        label: `(${c.code}) ${c.name} - ${formatCurrency(c.tuition, "VNĐ")}`,
+        value: String(c.id),
+      })),
+    [classes],
+  );
 
   return (
     <>
@@ -248,25 +259,29 @@ export default function StudentAttendance() {
               onChange={(e) => setPickedClassId(Number(e.target.value))}
             />
           </div>
-          <div className="flex items-center">
-            <label className="text-crm-label-text mr-2 mb-1 block text-sm font-medium">
-              {t("studentClassePage.attendanceDate")}
-            </label>
-            <input
-              type="date"
-              value={attendanceDate}
-              onChange={(e) =>
-                e.target.value && setAttendanceDate(e.target.value)
-              }
-              className="rounded-xl border border-slate-200 p-2.5 text-sm focus:outline-none"
-            />
-          </div>
-          <Button
-            buttonTitle="common.button.saveAttendance"
-            success
-            leftIcon={<SaveIcon />}
-            onClick={handleSave}
-          />
+          {isEditable && (
+            <>
+              <div className="flex items-center">
+                <label className="text-crm-label-text mr-2 mb-1 block text-sm font-medium">
+                  {t("studentClassePage.attendanceDate")}
+                </label>
+                <input
+                  type="date"
+                  value={attendanceDate}
+                  onChange={(e) =>
+                    e.target.value && setAttendanceDate(e.target.value)
+                  }
+                  className="rounded-xl border border-slate-200 p-2.5 text-sm focus:outline-none"
+                />
+              </div>
+              <Button
+                buttonTitle="common.button.saveAttendance"
+                success
+                leftIcon={<SaveIcon />}
+                onClick={handleSave}
+              />
+            </>
+          )}
         </div>
       </CardBase>
 

@@ -408,7 +408,31 @@
       "created": "Tạo thành công PreSale mới.",
       "updated": "Cập nhật thành công PreSale với tên là: {{name}}."
     },
-    "enrolled": "Đã vào lớp"
+    "enrolled": "Đã vào lớp",
+    "classStatus": {
+      "enrolled": "Đã vào lớp",
+      "learning": "Đang học",
+      "completed": "Đã hoàn thành"
+    },
+    "classList": {
+      "title": "Lớp Học Của Học Viên",
+      "heading": "Danh sách lớp học",
+      "count": "{{num}} lớp học",
+      "viewDetail": "Xem chi tiết các lớp học"
+    },
+    "addClass": {
+      "button": "Thêm lớp",
+      "title": "Thêm Lớp Học Cho Học Viên",
+      "currentClasses": "Lớp đang học",
+      "selectLabel": "Chọn lớp học mới",
+      "selectPlaceholder": "-- Chọn lớp học --",
+      "submit": "Thêm lớp",
+      "noAvailable": "Học viên đã học tất cả các lớp đang mở.",
+      "selectRequired": "Vui lòng chọn lớp học.",
+      "toast": {
+        "added": "Đã thêm {{student}} vào lớp {{name}}."
+      }
+    }
   },
   "empPage": {
     "roles": {

@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
-import { InputField, ScheduleSelector, SelectField } from "../Form";
+import {
+  InputField,
+  ScheduleSelector,
+  SelectField,
+  type SelectOption,
+} from "../Form";
 import { createClasse, updateClasse } from "@/services/classe";
 import { useAppToast, useForm } from "@/hooks";
-import type { ClasseI, EmployeeI } from "@/types/database";
+import type { ClasseI } from "@/types/database";
 
 interface ClassDialogProps {
   isOpen: boolean;
   initialData?: ClasseI | null;
-  trainers?: EmployeeI[];
+  trainerOptions?: SelectOption[];
   onClose: () => void;
   onSuccess?: () => void;
   onDelete?: () => void;
@@ -34,7 +39,7 @@ const DEFAULT_FORM: ClasseI = {
 export default function ClassDialog({
   isOpen,
   initialData,
-  trainers = [],
+  trainerOptions = [],
   onClose,
   onSuccess,
   onDelete,
@@ -49,16 +54,6 @@ export default function ClassDialog({
   const toastMsg = useAppToast();
 
   const isEdit = Boolean(initialData?.id);
-
-  const trainerOptions = [
-    { label: "classPage.filter.selectTrainer", value: "" },
-    ...trainers.map((t) => {
-      return {
-        label: t.fullName || `classPage.details.trainer #${t.id}`,
-        value: String(t.id),
-      };
-    }),
-  ];
 
   useEffect(() => {
     if (isOpen) {

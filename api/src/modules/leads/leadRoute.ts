@@ -1,7 +1,7 @@
 import express from "express";
 
 import leadController from "./LeadController";
-import { LeadCreateDto, LeadUpdateDto } from "./LeadDto";
+import { LeadCreateDto, LeadEnrollmentDto, LeadUpdateDto } from "./LeadDto";
 import { ValidationPipe } from "@/validations";
 
 const router = express.Router();
@@ -10,6 +10,7 @@ router.get("/", leadController.getList);
 router.get("/:id", leadController.getOne);
 router.post("/", ValidationPipe(LeadCreateDto), leadController.create);
 router.put("/:id", ValidationPipe(LeadUpdateDto), leadController.update);
+router.post("/:id/enrollments", ValidationPipe(LeadEnrollmentDto), leadController.addEnrollment);
 router.delete("/:id", leadController.delete);
 
 /**
@@ -211,6 +212,44 @@ router.delete("/:id", leadController.delete);
  *         description: Xoá thành công
  *       404:
  *         description: Không tìm thấy khách hàng tiềm năng
+ */
+
+/**
+ * @swagger
+ * /leads/{id}/enrollments:
+ *   post:
+ *     summary: Thêm 1 lớp học nữa cho học viên (1 học viên học nhiều lớp)
+ *     description: |
+ *       Chỉ dùng cho lead đã chốt đơn (converted). Học phí lấy theo học phí của lớp.
+ *       Không thêm được lớp đã đóng / đã kết thúc, hoặc lớp học viên đã đăng ký rồi (409).
+ *     tags:
+ *       - Leads
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [classId]
+ *             properties:
+ *               classId:
+ *                 type: integer
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: Đã thêm lớp học cho học viên
+ *       400:
+ *         description: Lead chưa chốt đơn, lớp đã đóng/kết thúc hoặc dữ liệu không hợp lệ
+ *       404:
+ *         description: Lead hoặc lớp học không tồn tại
+ *       409:
+ *         description: Học viên đã đăng ký lớp này rồi
  */
 
 export default router;

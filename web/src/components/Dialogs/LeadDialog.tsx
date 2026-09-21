@@ -2,21 +2,20 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
-import { InputField, SelectField } from "../Form";
+import { InputField, SelectField, type SelectOption } from "../Form";
 import { createLead, updateLead } from "@/services/lead";
 import { useAppToast, useForm } from "@/hooks";
-import type { LeadI, EmployeeI, SourceI, ClasseI } from "@/types/database";
+import type { LeadI } from "@/types/database";
 import { LEAD_STATUS_OPTIONS } from "@/constants/leadStatus";
-import { formatCurrency } from "@/utils/format";
 
 interface LeadDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
   initialData?: LeadI | null;
-  sellers?: EmployeeI[];
-  sources?: SourceI[];
-  classes?: ClasseI[];
+  sourceOptions: SelectOption[];
+  sellerOptions: SelectOption[];
+  classeOptions: SelectOption[];
 }
 
 const DEFAULT_FORM: LeadI = {
@@ -37,9 +36,9 @@ export default function LeadDialog({
   onClose,
   onSuccess,
   initialData,
-  sellers = [],
-  sources = [],
-  classes = [],
+  sourceOptions,
+  sellerOptions,
+  classeOptions,
 }: LeadDialogProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -49,30 +48,6 @@ export default function LeadDialog({
   const toastMsg = useAppToast();
 
   const isEdit = Boolean(initialData?.id);
-
-  const sellerOptions = [
-    { label: "leadPage.form.selectSales", value: "" },
-    ...sellers.map((s) => ({
-      label: s.fullName || `Sales #${s.id}`,
-      value: String(s.id),
-    })),
-  ];
-
-  const sourceOptions = [
-    { label: "leadPage.form.selectSource", value: "" },
-    ...sources.map((src) => ({
-      label: src.name,
-      value: String(src.id),
-    })),
-  ];
-
-  const classeOptions = [
-    { label: "leadPage.form.selectClasse", value: "" },
-    ...classes.map((c) => ({
-      label: `${c.name} - ${formatCurrency(c.tuition)}`,
-      value: String(c.id),
-    })),
-  ];
 
   useEffect(() => {
     if (isOpen) {

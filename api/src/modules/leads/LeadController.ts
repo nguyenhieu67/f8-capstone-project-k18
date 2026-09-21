@@ -71,12 +71,27 @@ class LeadController extends BaseController {
 
     const { data, total } = await this.service.getList(condition, sortBy, sortOrder, page, limit);
 
+    const enrolledClasses = await leadService.getEnrolledClasses(data.map((lead: { id: number }) => Number(lead.id)));
+    const items = this.serializeList(data).map((lead) => ({
+      ...lead,
+      enrolledClasses: enrolledClasses.get(Number(lead.id)) ?? [],
+    }));
+
     res.success({
-      items: this.serializeList(data),
+      items,
       total,
       page: page ?? 1,
       limit: limit ?? total,
     });
+  };
+
+  addEnrollment = async (req: Request, res: Response) => {
+    const leadId = Number(req.params.id);
+    if (!Number.isInteger(leadId) || leadId <= 0) {
+      throw AppError.badRequest("Tham số id không hợp lệ.");
+    }
+
+    res.success(await leadService.addEnrollment(leadId, Number(req.body.classId), this.getUserId(req)));
   };
 }
 

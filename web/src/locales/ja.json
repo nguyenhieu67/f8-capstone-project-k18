@@ -408,7 +408,31 @@
       "created": "プレセールスのリードを作成しました。",
       "updated": "プレセールスのリードを更新しました: {{name}}"
     },
-    "enrolled": "入学済み"
+    "enrolled": "入学済み",
+    "classStatus": {
+      "enrolled": "入学済み",
+      "learning": "受講中",
+      "completed": "修了"
+    },
+    "classList": {
+      "title": "受講生のクラス",
+      "heading": "クラス一覧",
+      "count": "{{num}}クラス",
+      "viewDetail": "クラスの詳細を見る"
+    },
+    "addClass": {
+      "button": "クラスを追加",
+      "title": "受講生にクラスを追加",
+      "currentClasses": "受講中のクラス",
+      "selectLabel": "新しいクラスを選択",
+      "selectPlaceholder": "-- クラスを選択 --",
+      "submit": "クラスを追加",
+      "noAvailable": "開講中のすべてのクラスに登録済みです。",
+      "selectRequired": "クラスを選択してください。",
+      "toast": {
+        "added": "{{student}}さんを{{name}}に追加しました。"
+      }
+    }
   },
   "empPage": {
     "roles": {

@@ -7,6 +7,7 @@ import { deleteClasse, getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
 import { getStudentClasses } from "@/services/students";
 import type { ClasseI } from "@/types/database";
+import { buildSelectOptions } from "@/utils/helper";
 import { useMemo } from "react";
 
 export default function Classe() {
@@ -38,6 +39,16 @@ export default function Classe() {
   const trainers = useMemo(
     () => employees?.filter((e) => e.role === "trainer"),
     [employees],
+  );
+
+  const trainerOptions = useMemo(
+    () =>
+      buildSelectOptions(
+        trainers,
+        (t) => t.fullName || `Trainer #${t.id}`,
+        "classPage.filter.selectTrainer",
+      ),
+    [trainers],
   );
 
   return (
@@ -84,7 +95,7 @@ export default function Classe() {
             onClose={actions.handleCloseForm}
             onSuccess={refetch}
             initialData={actions.selectedItem}
-            trainers={trainers}
+            trainerOptions={trainerOptions}
             onDelete={
               actions.selectedItem
                 ? () => actions.handleOpenDelete(actions.selectedItem!)

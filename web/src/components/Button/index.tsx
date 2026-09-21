@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 interface ButtonProps {
   to?: string;
   href?: string;
+  title?: string;
   primary?: boolean;
   outline?: boolean;
   text?: boolean;
@@ -26,6 +27,7 @@ interface ButtonProps {
 export default function Button({
   to,
   href,
+  title,
   primary = false,
   outline = false,
   text = false,
@@ -71,7 +73,9 @@ export default function Button({
   const content = (
     <>
       {leftIcon}
-      <span>{buttonTitle ? t(buttonTitle) : children}</span>
+      {(buttonTitle || children) && (
+        <span>{buttonTitle ? t(buttonTitle) : children}</span>
+      )}
       {rightIcon}
     </>
   );
@@ -97,6 +101,7 @@ export default function Button({
       className={`cursor-pointer ${classes}`}
       disabled={disabled}
       onClick={onClick}
+      title={title}
       {...passProps}
     >
       {content}

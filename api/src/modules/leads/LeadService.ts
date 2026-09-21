@@ -5,7 +5,7 @@ import { validateEmployeeRole } from "@/modules/employees/helpers/validateEmploy
 import { EmployeeRole } from "@/modules/employees/EmployeeEntity";
 import { LeadEntity, LeadStatus } from "./LeadEntity";
 import { StudentEntity } from "@/modules/students/StudentEntity";
-import { ClasseEntity } from "@/modules/classes/ClasseEntity";
+import { ClasseEntity, ClasseStatus } from "@/modules/classes/ClasseEntity";
 import { StudentClasseEntity, StudentClasseStatus } from "../students/studentClasse/StudentClasseEntity";
 import { AppError } from "@/utils";
 import { escapeLike, isPhoneLike, normalizeSearchText, VN_FROM, VN_TO } from "./leadSearch";
@@ -50,7 +50,7 @@ class LeadService extends BaseService {
 
   private async ensureStudentEnrollment(
     leadId: number,
-    payload: { classe: ClasseEntity; createdBy?: number; updatedBy?: number },
+    payload: { classe: ClasseEntity; previousClassId?: number; createdBy?: number; updatedBy?: number },
     manager = AppDataSource.manager,
   ) {
     const studentRepo = manager.getRepository(StudentEntity);
@@ -79,11 +79,37 @@ class LeadService extends BaseService {
       throw AppError.badRequest("Không thể tạo student cho lead");
     }
 
-    const activeEnrollment = await studentClassRepo.findOne({
-      where: { studentId: student.id, status: StudentClasseStatus.ACTIVE },
+    const activeEnrollments = await studentClassRepo.find({
+      where: { studentId: student.id, status: StudentClasseStatus.ACTIVE, isActive: true },
     });
 
-    if (!activeEnrollment) {
+    const targetClassId = Number(payload.classe.id);
+    const alreadyInTarget = activeEnrollments.some((e) => Number(e.classId) === targetClassId);
+
+    if (alreadyInTarget) {
+      if (payload.previousClassId !== undefined && payload.previousClassId !== targetClassId) {
+        throw AppError.badRequest("Học viên đã đăng ký lớp này rồi, hãy chọn lớp khác.");
+      }
+      return student;
+    }
+
+    const primaryEnrollment =
+      payload.previousClassId !== undefined
+        ? activeEnrollments.find((e) => Number(e.classId) === payload.previousClassId)
+        : undefined;
+
+    if (primaryEnrollment) {
+      await studentClassRepo
+        .createQueryBuilder()
+        .update(StudentClasseEntity)
+        .set({
+          classId: payload.classe.id,
+          tuitionAmount: payload.classe.tuition,
+          updatedBy: payload.updatedBy,
+        })
+        .where("id = :id", { id: primaryEnrollment.id })
+        .execute();
+    } else {
       await studentClassRepo
         .createQueryBuilder()
         .insert()
@@ -97,17 +123,6 @@ class LeadService extends BaseService {
             createdBy: payload.createdBy,
           },
         ])
-        .execute();
-    } else if (activeEnrollment.classId !== payload.classe.id) {
-      await studentClassRepo
-        .createQueryBuilder()
-        .update(StudentClasseEntity)
-        .set({
-          classId: payload.classe.id,
-          tuitionAmount: payload.classe.tuition,
-          updatedBy: payload.updatedBy,
-        })
-        .where("id = :id", { id: activeEnrollment.id })
         .execute();
     }
 
@@ -138,7 +153,7 @@ class LeadService extends BaseService {
 
     const classe = await this.validateConvertPayload(data);
 
-    return AppDataSource.transaction(async (manager) => {
+    const leadId = await AppDataSource.transaction(async (manager) => {
       const leadRepo = manager.getRepository(LeadEntity);
       const safeLeadData = this.pickEntityColumns(data);
 
@@ -150,12 +165,14 @@ class LeadService extends BaseService {
         .returning(["id"])
         .execute();
 
-      const leadId = insertResult.identifiers[0].id;
+      const newLeadId = insertResult.identifiers[0].id;
 
-      await this.ensureStudentEnrollment(leadId, { classe, createdBy: data.createdBy }, manager);
+      await this.ensureStudentEnrollment(newLeadId, { classe, createdBy: data.createdBy }, manager);
 
-      return this.getById(leadId);
+      return newLeadId;
     });
+
+    return this.getById(leadId);
   }
 
   async updateById(id: number, data: any): Promise<UpdateResult> {
@@ -175,7 +192,9 @@ class LeadService extends BaseService {
       }
 
       const wasAlreadyConverted = lead.status === LeadStatus.CONVERTED;
-      const isChangingClasse = wasAlreadyConverted && data.classeId !== undefined && data.classeId !== lead.classeId;
+      const currentClasseId = lead.classeId != null ? Number(lead.classeId) : undefined;
+      const isChangingClasse =
+        wasAlreadyConverted && data.classeId !== undefined && Number(data.classeId) !== currentClasseId;
 
       let classe: ClasseEntity | undefined;
 
@@ -196,12 +215,96 @@ class LeadService extends BaseService {
       if ((isConvertingStatus && !wasAlreadyConverted) || isChangingClasse) {
         await this.ensureStudentEnrollment(
           id,
-          { classe: classe!, createdBy: data.updatedBy, updatedBy: data.updatedBy },
+          { classe: classe!, previousClassId: currentClasseId, createdBy: data.updatedBy, updatedBy: data.updatedBy },
           manager,
         );
       }
 
       return updateResult;
+    });
+  }
+
+  async getEnrolledClasses(leadIds: number[]) {
+    const result = new Map<number, { classId: number; status: StudentClasseStatus }[]>();
+    if (leadIds.length === 0) return result;
+
+    const rows = (await AppDataSource.query(
+      `
+      SELECT s.lead_id AS "leadId", sc.class_id AS "classId", sc.status AS "status"
+      FROM student s
+      JOIN student_classe sc ON sc.student_id = s.id AND sc.is_active = true AND sc.status IN ('active', 'completed')
+      WHERE s.is_active = true AND s.lead_id = ANY($1::bigint[])
+      ORDER BY sc.id ASC
+      `,
+      [leadIds],
+    )) as { leadId: string; classId: string; status: StudentClasseStatus }[];
+
+    for (const row of rows) {
+      const key = Number(row.leadId);
+      result.set(key, [...(result.get(key) ?? []), { classId: Number(row.classId), status: row.status }]);
+    }
+    return result;
+  }
+
+  async addEnrollment(leadId: number, classId: number, createdBy?: number) {
+    return AppDataSource.transaction(async (manager) => {
+      const lead = await manager.getRepository(LeadEntity).findOne({ where: { id: leadId, isActive: true } });
+      if (!lead) {
+        throw AppError.notFound("Lead không tồn tại");
+      }
+      if (lead.status !== LeadStatus.CONVERTED) {
+        throw AppError.badRequest("Chỉ thêm lớp học cho lead đã chốt đơn (converted)");
+      }
+
+      const classe = await manager.getRepository(ClasseEntity).findOne({ where: { id: classId, isActive: true } });
+      if (!classe) {
+        throw AppError.notFound("Lớp học không tồn tại");
+      }
+      if (classe.status === ClasseStatus.CLOSED || classe.status === ClasseStatus.COMPLETED) {
+        throw AppError.badRequest("Lớp học đã kết thúc hoặc đã đóng, không thể thêm học viên");
+      }
+
+      const student = await manager
+        .getRepository(StudentEntity)
+        .createQueryBuilder("student")
+        .setLock("pessimistic_write")
+        .where("student.leadId = :leadId AND student.isActive = true", { leadId })
+        .getOne();
+      if (!student) {
+        throw AppError.badRequest("Lead này chưa có học viên, hãy mở lại lead và chọn lớp để chốt đơn");
+      }
+
+      const studentClassRepo = manager.getRepository(StudentClasseEntity);
+      const existing = await studentClassRepo.findOne({
+        where: { studentId: student.id, classId: classe.id, isActive: true },
+      });
+      if (existing) {
+        throw AppError.conflict("Học viên đã đăng ký lớp này rồi");
+      }
+
+      const insertResult = await studentClassRepo
+        .createQueryBuilder()
+        .insert()
+        .into(StudentClasseEntity)
+        .values([
+          {
+            studentId: student.id,
+            classId: classe.id,
+            tuitionAmount: classe.tuition,
+            status: StudentClasseStatus.ACTIVE,
+            createdBy,
+          },
+        ])
+        .returning(["id"])
+        .execute();
+
+      return {
+        id: Number(insertResult.identifiers[0].id),
+        studentId: Number(student.id),
+        classId: Number(classe.id),
+        tuitionAmount: Number(classe.tuition ?? 0),
+        status: StudentClasseStatus.ACTIVE,
+      };
     });
   }
 

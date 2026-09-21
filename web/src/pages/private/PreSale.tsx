@@ -1,8 +1,19 @@
 import Button from "@/components/Button";
 import { CardBase } from "@/components/Card";
 import { InputField, SelectField } from "@/components/Form";
-import { ConfirmDeleteDialog, LeadDialog } from "@/components/Dialogs";
-import { EditIcon, PlusIcon, SearchIcon, TrashIcon } from "@/components/Icons";
+import {
+  AddClassDialog,
+  ConfirmDeleteDialog,
+  EnrolledClassesDialog,
+  LeadDialog,
+} from "@/components/Dialogs";
+import {
+  EditIcon,
+  GraduationCapIcon,
+  PlusIcon,
+  SearchIcon,
+  TrashIcon,
+} from "@/components/Icons";
 import Table from "@/components/Table";
 import { StatusBadge } from "@/components/ui";
 import {
@@ -27,11 +38,16 @@ import { LEAD_STATUS, LEAD_STATUS_OPTIONS } from "@/constants/leadStatus";
 import type { TFunction } from "i18next";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { buildSelectOptions } from "@/utils/helper";
+import { formatCurrency } from "@/utils/format";
+import { getLeadEnrolledClasses } from "@/utils/enrollment";
 
 const STATUS_FILTER_OPTIONS = [
   { label: "leadPage.filter.allStatuses", value: "" },
   ...LEAD_STATUS_OPTIONS,
 ];
+
+const MAX_INLINE_CLASSES = 2;
 
 const getColumns = (
   sources: SourceI[],
@@ -40,6 +56,8 @@ const getColumns = (
   t: TFunction,
   onActionEdit: (row: LeadI) => void,
   onActionDelete: (row: LeadI) => void,
+  onActionAddClass: (row: LeadI) => void,
+  onActionViewClasses: (row: LeadI) => void,
 ): ColumnI<LeadI>[] => [
   {
     value: "customerPhone",
@@ -86,13 +104,37 @@ const getColumns = (
   {
     value: "class",
     text: "common.tableHeader.class",
-    render: (l) => (
-      <span className="text-crm-accent font-medium">
-        {classes.find((c) => c.id === Number(l.classeId))?.name ?? (
-          <span className="text-crm-danger">-</span>
-        )}
-      </span>
-    ),
+    render: (l) => {
+      const enrolled = getLeadEnrolledClasses(l);
+
+      if (enrolled.length === 0) {
+        return <span className="text-crm-danger font-medium">-</span>;
+      }
+
+      if (enrolled.length > MAX_INLINE_CLASSES) {
+        return (
+          <button
+            type="button"
+            onClick={() => onActionViewClasses(l)}
+            title={t("leadPage.classList.viewDetail")}
+            className="text-crm-accent border-crm-border hover:bg-crm-menu-item-bg-hover inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold whitespace-nowrap transition"
+          >
+            <GraduationCapIcon size="xs" />
+            {t("leadPage.classList.count", { num: enrolled.length })}
+          </button>
+        );
+      }
+
+      return (
+        <div className="flex flex-col gap-0.5">
+          {enrolled.map(({ classId }) => (
+            <span key={classId} className="text-crm-accent font-medium">
+              {classes.find((c) => c.id === classId)?.name ?? `#${classId}`}
+            </span>
+          ))}
+        </div>
+      );
+    },
   },
   {
     value: "status",
@@ -115,37 +157,36 @@ const getColumns = (
     value: "customAction",
     text: "common.tableHeader.actions",
     render: (l: LeadI) => {
-      if (l.status === "converted") {
-        return (
-          <div className="text-crm-success flex items-center gap-1.5 text-xs font-medium">
-            <span className="bg-crm-success h-2 w-2 rounded-full"></span>
-            <span>{t("leadPage.enrolled")}</span>
-          </div>
-        );
-      }
-
       if (l.status === "lost") {
         return <span className="text-crm-danger text-xs">-----</span>;
       }
 
       return (
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => onActionEdit(l)}
-            className="text-crm-label-text hover:text-crm-info cursor-pointer rounded p-1 transition hover:bg-slate-100"
-            title={t("common.button.edit")}
-          >
-            <EditIcon />
-          </button>
-          <button
-            type="button"
+          {l.status === "converted" ? (
+            <Button
+              small
+              leftIcon={<PlusIcon />}
+              className="text-crm-label-text hover:text-crm-primary w-fit cursor-pointer rounded p-1! transition hover:bg-slate-100"
+              onClick={() => onActionAddClass(l)}
+              title={t("common.button.addClass")}
+            />
+          ) : (
+            <Button
+              small
+              leftIcon={<EditIcon />}
+              className="text-crm-label-text hover:text-crm-info w-fit cursor-pointer rounded p-1! transition hover:bg-slate-100"
+              onClick={() => onActionEdit(l)}
+              title={t("common.button.edit")}
+            />
+          )}
+          <Button
+            small
+            leftIcon={<TrashIcon />}
+            className="text-crm-label-text hover:text-crm-danger cursor-pointer rounded p-1! transition hover:bg-slate-100"
             onClick={() => onActionDelete(l)}
-            className="text-crm-label-text hover:text-crm-danger cursor-pointer rounded p-1 transition hover:bg-slate-100"
             title={t("common.button.delete")}
-          >
-            <TrashIcon />
-          </button>
+          />
         </div>
       );
     },
@@ -196,9 +237,13 @@ export default function PreSale() {
     () => lookups?.employees.items || [],
     [lookups?.employees.items],
   );
-  const classes = useMemo(
-    () => lookups?.classes.items.filter((c) => c.status !== "closed") || [],
+  const allClasses = useMemo(
+    () => lookups?.classes.items || [],
     [lookups?.classes.items],
+  );
+  const classes = useMemo(
+    () => allClasses.filter((c) => c.status !== "closed"),
+    [allClasses],
   );
 
   const handleStatusChange = (value: string) => {
@@ -213,6 +258,8 @@ export default function PreSale() {
     setSellerId(value);
     onPageChange(1);
   };
+  const [addClassLead, setAddClassLead] = useState<LeadI | null>(null);
+  const [viewClassesLead, setViewClassesLead] = useState<LeadI | null>(null);
   const actions = useTableActions<LeadI>(
     refetch,
     deleteLead as (id: string | number) => Promise<void>,
@@ -223,12 +270,14 @@ export default function PreSale() {
       getColumns(
         sources,
         employees,
-        classes,
+        allClasses,
         t,
         (row) => actions.handleOpenEdit(leads, row),
         (row) => actions.handleOpenDelete(row),
+        (row) => setAddClassLead(row),
+        (row) => setViewClassesLead(row),
       ),
-    [sources, employees, classes, t, actions, leads],
+    [sources, employees, allClasses, t, actions, leads],
   );
 
   const sellers = useMemo(
@@ -237,21 +286,45 @@ export default function PreSale() {
   );
 
   const sourceFilterOptions = useMemo(
-    () => [
-      { label: "leadPage.filter.allSources", value: "" },
-      ...sources.map((src) => ({ label: src.name, value: String(src.id) })),
-    ],
+    () =>
+      buildSelectOptions(sources, (s) => s.name, "leadPage.filter.allSources"),
     [sources],
   );
+
   const sellerFilterOptions = useMemo(
-    () => [
-      { label: "leadPage.filter.allSellers", value: "" },
-      ...sellers.map((e) => ({
-        label: e.fullName || `#${e.id}`,
-        value: String(e.id),
-      })),
-    ],
+    () =>
+      buildSelectOptions(
+        sellers,
+        (s) => s.fullName || `#${s.id}`,
+        "leadPage.filter.allSellers",
+      ),
     [sellers],
+  );
+
+  const sourceOptions = useMemo(
+    () =>
+      buildSelectOptions(sources, (s) => s.name, "leadPage.form.selectSource"),
+    [sources],
+  );
+
+  const sellerOptions = useMemo(
+    () =>
+      buildSelectOptions(
+        sellers,
+        (s) => s.fullName || `Sales #${s.id}`,
+        "leadPage.form.selectSales",
+      ),
+    [sellers],
+  );
+
+  const classeOptions = useMemo(
+    () =>
+      buildSelectOptions(
+        classes,
+        (c) => `${c.name} - ${formatCurrency(c.tuition)}`,
+        "leadPage.form.selectClasse",
+      ),
+    [classes],
   );
 
   return (
@@ -330,10 +403,31 @@ export default function PreSale() {
             onClose={actions.handleCloseForm}
             onSuccess={refetch}
             initialData={actions.selectedItem}
-            sources={sources}
-            sellers={sellers}
-            classes={classes}
+            sourceOptions={sourceOptions}
+            sellerOptions={sellerOptions}
+            classeOptions={classeOptions}
           />
+          {addClassLead && (
+            <AddClassDialog
+              isOpen
+              lead={addClassLead}
+              classes={allClasses}
+              onClose={() => setAddClassLead(null)}
+              onSuccess={refetch}
+            />
+          )}
+          {viewClassesLead && (
+            <EnrolledClassesDialog
+              isOpen
+              lead={viewClassesLead}
+              classes={allClasses}
+              onClose={() => setViewClassesLead(null)}
+              onAddClass={(lead) => {
+                setViewClassesLead(null);
+                setAddClassLead(lead);
+              }}
+            />
+          )}
           <ConfirmDeleteDialog
             isOpen={actions.isDeleteOpen}
             loading={actions.deleteLoading}

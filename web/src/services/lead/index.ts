@@ -7,7 +7,7 @@ export interface LeadFilters {
   status?: LeadStatus;
   sourceId?: number;
   sellerId?: number;
-  search?: string;
+  search?: string; // tên hoặc SĐT
 }
 
 export async function getLeads(
@@ -34,4 +34,9 @@ export async function updateLead(id: number, payload: RequestBody) {
 
 export async function deleteLead(id: number) {
   return await fetchApi.delete(`/leads/${id}`);
+}
+
+// Thêm 1 lớp học nữa cho học viên (1 học viên học nhiều lớp) — chỉ lead đã chốt đơn
+export async function addLeadEnrollment(leadId: number, classId: number) {
+  return await fetchApi.post(`/leads/${leadId}/enrollments`, { classId });
 }
