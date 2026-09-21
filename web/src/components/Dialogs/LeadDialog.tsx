@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { PlusIcon } from "../Icons";
 import Dialog from "./Dialog";
 import { InputField, SelectField } from "../Form";
 import { createLead, updateLead } from "@/services/lead";
 import { useAppToast, useForm } from "@/hooks";
 import type { LeadI, EmployeeI, SourceI, ClasseI } from "@/types/database";
+import { LEAD_STATUS_OPTIONS } from "@/constants/leadStatus";
 import { formatCurrency } from "@/utils/format";
 
 interface LeadDialogProps {
@@ -16,14 +18,6 @@ interface LeadDialogProps {
   sources?: SourceI[];
   classes?: ClasseI[];
 }
-
-const STATUS_OPTIONS = [
-  { label: "leadPage.status.new", value: "new" },
-  { label: "leadPage.status.contacted", value: "contacted" },
-  { label: "leadPage.status.qualified", value: "qualified" },
-  { label: "leadPage.status.converted", value: "converted" },
-  { label: "leadPage.status.lost", value: "lost" },
-];
 
 const DEFAULT_FORM: LeadI = {
   firstName: "",
@@ -47,6 +41,7 @@ export default function LeadDialog({
   sources = [],
   classes = [],
 }: LeadDialogProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const { formData, setFormData, handleChange } = useForm(DEFAULT_FORM, {
     numberFields: ["sellerId", "sourceId"],
@@ -55,7 +50,6 @@ export default function LeadDialog({
 
   const isEdit = Boolean(initialData?.id);
 
-  // Parse danh sách Seller cho SelectField
   const sellerOptions = [
     { label: "leadPage.form.selectSales", value: "" },
     ...sellers.map((s) => ({
@@ -64,7 +58,6 @@ export default function LeadDialog({
     })),
   ];
 
-  // Parse danh sách Source cho SelectField
   const sourceOptions = [
     { label: "leadPage.form.selectSource", value: "" },
     ...sources.map((src) => ({
@@ -73,7 +66,6 @@ export default function LeadDialog({
     })),
   ];
 
-  // Parse danh sách Source cho SelectField
   const classeOptions = [
     { label: "leadPage.form.selectClasse", value: "" },
     ...classes.map((c) => ({
@@ -106,14 +98,14 @@ export default function LeadDialog({
             : null,
       };
 
+      const leadName = `${formData.firstName} ${formData.lastName}`.trim();
+
       if (isEdit && formData.id) {
         await updateLead(formData.id, payload);
-        toastMsg.success(
-          `Cập nhật thành công PreSale với tên là: ${formData.fullName}.`,
-        );
+        toastMsg.success(t("leadPage.toast.updated", { name: leadName }));
       } else {
         await createLead(payload);
-        toastMsg.success("Tạo thành công PreSale mới.");
+        toastMsg.success(t("leadPage.toast.created"));
       }
       onSuccess?.();
       onClose();
@@ -175,7 +167,7 @@ export default function LeadDialog({
             name="status"
             label="common.tableHeader.status"
             required
-            options={STATUS_OPTIONS}
+            options={LEAD_STATUS_OPTIONS}
             value={formData.status}
             onChange={handleChange}
           />
@@ -186,7 +178,7 @@ export default function LeadDialog({
           <SelectField
             id="sellerId"
             name="sellerId"
-            label="common.tableHeader.seller"
+            label="common.tableHeader.assignedSeller"
             options={sellerOptions}
             value={String(formData.sellerId || "")}
             onChange={handleChange}
@@ -194,7 +186,7 @@ export default function LeadDialog({
           <SelectField
             id="sourceId"
             name="sourceId"
-            label="common.tableHeader.source"
+            label="common.tableHeader.adSource"
             options={sourceOptions}
             value={String(formData.sourceId || "")}
             onChange={handleChange}
@@ -206,7 +198,7 @@ export default function LeadDialog({
           <InputField
             id="purpose"
             name="purpose"
-            label="common.tableHeader.purpose"
+            label="common.tableHeader.learningPurpose"
             value={formData.purpose}
             onChange={handleChange}
             placeholder="leadPage.form.demandPlaceholder"
@@ -214,7 +206,7 @@ export default function LeadDialog({
           <InputField
             id="who"
             name="who"
-            label="common.tableHeader.who"
+            label="common.tableHeader.targetAudience"
             value={formData.who}
             onChange={handleChange}
             placeholder="leadPage.form.jobPlaceholder"

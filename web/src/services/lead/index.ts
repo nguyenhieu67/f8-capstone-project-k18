@@ -1,11 +1,22 @@
 import { fetchApi } from "@/lib/api";
 import type { RequestBody } from "@/types/api";
-import type { LeadI } from "@/types/database";
+import type { LeadI, LeadStatus } from "@/types/database";
 import type { PaginatedResultI } from "@/types/table";
 
-export async function getLeads(page?: number, limit?: number) {
+export interface LeadFilters {
+  status?: LeadStatus;
+  sourceId?: number;
+  sellerId?: number;
+  search?: string;
+}
+
+export async function getLeads(
+  page?: number,
+  limit?: number,
+  filters: LeadFilters = {},
+) {
   return (await fetchApi.get("/leads", {
-    params: { page, limit },
+    params: { page, limit, ...filters },
   })) as PaginatedResultI<LeadI>;
 }
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 type AsyncFn = () => Promise<any>;
 type FetchMap = Record<string, AsyncFn>;
@@ -36,33 +36,40 @@ export default function useFetchData(
 ) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const latestRequest = useRef(0);
 
   const fetchData = useCallback(async () => {
+    const requestId = ++latestRequest.current;
     setLoading(true);
     try {
+      let result: any;
+      let hasResult = false;
       //  Truyền vào 1 hàm đơn
       if (typeof fetchTarget === "function") {
-        const res = await fetchTarget();
-        setData(res);
+        result = await fetchTarget();
+        hasResult = true;
       }
       // Truyền vào Object { employees: getA, courses: getB }
       else if (typeof fetchTarget === "object" && fetchTarget !== null) {
         const fetchMap = fetchTarget as FetchMap;
         const keys = Object.keys(fetchMap);
         const results = await Promise.all(keys.map((key) => fetchMap[key]()));
-        const mappedData = keys.reduce(
+        hasResult = true;
+        result = keys.reduce(
           (acc, key, i) => {
             acc[key] = results[i];
             return acc;
           },
           {} as Record<string, any>,
         );
-        setData(mappedData);
       }
+
+      if (requestId !== latestRequest.current) return;
+      if (hasResult) setData(result);
     } catch (err) {
       console.error("Failed to fetch data:", err);
     } finally {
-      setLoading(false);
+      if (requestId === latestRequest.current) setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
   }, deps);

@@ -1,8 +1,7 @@
 import { AppDataSource } from "@/config";
+import { getMonthRange } from "@/utils";
 import { EmployeeEntity } from "../employees/EmployeeEntity";
 import { calculatePayslip } from "./payrollCalculator";
-
-const TIMEZONE = "Asia/Ho_Chi_Minh";
 
 const SALES_SQL = `
   SELECT l.seller_id AS "sellerId",
@@ -31,38 +30,7 @@ const ATTENDANCE_SQL = `
   GROUP BY employee_id
 `;
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
-function getMonthRange(month: string) {
-  const [year, m] = month.split("-").map(Number);
-  const nextYear = m === 12 ? year + 1 : year;
-  const nextMonth = m === 12 ? 1 : m + 1;
-
-  const startDate = `${year}-${pad(m)}-01`;
-  const endDate = `${nextYear}-${pad(nextMonth)}-01`;
-
-  return {
-    startDate,
-    endDate,
-    // Ranh giới tháng tính theo giờ Việt Nam
-    start: new Date(`${startDate}T00:00:00+07:00`),
-    end: new Date(`${endDate}T00:00:00+07:00`),
-  };
-}
-
 class PayrollService {
-  getCurrentMonth() {
-    const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: TIMEZONE,
-      year: "numeric",
-      month: "2-digit",
-    }).formatToParts(new Date());
-
-    const year = parts.find((p) => p.type === "year")?.value;
-    const month = parts.find((p) => p.type === "month")?.value;
-    return `${year}-${month}`;
-  }
-
   async getMonthlyPayroll(month: string) {
     const { startDate, endDate, start, end } = getMonthRange(month);
 

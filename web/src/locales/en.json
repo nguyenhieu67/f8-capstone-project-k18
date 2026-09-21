@@ -68,7 +68,8 @@
       "details": "Details",
       "dependents": "Dependents",
       "actions": "Actions",
-      "total": "Total"
+      "total": "Total",
+      "enrolledDate": "Enrolled On"
     },
     "button": {
       "addSource": "Add Source",
@@ -83,7 +84,8 @@
       "saving": "Saving...",
       "delete": "Delete",
       "update": "Update Information",
-      "printPayslip": "Print Payslip"
+      "printPayslip": "Print Payslip",
+      "edit": "Edit"
     },
     "dialog": {
       "confirmDelete": "Confirm Delete",
@@ -327,7 +329,8 @@
     },
     "header": {
       "liveStatus": "System Live"
-    }
+    },
+    "noRejections": "No rejected leads this month."
   },
   "classPage": {
     "createModal": {
@@ -389,6 +392,7 @@
     "form": {
       "selectSales": "-- Select Assigned Sales --",
       "selectSource": "-- Select Lead Source --",
+      "selectClasse": "-- Select Class --",
       "demandPlaceholder": "e.g., Learn for job / Career change",
       "jobPlaceholder": "e.g., Student / Employee",
       "reasonPlaceholder": "e.g., High tuition fee / Schedule conflict"
@@ -399,7 +403,12 @@
       "qualified": "Qualified",
       "converted": "Converted",
       "lost": "Lost / Rejected"
-    }
+    },
+    "toast": {
+      "created": "Pre-sale lead created successfully.",
+      "updated": "Pre-sale lead updated successfully: {{name}}."
+    },
+    "enrolled": "Enrolled"
   },
   "empPage": {
     "roles": {
@@ -475,5 +484,10 @@
       "attendance": "Attendance this month",
       "days": "{{days}} day(s)"
     }
+  },
+  "saleResultPage": {
+    "period": "Filter by enrollment month",
+    "allTime": "All time",
+    "totalRevenue": "Total Revenue Collected"
   }
 }

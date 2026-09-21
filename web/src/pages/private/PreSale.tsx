@@ -1,10 +1,16 @@
 import Button from "@/components/Button";
 import { CardBase } from "@/components/Card";
+import { InputField, SelectField } from "@/components/Form";
 import { ConfirmDeleteDialog, LeadDialog } from "@/components/Dialogs";
-import { EditIcon, PlusIcon, TrashIcon } from "@/components/Icons";
+import { EditIcon, PlusIcon, SearchIcon, TrashIcon } from "@/components/Icons";
 import Table from "@/components/Table";
 import { StatusBadge } from "@/components/ui";
-import { useFetchData, usePagination, useTableActions } from "@/hooks";
+import {
+  useDebounce,
+  useFetchData,
+  usePagination,
+  useTableActions,
+} from "@/hooks";
 import { getClasses } from "@/services/classe";
 import { getEmployees } from "@/services/employee";
 import { deleteLead, getLeads } from "@/services/lead";
@@ -17,29 +23,21 @@ import type {
   SourceI,
 } from "@/types/database";
 import type { ColumnI } from "@/types/table";
-import { useMemo } from "react";
+import { LEAD_STATUS, LEAD_STATUS_OPTIONS } from "@/constants/leadStatus";
+import type { TFunction } from "i18next";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const LEAD_STATUS = {
-  new: { label: "leadPage.status.new", color: "var(--crm-info)" },
-  contacted: {
-    label: "leadPage.status.contacted",
-    color: "var(--crm-warning)",
-  },
-  qualified: {
-    label: "leadPage.status.qualified",
-    color: "var(--crm-accent)",
-  },
-  converted: {
-    label: "leadPage.status.converted",
-    color: "var(--crm-success)",
-  },
-  lost: { label: "leadPage.status.lost", color: "var(--crm-danger)" },
-};
+const STATUS_FILTER_OPTIONS = [
+  { label: "leadPage.filter.allStatuses", value: "" },
+  ...LEAD_STATUS_OPTIONS,
+];
 
 const getColumns = (
   sources: SourceI[],
   employees: EmployeeI[],
   classes: ClasseI[],
+  t: TFunction,
   onActionEdit: (row: LeadI) => void,
   onActionDelete: (row: LeadI) => void,
 ): ColumnI<LeadI>[] => [
@@ -121,7 +119,7 @@ const getColumns = (
         return (
           <div className="text-crm-success flex items-center gap-1.5 text-xs font-medium">
             <span className="bg-crm-success h-2 w-2 rounded-full"></span>
-            <span>Đã vào lớp</span>
+            <span>{t("leadPage.enrolled")}</span>
           </div>
         );
       }
@@ -136,7 +134,7 @@ const getColumns = (
             type="button"
             onClick={() => onActionEdit(l)}
             className="text-crm-label-text hover:text-crm-info cursor-pointer rounded p-1 transition hover:bg-slate-100"
-            title="Chỉnh sửa"
+            title={t("common.button.edit")}
           >
             <EditIcon />
           </button>
@@ -144,7 +142,7 @@ const getColumns = (
             type="button"
             onClick={() => onActionDelete(l)}
             className="text-crm-label-text hover:text-crm-danger cursor-pointer rounded p-1 transition hover:bg-slate-100"
-            title="Xóa"
+            title={t("common.button.delete")}
           >
             <TrashIcon />
           </button>
@@ -155,32 +153,66 @@ const getColumns = (
 ];
 
 export default function PreSale() {
+  const { t } = useTranslation();
   const { page, limit, onPageChange, onLimitChange } = usePagination(10);
-  const { data, refetch } = useFetchData(
+  const [status, setStatus] = useState<LeadStatus | "">("");
+  const [sourceId, setSourceId] = useState("");
+  const [sellerId, setSellerId] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const search = useDebounce(searchInput.trim());
+
+  const [appliedSearch, setAppliedSearch] = useState(search);
+  if (search !== appliedSearch) {
+    setAppliedSearch(search);
+    onPageChange(1);
+  }
+
+  const { data: leadData, refetch } = useFetchData(
+    () =>
+      getLeads(page, limit, {
+        status: status || undefined,
+        sourceId: sourceId ? Number(sourceId) : undefined,
+        sellerId: sellerId ? Number(sellerId) : undefined,
+        search: search || undefined,
+      }),
+    [page, limit, status, sourceId, sellerId, search],
+  );
+  const { data: lookups } = useFetchData(
     {
-      leads: () => getLeads(page, limit),
       sources: () => getSources(),
       employees: () => getEmployees(),
       classes: () => getClasses(),
     },
-    [page, limit],
+    [],
   );
 
-  const leads = useMemo(() => data?.leads.items || [], [data?.leads.items]);
-  const total = data?.leads.total ?? 0;
+  const leads = useMemo(() => leadData?.items || [], [leadData?.items]);
+  const total = leadData?.total ?? 0;
   const sources = useMemo(
-    () => data?.sources.items || [],
-    [data?.sources.items],
+    () => lookups?.sources.items || [],
+    [lookups?.sources.items],
   );
   const employees = useMemo(
-    () => data?.employees.items || [],
-    [data?.employees.items],
+    () => lookups?.employees.items || [],
+    [lookups?.employees.items],
   );
   const classes = useMemo(
-    () => data?.classes.items.filter((c) => c.status !== "closed") || [],
-    [data?.classes.items],
+    () => lookups?.classes.items.filter((c) => c.status !== "closed") || [],
+    [lookups?.classes.items],
   );
 
+  const handleStatusChange = (value: string) => {
+    setStatus(value as LeadStatus | "");
+    onPageChange(1);
+  };
+  const handleSourceChange = (value: string) => {
+    setSourceId(value);
+    onPageChange(1);
+  };
+  const handleSellerChange = (value: string) => {
+    setSellerId(value);
+    onPageChange(1);
+  };
   const actions = useTableActions<LeadI>(
     refetch,
     deleteLead as (id: string | number) => Promise<void>,
@@ -192,10 +224,11 @@ export default function PreSale() {
         sources,
         employees,
         classes,
+        t,
         (row) => actions.handleOpenEdit(leads, row),
         (row) => actions.handleOpenDelete(row),
       ),
-    [sources, employees, classes, actions, leads],
+    [sources, employees, classes, t, actions, leads],
   );
 
   const sellers = useMemo(
@@ -203,16 +236,79 @@ export default function PreSale() {
     [employees],
   );
 
+  const sourceFilterOptions = useMemo(
+    () => [
+      { label: "leadPage.filter.allSources", value: "" },
+      ...sources.map((src) => ({ label: src.name, value: String(src.id) })),
+    ],
+    [sources],
+  );
+  const sellerFilterOptions = useMemo(
+    () => [
+      { label: "leadPage.filter.allSellers", value: "" },
+      ...sellers.map((e) => ({
+        label: e.fullName || `#${e.id}`,
+        value: String(e.id),
+      })),
+    ],
+    [sellers],
+  );
+
   return (
     <>
       <div>
-        <CardBase>
-          <Button
-            buttonTitle="common.button.addLead"
-            gradient
-            leftIcon={<PlusIcon size="sm" />}
-            onClick={actions.handleOpenCreate}
-          />
+        <CardBase className="flex flex-wrap items-center gap-4">
+          <div className="min-w-64 flex-1">
+            <InputField
+              id="leadSearch"
+              name="leadSearch"
+              label=""
+              icon={<SearchIcon size="sm" />}
+              placeholder="leadPage.filter.searchPlaceholder"
+              autoComplete="off"
+              maxLength={100}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </div>
+          <div className="w-52">
+            <SelectField
+              id="sourceFilter"
+              name="sourceFilter"
+              label=""
+              options={sourceFilterOptions}
+              value={sourceId}
+              onChange={(e) => handleSourceChange(e.target.value)}
+            />
+          </div>
+          <div className="w-52">
+            <SelectField
+              id="sellerFilter"
+              name="sellerFilter"
+              label=""
+              options={sellerFilterOptions}
+              value={sellerId}
+              onChange={(e) => handleSellerChange(e.target.value)}
+            />
+          </div>
+          <div className="w-52">
+            <SelectField
+              id="statusFilter"
+              name="statusFilter"
+              label=""
+              options={STATUS_FILTER_OPTIONS}
+              value={status}
+              onChange={(e) => handleStatusChange(e.target.value)}
+            />
+          </div>
+          <div className="ml-auto">
+            <Button
+              buttonTitle="common.button.addLead"
+              gradient
+              leftIcon={<PlusIcon size="sm" />}
+              onClick={actions.handleOpenCreate}
+            />
+          </div>
         </CardBase>
       </div>
       <div>

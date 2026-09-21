@@ -1,11 +1,9 @@
-// StaffAttendanceService.ts
 import { BaseService } from "@/common";
 import { StaffAttendanceEntity } from "./StaffAttendanceEntity";
 
 class StaffAttendanceService extends BaseService {
   async saveSessionAttendance(data: any[], userId: number) {
     const results = [];
-    let hasAnyChanges = false;
 
     for (const item of data) {
       const existing = (await this.findOneBy({
@@ -23,7 +21,6 @@ class StaffAttendanceService extends BaseService {
           createdBy: userId,
         });
         results.push(newRecord);
-        hasAnyChanges = true;
       } else {
         const isChanged =
           existing.status !== item.status ||
@@ -39,13 +36,8 @@ class StaffAttendanceService extends BaseService {
             updatedAt: new Date(),
           });
           results.push(await this.getById(existing.id));
-          hasAnyChanges = true;
         }
       }
-    }
-
-    if (!hasAnyChanges && data.length > 0) {
-      throw new Error("DUPLICATE_DATA_NO_CHANGES");
     }
 
     return results;

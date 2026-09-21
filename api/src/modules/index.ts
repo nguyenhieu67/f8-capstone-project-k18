@@ -12,10 +12,13 @@ export * from "./users/UserEntity";
 
 // Routes
 export { default as authRoute } from "./auth/authRoute";
+export { default as classAttendanceRoute } from "./classAttendance/classAttendanceRoute";
 export { default as classeRoute } from "./classes/classeRoute";
+export { default as dashboardRoute } from "./dashboard/dashboardRoute";
 export { default as employeeRoute } from "./employees/employeeRoute";
 export { default as leadRoute } from "./leads/leadRoute";
+export { default as payrollRoute } from "./payroll/payrollRoute";
+export { default as saleResultRoute } from "./saleResults/saleResultRoute";
 export { default as sourceRoute } from "./sources/sourceRoute";
 export { default as studentRoute } from "./students/studentRoute";
 export { default as userRoute } from "./users/userRoute";
-export { default as payrollRoute } from "./payroll/payrollRoute";
