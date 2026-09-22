@@ -10,7 +10,6 @@ export const formatCurrency = (
 
   return `${num.toLocaleString("en-US")} ${unit}`;
 };
-
 // Date from user using
 export const toLocalDateString = (date: Date = new Date()) => {
   const y = date.getFullYear();
@@ -37,3 +36,14 @@ export const formatScheduleLanguage = (
     return translationKey ? t(translationKey) : matched;
   });
 };
+
+export const formatMonthShort = (month: string) => {
+  const [year, m] = month.split("-");
+  return `${m}/${year.slice(2)}`;
+};
+
+export const formatCompactNumber = (value: number, language: string) =>
+  new Intl.NumberFormat(language, {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);

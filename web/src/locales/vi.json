@@ -330,7 +330,14 @@
     "header": {
       "liveStatus": "System Live"
     },
-    "noRejections": "Chưa có lead nào bị từ chối trong tháng này."
+    "noRejections": "Chưa có lead nào bị từ chối trong tháng này.",
+    "trend": {
+      "title": "Theo Dõi Tiến Trình",
+      "desc": "Doanh thu, lead và học viên đăng ký trong 6 tháng gần nhất",
+      "revenue": "Doanh thu",
+      "leadsCount": "Số lead",
+      "registeredStudents": "Học viên đăng ký"
+    }
   },
   "classPage": {
     "createModal": {
@@ -409,17 +416,6 @@
       "updated": "Cập nhật thành công PreSale với tên là: {{name}}."
     },
     "enrolled": "Đã vào lớp",
-    "classStatus": {
-      "enrolled": "Đã vào lớp",
-      "learning": "Đang học",
-      "completed": "Đã hoàn thành"
-    },
-    "classList": {
-      "title": "Lớp Học Của Học Viên",
-      "heading": "Danh sách lớp học",
-      "count": "{{num}} lớp học",
-      "viewDetail": "Xem chi tiết các lớp học"
-    },
     "addClass": {
       "button": "Thêm lớp",
       "title": "Thêm Lớp Học Cho Học Viên",
@@ -432,6 +428,17 @@
       "toast": {
         "added": "Đã thêm {{student}} vào lớp {{name}}."
       }
+    },
+    "classStatus": {
+      "enrolled": "Đã vào lớp",
+      "learning": "Đang học",
+      "completed": "Đã hoàn thành"
+    },
+    "classList": {
+      "title": "Lớp Học Của Học Viên",
+      "heading": "Danh sách lớp học",
+      "count": "{{num}} lớp học",
+      "viewDetail": "Xem chi tiết các lớp học"
     }
   },
   "empPage": {
@@ -445,6 +452,7 @@
   },
   "sourcePage": {
     "form": {
+      "icon": "Biểu tượng",
       "sourceName": "Tên nguồn",
       "sourceNamePlaceholder": "Ví dụ: Zalo OA, Facebook Ads..."
     },
@@ -455,6 +463,9 @@
       "convertedCount": "Đã chốt đơn",
       "convertedUnit": "học viên",
       "revenue": "Doanh thu tạo ra"
+    },
+    "toast": {
+      "created": "Tạo thành công nguồn quảng cáo."
     }
   },
   "studentClassePage": {

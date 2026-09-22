@@ -330,7 +330,14 @@
     "header": {
       "liveStatus": "System Live"
     },
-    "noRejections": "No rejected leads this month."
+    "noRejections": "No rejected leads this month.",
+    "trend": {
+      "title": "Progress Tracking",
+      "desc": "Revenue, leads and registered students over the last 6 months",
+      "revenue": "Revenue",
+      "leadsCount": "Leads",
+      "registeredStudents": "Registered students"
+    }
   },
   "classPage": {
     "createModal": {
@@ -409,17 +416,6 @@
       "updated": "Pre-sale lead updated successfully: {{name}}."
     },
     "enrolled": "Enrolled",
-    "classStatus": {
-      "enrolled": "Enrolled",
-      "learning": "In progress",
-      "completed": "Completed"
-    },
-    "classList": {
-      "title": "Student's Classes",
-      "heading": "Class list",
-      "count": "{{num}} classes",
-      "viewDetail": "View class details"
-    },
     "addClass": {
       "button": "Add class",
       "title": "Add Class For Student",
@@ -432,6 +428,17 @@
       "toast": {
         "added": "Added {{student}} to {{name}}."
       }
+    },
+    "classStatus": {
+      "enrolled": "Enrolled",
+      "learning": "In progress",
+      "completed": "Completed"
+    },
+    "classList": {
+      "title": "Student's Classes",
+      "heading": "Class list",
+      "count": "{{num}} classes",
+      "viewDetail": "View class details"
     }
   },
   "empPage": {
@@ -445,6 +452,7 @@
   },
   "sourcePage": {
     "form": {
+      "icon": "Icon",
       "sourceName": "Source Name",
       "sourceNamePlaceholder": "e.g., Zalo OA, Facebook Ads..."
     },
@@ -455,6 +463,9 @@
       "convertedCount": "Converted",
       "convertedUnit": "student(s)",
       "revenue": "Revenue Generated"
+    },
+    "toast": {
+      "created": "Ad source created successfully."
     }
   },
   "studentClassePage": {

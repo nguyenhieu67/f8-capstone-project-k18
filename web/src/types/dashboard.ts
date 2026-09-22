@@ -13,6 +13,13 @@ export interface DashboardRejectionReasonI {
   percent: number;
 }
 
+export interface DashboardTrendPointI {
+  month: string;
+  revenue: number;
+  leadsCount: number;
+  registeredStudents: number;
+}
+
 export interface DashboardResultI {
   month: string;
   revenue: {
@@ -29,4 +36,6 @@ export interface DashboardResultI {
   payrollTotal: number;
   leaderboard: DashboardLeaderboardRowI[];
   rejectionReasons: DashboardRejectionReasonI[];
+
+  trend: DashboardTrendPointI[];
 }

@@ -330,7 +330,14 @@
     "header": {
       "liveStatus": "システム稼働中"
     },
-    "noRejections": "今月の却下リードはありません。"
+    "noRejections": "今月の却下リードはありません。",
+    "trend": {
+      "title": "進捗トラッキング",
+      "desc": "過去6か月の売上・リード数・受講登録者数",
+      "revenue": "売上",
+      "leadsCount": "リード数",
+      "registeredStudents": "受講登録者数"
+    }
   },
   "classPage": {
     "createModal": {
@@ -409,17 +416,6 @@
       "updated": "プレセールスのリードを更新しました: {{name}}"
     },
     "enrolled": "入学済み",
-    "classStatus": {
-      "enrolled": "入学済み",
-      "learning": "受講中",
-      "completed": "修了"
-    },
-    "classList": {
-      "title": "受講生のクラス",
-      "heading": "クラス一覧",
-      "count": "{{num}}クラス",
-      "viewDetail": "クラスの詳細を見る"
-    },
     "addClass": {
       "button": "クラスを追加",
       "title": "受講生にクラスを追加",
@@ -432,6 +428,17 @@
       "toast": {
         "added": "{{student}}さんを{{name}}に追加しました。"
       }
+    },
+    "classStatus": {
+      "enrolled": "入学済み",
+      "learning": "受講中",
+      "completed": "修了"
+    },
+    "classList": {
+      "title": "受講生のクラス",
+      "heading": "クラス一覧",
+      "count": "{{num}}クラス",
+      "viewDetail": "クラスの詳細を見る"
     }
   },
   "empPage": {
@@ -445,6 +452,7 @@
   },
   "sourcePage": {
     "form": {
+      "icon": "アイコン",
       "sourceName": "チャネル名",
       "sourceNamePlaceholder": "例: Zalo OA, Facebook Ads..."
     },
@@ -455,6 +463,9 @@
       "convertedCount": "成約数",
       "convertedUnit": "名",
       "revenue": "創出売上"
+    },
+    "toast": {
+      "created": "広告チャネルを作成しました。"
     }
   },
   "studentClassePage": {

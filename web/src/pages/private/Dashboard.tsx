@@ -1,8 +1,19 @@
 import { useMemo } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { useTranslation } from "react-i18next";
 
 import { CardBase, StatCard } from "@/components/Card";
 import {
+  ArrowTrendUpIcon,
   ConisIcon,
   MedalIcon,
   SackDollarIcon,
@@ -13,9 +24,16 @@ import {
 import Table from "@/components/Table";
 import { useFetchData } from "@/hooks";
 import { getDashboard } from "@/services/dashboard";
-import type { DashboardLeaderboardRowI } from "@/types/dashboard";
+import type {
+  DashboardLeaderboardRowI,
+  DashboardTrendPointI,
+} from "@/types/dashboard";
 import type { ColumnI } from "@/types/table";
-import { formatCurrency } from "@/utils/format";
+import {
+  formatCompactNumber,
+  formatCurrency,
+  formatMonthShort,
+} from "@/utils/format";
 
 const formatChange = (percent: number | null | undefined) => {
   if (percent === null || percent === undefined) return "";
@@ -23,11 +41,15 @@ const formatChange = (percent: number | null | undefined) => {
 };
 
 export default function Dashboard() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data, loading } = useFetchData(() => getDashboard(), []);
 
   const leaderboard = useMemo(() => data?.leaderboard ?? [], [data]);
   const rejectionReasons = useMemo(() => data?.rejectionReasons ?? [], [data]);
+  const trend: DashboardTrendPointI[] = useMemo(
+    () => data?.trend ?? [],
+    [data],
+  );
 
   const columns: ColumnI<DashboardLeaderboardRowI>[] = useMemo(
     () => [
@@ -112,6 +134,107 @@ export default function Dashboard() {
           status="warning"
         />
       </div>
+
+      <CardBase
+        title="dashboardPage.trend.title"
+        desc="dashboardPage.trend.desc"
+        icon={<ArrowTrendUpIcon className="text-crm-primary" size="sm" />}
+        className={`transition-opacity ${loading ? "opacity-60" : ""}`}
+      >
+        <div className="mt-4 h-80 w-full overflow-hidden">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minWidth={0}
+            debounce={50}
+          >
+            <LineChart
+              data={trend}
+              margin={{ top: 5, right: 12, left: 0, bottom: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--crm-border)" />
+              <XAxis
+                dataKey="month"
+                tickFormatter={formatMonthShort}
+                tick={{ fill: "var(--crm-label-text)", fontSize: 12 }}
+                axisLine={{ stroke: "var(--crm-border)" }}
+                tickLine={false}
+              />
+              <YAxis
+                yAxisId="revenue"
+                tickFormatter={(value: number) =>
+                  formatCompactNumber(value, i18n.language)
+                }
+                tick={{ fill: "var(--crm-label-text)", fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+                width={48}
+              />
+              <YAxis
+                yAxisId="count"
+                orientation="right"
+                allowDecimals={false}
+                tick={{ fill: "var(--crm-label-text)", fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+                width={36}
+              />
+              <Tooltip
+                labelFormatter={(label) =>
+                  typeof label === "string" ? formatMonthShort(label) : label
+                }
+                formatter={(value, name) => [
+                  name === "revenue" ? formatCurrency(Number(value)) : value,
+                  t(`dashboardPage.trend.${name}`),
+                ]}
+                allowEscapeViewBox={{ x: false, y: false }}
+                contentStyle={{
+                  backgroundColor: "var(--crm-surface)",
+                  borderColor: "var(--crm-border)",
+                  borderRadius: 12,
+                  fontSize: 13,
+                }}
+                labelStyle={{ color: "var(--crm-heading-text)" }}
+                wrapperStyle={{ pointerEvents: "none" }}
+              />
+              <Legend
+                formatter={(key: string) => t(`dashboardPage.trend.${key}`)}
+                wrapperStyle={{ fontSize: 13 }}
+              />
+              <Line
+                yAxisId="revenue"
+                type="monotone"
+                dataKey="revenue"
+                name="revenue"
+                stroke="var(--crm-primary)"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+              />
+              <Line
+                yAxisId="count"
+                type="monotone"
+                dataKey="leadsCount"
+                name="leadsCount"
+                stroke="var(--crm-info)"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+              />
+              <Line
+                yAxisId="count"
+                type="monotone"
+                dataKey="registeredStudents"
+                name="registeredStudents"
+                stroke="var(--crm-success)"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 5 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </CardBase>
 
       <div
         className={`grid grid-cols-1 gap-6 transition-opacity lg:grid-cols-2 ${
